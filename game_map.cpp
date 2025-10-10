@@ -1,0 +1,47 @@
+#include "game_map.h"
+
+void GameMap :: LoadMap(string name){
+    ifstream file(name.c_str());   
+    if(!file.is_open()){
+        cout << "loi ko the mo file!\n";
+        return ;
+    }
+    for(int i =0; i<max_map_y; i++){
+        for(int j = 0; j< max_map_x; j++){
+            file >> game_map.tile[i][j];
+            game_map.stages[i][j] = 0;
+        }
+    }
+    file.close();
+    game_map.file_name = name;
+}
+
+void GameMap :: LoadTiles(SDL_Renderer* renderer){
+    for(int i =0; i<max_tiles; i++){
+        string str1 = "image_game/";
+        string str2 = to_string(i);
+        string str3 = ".png";
+        str1 += str2 +str3;
+
+        ifstream fn(str1.c_str());
+        if(!fn.is_open()){
+            continue;
+        }
+        fn.close();
+        tile_mat[i].Loadfromfile(renderer, str1);
+    }
+}
+
+void GameMap :: DrawMap(SDL_Renderer* renderer){
+    for(int i = 0; i< (max_map_y + 0)*tile_size; i+= tile_size){
+        for(int j = 0; j < (max_map_x + 0)*tile_size; j +=tile_size){
+            int val = game_map.tile[i/tile_size][j/tile_size];
+            tile_mat[val].setRect(j + root_map_x, i + root_map_y, tile_size, tile_size);
+            tile_mat[val].render(renderer);
+        }
+    }
+} 
+
+void GameMap:: update(int y, int x){
+    game_map.stages[y][x] = (game_map.stages[y][x] == 0)?1:0;
+}
