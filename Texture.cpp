@@ -5,6 +5,7 @@ SDL_Color green = {0, 255, 0, 255};
 SDL_Color blue = {0, 0, 255, 255};
 SDL_Color orange = {200, 100, 0, 255};
 SDL_Color black = {0, 0, 0, 255};
+SDL_Color gray = {255, 255, 224, 225}; 
 
 Texture :: Texture(){
     texture = NULL;
@@ -61,8 +62,8 @@ void Texture :: free(){
     }
 }
 
-void Texture::write(SDL_Renderer *renderer, TTF_Font* font, string letter){
-    SDL_Surface* textSurface = TTF_RenderText_Solid(font, letter.c_str(), black);
+void Texture::write(SDL_Renderer *renderer, TTF_Font* font, string letter, SDL_Color c){
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, letter.c_str(), c);
     this->texture = SDL_CreateTextureFromSurface(renderer, textSurface);
     SDL_FreeSurface(textSurface);
 }

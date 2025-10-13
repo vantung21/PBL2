@@ -9,6 +9,7 @@ extern SDL_Color green;
 extern SDL_Color blue ;
 extern SDL_Color orange ;
 extern SDL_Color black;
+extern SDL_Color gray;
 
 class Texture{
     protected:
@@ -22,7 +23,7 @@ class Texture{
         void render(SDL_Renderer* renderer);
         void SetColor(SDL_Renderer* renderer, SDL_Color c);
         void FillRect(SDL_Renderer* renderer, SDL_Color c); 
-        void write(SDL_Renderer *renderer, TTF_Font* font, string letter);       
+        void write(SDL_Renderer *renderer, TTF_Font* font, string letter, SDL_Color c);       
         void free();
         SDL_Texture* getTexture(){ return texture;}
         SDL_Rect getRect(){ return rect;}

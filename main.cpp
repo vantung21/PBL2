@@ -45,12 +45,13 @@ int main(int argc, char* argv[]){
     House.setRect(64, 64, 64*5, 64*7);
     Texture name;
     name.setRect(10, 10, 100, 30);
-    name.write(renderer, font, "TVT");
+    name.write(renderer, font, "TVT", black);
     Texture money;
     money.setRect(110, 10, 30, 30);
 
 
     // loop game
+    bool invetorystart = false;
     Uint32 startTime, endTime, TotalTime;
     SDL_Event e;
     bool running = true;
@@ -80,11 +81,13 @@ int main(int argc, char* argv[]){
                     }
                 }
                 if(e.button.button == SDL_BUTTON_RIGHT){
+
                     if((gMap_.getMap().tile[y][x] >=17 && gMap_.getMap().tile[y][x] <= 24 || gMap_.getMap().tile[y][x] == 3) ){
                         // Crop newCp(CORN, x*tile_size, y*tile_size);
                         // //plantedCrops.push_back(newCp);
                         // gMap_.update(x,y);
                     }
+                    (invetorystart== false)?invetorystart=true: invetorystart= false;
                 }
             }
             else if(e.type == SDL_KEYDOWN){
@@ -131,8 +134,13 @@ int main(int argc, char* argv[]){
         }
         name.FillRect(renderer, white);
         name.render(renderer);
-        money.write(renderer, font, to_string(tvt.getMoney()));
+        money.write(renderer, font, to_string(tvt.getMoney()), black);
         money.render(renderer);
+
+        //
+        if(invetorystart){
+            tvt.getInventory().render(renderer, font);
+        }
         
 
         //House.render(renderer);
@@ -141,7 +149,7 @@ int main(int argc, char* argv[]){
         endTime = SDL_GetTicks();
         TotalTime = endTime - startTime;
         cout << TotalTime <<endl;
-        SDL_Delay((40 - TotalTime > 0)?40 - TotalTime: 0);
+        //SDL_Delay((40 - TotalTime > 0)?40 - TotalTime: 0);
         
     }
 

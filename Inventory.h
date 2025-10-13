@@ -6,13 +6,19 @@
 class Inventory{
     private:
         map<ItemType, int > items;
+        map<ItemType, Texture> itemPositions;
+        ItemType selectedItem;
+        int inv_x;
+        int inv_y ;
+        int inv_height;
+        int inv_width;
     public:
         Inventory();
         void addItem(ItemType item, int quantity);
         void removeItem(ItemType item, int quantity);
         int getQuantity(ItemType item) const ;
         bool saleItem(ItemType item, int quantity, int &playerMoney);
-        void render(SDL_Renderer *renderer);
+        void render(SDL_Renderer *renderer, TTF_Font* font);
 };
 
 
