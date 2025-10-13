@@ -32,9 +32,10 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
     
     // load anh nen
     Texture bgInventory;
-    bgInventory.Loadfromfile(renderer, "image_game/BG_Inventory.png");
+    bgInventory.Loadfromfile(renderer, "image_game/BG_Inventory2.png");
     bgInventory.setRect(inv_x,inv_y, inv_width, inv_height);
     bgInventory.render(renderer);
+    bgInventory.drawRect(renderer, black);
 
     // ve tieu de
     Texture titleInv;
@@ -52,7 +53,7 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
         if(item.second > 0){
 
             //luu vi tri cac item trong inv
-            itemPositions[item.first].setRect(item_x, item_y, 64, 64+20);
+            itemPositions[item.first].setRect(item_x, item_y, 100, 100+30);
 
             // highlight o duoc chon
             if(selectedItem == item.first){
@@ -60,23 +61,24 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
             }
 
             //ve item
-            ItemDataBase::allItems[item.first].icon.setRect(item_x, item_y, 64, 64);
+            ItemDataBase::allItems[item.first].icon.setRect(item_x, item_y, 100, 100);
             ItemDataBase::allItems[item.first].icon.render(renderer);
 
             //ve so luong
             string s = to_string(item.second);
             int lenght = s.size();
             Texture quantityText;
-            quantityText.setRect(item_x + (64-16*lenght)/2, item_y + 64, 16*lenght, 20);
-            quantityText.FillRect(renderer, white);  
+            quantityText.setRect(item_x + (100-14*lenght)/2, item_y + 100, 14*lenght, 30);
+            quantityText.FillRect(renderer, white);
+            quantityText.drawRect(renderer, black);  
             quantityText.write(renderer, font, s, black);
             quantityText.render(renderer);
 
             //dieu chinh vi tri cho o tiep theo
-            item_x += 64;
-            if(item_x > inv_x + inv_width- 74){
+            item_x += 100;
+            if(item_x > inv_x + inv_width- 110){
                 item_x = inv_x + 10;
-                item_y += 94;
+                item_y += 140;
             }
         }
     }
@@ -85,6 +87,7 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
     Texture areaSell;
     areaSell.setRect(inv_x, inv_y + inv_height - 140, inv_width, 140);
     areaSell.FillRect(renderer, gray);
+    areaSell.drawRect(renderer, black);
 
     //
     if(selectedItem == ItemType(-1)){
@@ -94,14 +97,14 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
                 + to_string(ItemDataBase::allItems[selectedItem].sellPrice);
         
         Texture firstline;
-        firstline.setRect(inv_x + 32, inv_y + inv_height - 120, select.size()*24, 40);
+        firstline.setRect(inv_x + 32, inv_y + inv_height - 120, select.size()*16, 40);
         firstline.write(renderer, font, select, black);
         firstline.render(renderer);
 
         //
         string quantity = "Quantity: ";
         Texture sl;
-        sl.setRect(inv_x + 32, inv_y + inv_height - 60, quantity.size()*24, 40);
+        sl.setRect(inv_x + 32, inv_y + inv_height - 60, quantity.size()*16, 40);
         sl.write(renderer, font, quantity, black);
         sl.render(renderer);
         //ve nut + -
@@ -109,28 +112,50 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
         string plus1 = "+1";
         string tru10 = "-10";
         string tru1 = "-1";
-        sl.setRect(inv_x + 32 + quantity.size()*24, inv_y + inv_height - 60, 3*24, 40);
+        sl.setRect(inv_x + 32 + quantity.size()*16, inv_y + inv_height - 60, 3*16, 40);
         sl.FillRect(renderer, red);
+        sl.drawRect(renderer, black);
         sl.write(renderer, font, tru10, black);
         sl.render(renderer);
 
-        sl.setRect(inv_x + 32 + quantity.size()*24 + 4*24, inv_y + inv_height - 60, 3*24, 40);
+        sl.setRect(inv_x + 32 + quantity.size()*16 + 4*16, inv_y + inv_height - 60, 3*16, 40);
         sl.FillRect(renderer, red);
+        sl.drawRect(renderer, black);
         sl.write(renderer, font, tru1, black);
         sl.render(renderer);
 
-        sl.setRect(inv_x + 32 + quantity.size()*24 +  8*24, inv_y + inv_height - 60, 3*24, 40);
+        sl.setRect(inv_x + 32 + quantity.size()*16 +  14*16, inv_y + inv_height - 60, 3*16, 40);
         sl.FillRect(renderer, red);
+        sl.drawRect(renderer, black);
         sl.write(renderer, font, plus1, black);
         sl.render(renderer);
 
-        sl.setRect(inv_x + 32 + quantity.size()*24 + 12*24, inv_y + inv_height - 60, 3*24, 40);
+        sl.setRect(inv_x + 32 + quantity.size()*16 + 18*16, inv_y + inv_height - 60, 3*16, 40);
         sl.FillRect(renderer, red);
+        sl.drawRect(renderer, black);
         sl.write(renderer, font, plus10, black);
         sl.render(renderer);
 
+        slban = 1;
+        sl.setRect(inv_x + 32 + quantity.size()*16 + 7*16 + (7-to_string(slban).size())*16/2, inv_y + inv_height - 60, to_string(slban).size()*16, 35);
+        sl.write(renderer, font, to_string(slban), blue);
+        sl.render(renderer);
+        sl.setRect(inv_x + 32 + quantity.size()*16 + 7*16 + 8, inv_y + inv_height - 60 + 38, 6*16, 2);
+        sl.FillRect(renderer, black);
 
+        int t = slban*ItemDataBase::allItems[selectedItem].sellPrice;
+        string tong = "Total Sales: ";
+        tong += to_string(t);
+        sl.setRect(inv_x + inv_width - 20*16, inv_y + inv_height - 120, tong.size()*16, 40);
+        sl.write(renderer, font, tong, black);
+        sl.render(renderer);
 
+        string sell = " SELL ";
+        sl.setRect(inv_x + inv_width - 13*16, inv_y + inv_height - 70, 7*16, 60);
+        sl.FillRect(renderer, green);
+        sl.drawRect(renderer, black);
+        sl.write(renderer, font, sell, black);
+        sl.render(renderer);
     }
     
     
