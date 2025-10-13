@@ -23,6 +23,7 @@ class Texture{
         void render(SDL_Renderer* renderer);
         void SetColor(SDL_Renderer* renderer, SDL_Color c);
         void FillRect(SDL_Renderer* renderer, SDL_Color c); 
+        void drawRect(SDL_Renderer* renderer, SDL_Color c);
         void write(SDL_Renderer *renderer, TTF_Font* font, string letter, SDL_Color c);       
         void free();
         SDL_Texture* getTexture(){ return texture;}

@@ -12,6 +12,7 @@ class Inventory{
         int inv_y ;
         int inv_height;
         int inv_width;
+        int slban;
     public:
         Inventory();
         void addItem(ItemType item, int quantity);

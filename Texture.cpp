@@ -54,6 +54,11 @@ void Texture::FillRect(SDL_Renderer* renderer, SDL_Color c){
     SDL_RenderFillRect(renderer, &rect);
 }
 
+void Texture::drawRect(SDL_Renderer* renderer, SDL_Color c){
+    SetColor(renderer, c);
+    SDL_RenderDrawRect(renderer, &rect);
+}
+
 void Texture :: free(){
     if(texture){
         SDL_DestroyTexture(texture);
