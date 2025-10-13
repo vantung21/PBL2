@@ -1,5 +1,7 @@
 #include "Inventory.h"
 
+Inventory::Inventory(){}
+
 void Inventory :: addItem(ItemType item, int quantity){
     items[item] += quantity;
 }

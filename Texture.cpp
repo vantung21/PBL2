@@ -1,4 +1,10 @@
 #include "Texture.h"
+SDL_Color white = {255, 255, 255, 255};
+SDL_Color red = {255, 0 , 0, 255};
+SDL_Color green = {0, 255, 0, 255};
+SDL_Color blue = {0, 0, 255, 255};
+SDL_Color orange = {200, 100, 0, 255};
+SDL_Color black = {0, 0, 0, 255};
 
 Texture :: Texture(){
     texture = NULL;
@@ -31,11 +37,20 @@ bool Texture :: Loadfromfile(SDL_Renderer *renderer, const string &path){
 void Texture :: setRect(int x, int y, int w, int h){
     rect = {x, y, (w == -1)?rect.w:w, (h == -1)?rect.h : h};
 }
+void Texture::SetColor(SDL_Renderer* renderer, SDL_Color c) {
+    SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
+}
 
 void Texture :: render(SDL_Renderer* renderer){
     if(texture){
+
         SDL_RenderCopy(renderer, texture, NULL, &rect);
     }
+}
+
+void Texture::FillRect(SDL_Renderer* renderer, SDL_Color c){
+    SetColor(renderer, c);
+    SDL_RenderFillRect(renderer, &rect);
 }
 
 void Texture :: free(){
@@ -44,4 +59,10 @@ void Texture :: free(){
         texture = NULL;
         rect = {0, 0, 0, 0};
     }
+}
+
+void Texture::write(SDL_Renderer *renderer, TTF_Font* font, string letter){
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, letter.c_str(), black);
+    this->texture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FreeSurface(textSurface);
 }

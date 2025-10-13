@@ -5,9 +5,9 @@
 #include <map>
 
 enum CropType{
-    RICE,
-    CARROT,
-    CORN
+    RICE_cp,
+    CARROT_cp,
+    CORN_cp
 };
 
 struct CropData{
@@ -36,7 +36,10 @@ class Crop{
         ~Crop(){;}
         void update(int deltaTime);
         void render(SDL_Renderer* renderer);
-        
+        bool isReadyToHarvest() const;
+        CropType getType() const;
+        int getTile_x() const;
+        int getTile_y() const;        
 };
 
 #endif

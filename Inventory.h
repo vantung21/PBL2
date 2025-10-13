@@ -7,7 +7,7 @@ class Inventory{
     private:
         map<ItemType, int > items;
     public:
-        Inventory(){};
+        Inventory();
         void addItem(ItemType item, int quantity);
         void removeItem(ItemType item, int quantity);
         int getQuantity(ItemType item) const ;

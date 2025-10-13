@@ -32,6 +32,7 @@ int main(int argc, char* argv[]){
     bool running = true;
     SDL_Event e;
     while(running){
+        Uint32 startTime = SDL_GetTicks();
         while(SDL_PollEvent(&e)){
             if(e.type == SDL_QUIT){
                 running = false;
@@ -45,7 +46,11 @@ int main(int argc, char* argv[]){
 
         inventory.render(renderer);
         SDL_RenderPresent(renderer);
-        SDL_Delay(40);
+
+        Uint32 endTime = SDL_GetTicks();
+        Uint32 TotalTime = endTime - startTime;
+        cout << TotalTime <<endl;
+        SDL_Delay(40 - TotalTime);
     }
 
     IMG_Quit();

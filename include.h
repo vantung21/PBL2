@@ -15,7 +15,7 @@ using namespace std;
 
 #define screen_width 1600
 #define screen_height 960
-#define tile_size 32
+#define tile_size 64
 
 //gia tri co ban
 const int max_map_x = 64;

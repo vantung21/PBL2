@@ -1,4 +1,19 @@
 #include "game_map.h"
+GameMap::GameMap(){
+    for(int i = 0; i < max_map_y ; i++){
+        for(int j =0 ; j < max_map_x; j++){
+            game_map.farmland[i][j] = NULL;
+        }
+    }
+}
+GameMap::~GameMap(){
+    for(int i = 0; i < max_map_y ; i++){
+        for(int j =0 ; j < max_map_x; j++){
+            if(game_map.farmland[i][j] != NULL)
+                delete game_map.farmland[i][j];
+        }
+    }
+}
 
 void GameMap :: LoadMap(string name){
     ifstream file(name.c_str());   
@@ -9,7 +24,7 @@ void GameMap :: LoadMap(string name){
     for(int i =0; i<max_map_y; i++){
         for(int j = 0; j< max_map_x; j++){
             file >> game_map.tile[i][j];
-            game_map.stages[i][j] = 0;
+           // game_map.stages[i][j] = 0;
         }
     }
     file.close();
@@ -42,6 +57,6 @@ void GameMap :: DrawMap(SDL_Renderer* renderer){
     }
 } 
 
-void GameMap:: update(int y, int x){
-    game_map.stages[y][x] = (game_map.stages[y][x] == 0)?1:0;
-}
+// void GameMap:: update(int x, int y){
+//     game_map.stages[y][x] = (game_map.stages[y][x] == 0)?1:0;
+// }

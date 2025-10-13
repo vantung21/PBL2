@@ -6,38 +6,38 @@ void CropManager :: init(SDL_Renderer* renderer){
     //khoi tao du lieu cho rice
     static CropData riceData;
     riceData.name = "Rice";
-    riceData.timePerStage = 20;
+    riceData.timePerStage = 2500; //ms
     riceData.totalStages = 4;
     riceData.stageTextures.resize(4);
     riceData.stageTextures[0].Loadfromfile(renderer, "image_game/rice_stage0.png");
     riceData.stageTextures[1].Loadfromfile(renderer, "image_game/rice_stage1.png");
     riceData.stageTextures[2].Loadfromfile(renderer, "image_game/rice_stage2.png");
     riceData.stageTextures[3].Loadfromfile(renderer, "image_game/rice_stage3.png");
-    allCropData[RICE] = riceData;
+    allCropData[RICE_cp] = riceData;
 
     //carrot
     static CropData carrotData;
     carrotData.name = "Carrot";
-    carrotData.timePerStage = 20;
+    carrotData.timePerStage = 4000;
     carrotData.totalStages = 4;
     carrotData.stageTextures.resize(4);
     carrotData.stageTextures[0].Loadfromfile(renderer, "image_game/carrot_stage0.png");
     carrotData.stageTextures[1].Loadfromfile(renderer, "image_game/carrot_stage1.png");
     carrotData.stageTextures[2].Loadfromfile(renderer, "image_game/carrot_stage2.png");
     carrotData.stageTextures[3].Loadfromfile(renderer, "image_game/carrot_stage3.png");
-    allCropData[CARROT] = carrotData;
+    allCropData[CARROT_cp] = carrotData;
 
     //corn
     static CropData cornData;
     cornData.name = "Corn";
-    cornData.timePerStage = 20;
+    cornData.timePerStage = 6000;
     cornData.totalStages = 4;
     cornData.stageTextures.resize(4);
     cornData.stageTextures[0].Loadfromfile(renderer, "image_game/corn_stage0.png");
     cornData.stageTextures[1].Loadfromfile(renderer, "image_game/corn_stage1.png");
     cornData.stageTextures[2].Loadfromfile(renderer, "image_game/corn_stage2.png");
     cornData.stageTextures[3].Loadfromfile(renderer, "image_game/corn_stage3.png");
-    allCropData[CORN] = cornData;
+    allCropData[CORN_cp] = cornData;
 }
 
 const CropData&  CropManager :: getData(CropType type){
@@ -73,4 +73,17 @@ void Crop::render(SDL_Renderer* renderer){
         t.setRect(position.x + root_map_x, position.y + root_map_y, position.w, position.h);
         t.render(renderer);
     }
+}
+
+bool Crop::isReadyToHarvest() const{
+    return this->growthStage == CropManager::getData(type).totalStages -1; 
+}
+CropType Crop::getType() const{
+    return this->type;
+}
+int Crop::getTile_x() const{
+    return this->position.x / tile_size;
+}
+int Crop::getTile_y() const{
+    return this->position.y / tile_size;
 }

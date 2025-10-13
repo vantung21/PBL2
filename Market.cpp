@@ -15,6 +15,5 @@ void Market :: render(SDL_Renderer *renderer){
     SDL_SetRenderDrawColor(renderer, 255, 150 , 0, 225);
     SDL_RenderFillRect(renderer, &wd_inventory);
     SDL_SetRenderDrawColor(renderer, 255, 200 , 200, 225);
-    SDL_RenderDrawRect(renderer, &wd_inventory);
-    
+    SDL_RenderDrawRect(renderer, &wd_inventory); 
 }
