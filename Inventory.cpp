@@ -159,7 +159,7 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
         sl.render(renderer);
     }
     
-    
+    // anh truong dap trai
 
 
 }
