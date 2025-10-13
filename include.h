@@ -2,9 +2,9 @@
 #define INCLUDE_H
 
 #include <SDL2/SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 
 #include<iostream>
 #include<fstream>
@@ -13,8 +13,8 @@
 
 using namespace std;
 
-#define screen_width 1600
-#define screen_height 960
+#define screen_width 1088
+#define screen_height 768
 #define tile_size 64
 
 //gia tri co ban

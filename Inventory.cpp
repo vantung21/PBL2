@@ -32,7 +32,7 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
     
     // load anh nen
     Texture bgInventory;
-    bgInventory.Loadfromfile(renderer, "image_game/BG_Inventory.png");
+    bgInventory.Loadfromfile(renderer, "image_game/BG_Inventory2.png");
     bgInventory.setRect(inv_x,inv_y, inv_width, inv_height);
     bgInventory.render(renderer);
 
