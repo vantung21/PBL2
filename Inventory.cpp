@@ -47,6 +47,8 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
     line.setRect(inv_x + inv_width/2 - 64*3 - 32, inv_y + 106, 64*7, 4);
     line.FillRect(renderer, black);
 
+
+    // ggfhghghg
     // ve cac items
     int item_x = inv_x + 10, item_y = inv_y + 126;
     for(auto &item : items){
