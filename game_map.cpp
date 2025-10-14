@@ -57,6 +57,3 @@ void GameMap :: DrawMap(SDL_Renderer* renderer){
     }
 } 
 
-// void GameMap:: update(int x, int y){
-//     game_map.stages[y][x] = (game_map.stages[y][x] == 0)?1:0;
-// }

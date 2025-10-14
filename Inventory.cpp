@@ -48,7 +48,6 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
     line.setRect(inv_x + inv_width/2 - 64*3 - 32, inv_y + 106, 64*7, 4);
     line.FillRect(renderer, black);
 
-    //Tungf depj trai
     // ve cac items
     int item_x = inv_x + 10, item_y = inv_y + 126;
     itemPositions.clear();
@@ -176,7 +175,8 @@ ItemType Inventory::getItemAtPosition(int x, int y){
     return ItemType(-1);
 }
 
-void Inventory::click(int x, int y, int &money){
+bool Inventory::click(int x, int y, int &money){
+    bool run = true;
     ItemType clickedItem = getItemAtPosition(x, y);
     if(clickedItem != ItemType(-1)){
         this->selectedItem = clickedItem;
@@ -218,9 +218,14 @@ void Inventory::click(int x, int y, int &money){
                     if(slban >= items[selectedItem]) slban = items[selectedItem];
                 }
         }
-        else{
+        else if(x <= inv_x || x >= inv_x + inv_width ||
+            y <= inv_y || y >= inv_y + inv_height){
+                this->selectedItem = ItemType(-1);
+                run = false;
+        }
+        else {
             this->selectedItem = ItemType(-1);
         }
-
     }
+    return run;
 }

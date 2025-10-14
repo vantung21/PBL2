@@ -10,16 +10,17 @@ enum ItemType{
     RICE_SEED, CARROT_SEED, CORN_SEED,
 
     // SAN PHAM
-    RICE, CARROT, CORN
+    RICE, CARROT, CORN,
 
-
+    //tong
+    COUNT
 };
 
 struct ItemInfo{
     string ItemName;
     Texture icon;
     int sellPrice;
-    int BuyPrice;
+    int buyPrice;
 };
 
 class ItemDataBase{

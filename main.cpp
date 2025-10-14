@@ -3,6 +3,7 @@
 #include "game_map.h"
 #include "crop.h"
 #include "player.h"
+#include "Market.h"
 
 int main(int argc, char* argv[]){
      //khoi tao
@@ -36,6 +37,9 @@ int main(int argc, char* argv[]){
     //player
     Player tvt;
 
+    //market
+    Market Market_;
+
     GameMap gMap_;
     gMap_.LoadMap("newmap.txt");
     gMap_.LoadTiles(renderer);
@@ -44,6 +48,16 @@ int main(int argc, char* argv[]){
     House.Loadfromfile(renderer, "image_game/House.png");
     House.setRect(64, 64, 64*5, 64*7);
     Texture name;
+
+    Texture icon_inv;
+    icon_inv.Loadfromfile(renderer, "image_game/Icon_Inventory.png");
+    icon_inv.setRect(screen_width - 70, screen_height - 70, 64, 64);
+
+    Texture icon_market;
+    icon_market.Loadfromfile(renderer, "image_game/Icon_Shop.png");
+    icon_market.setRect(screen_width - 70, screen_height - 140, 64, 64);
+
+
     name.setRect(10, 10, 100, 30);
     name.write(renderer, font, "TVT", black);
     Texture money;
@@ -63,15 +77,22 @@ int main(int argc, char* argv[]){
                 int x= (e.button.x - root_map_x)/tile_size;
                 int y= (e.button.y - root_map_y)/tile_size;
                 if(e.button.button == SDL_BUTTON_LEFT){
-                    if(!invetorystart){
-                        if((gMap_.getMap().tile[y][x] >=17 && gMap_.getMap().tile[y][x] <= 24 || gMap_.getMap().tile[y][x] == 3) && gMap_.getMap().farmland[y][x] == NULL){
-                        int t = current_cropTyppe;
-                        if(tvt.getInventory().getQuantity((ItemType)t) > 0){
-                            Crop* newCp = new Crop(current_cropTyppe, x*tile_size, y*tile_size);
-                            gMap_.getMap().farmland[y][x] = newCp;
-                            tvt.getInventory().removeItem((ItemType)t, 1);
+                    if(tvt.getStage() == farm){
+                        if( e.button.x >= icon_inv.getRect().x && e.button.x <= icon_inv.getRect().x + icon_inv.getRect().w && 
+                                e.button.y >= icon_inv.getRect().y && e.button.y <= icon_inv.getRect().y + icon_inv. getRect().h){
+                                    tvt.updateStage(inventory);
                         }
-                        
+                        else if( e.button.x >= icon_market.getRect().x && e.button.x <= icon_market.getRect().x + icon_market.getRect().w && 
+                                e.button.y >= icon_market.getRect().y && e.button.y <= icon_market.getRect().y + icon_market. getRect().h){
+                                    tvt.updateStage(market);
+                        }
+                        else if((gMap_.getMap().tile[y][x] >=17 && gMap_.getMap().tile[y][x] <= 24 || gMap_.getMap().tile[y][x] == 3) && gMap_.getMap().farmland[y][x] == NULL){
+                            int t = current_cropTyppe;
+                            if(tvt.getInventory().getQuantity((ItemType)t) > 0){
+                                Crop* newCp = new Crop(current_cropTyppe, x*tile_size, y*tile_size);
+                                gMap_.getMap().farmland[y][x] = newCp;
+                                tvt.getInventory().removeItem((ItemType)t, 1);
+                            }
                         }
                         else if(gMap_.getMap().farmland[y][x] != NULL ){
                             if((*(gMap_.getMap().farmland[y][x])).isReadyToHarvest()){
@@ -81,19 +102,18 @@ int main(int argc, char* argv[]){
                             }
                         }
                     }
-                    else if(invetorystart){
-                        tvt.getInventory().click(e.button.x, e.button.y, tvt.getMoney());
-                    }     
+                    else if(tvt.getStage() == inventory){
+                        bool check = tvt.getInventory().click(e.button.x, e.button.y, tvt.getMoney());
+                        if(!check) tvt.updateStage(farm); 
+                    } 
+                    else if(tvt.getStage() == market){
+                        bool check = Market_.click(e.button.x, e.button.y,tvt.getInventory(), tvt.getMoney());
+                        if(!check) tvt.updateStage(farm);
+                    }    
                     
                 }
                 if(e.button.button == SDL_BUTTON_RIGHT){
-
-                    if((gMap_.getMap().tile[y][x] >=17 && gMap_.getMap().tile[y][x] <= 24 || gMap_.getMap().tile[y][x] == 3) ){
-                        // Crop newCp(CORN, x*tile_size, y*tile_size);
-                        // //plantedCrops.push_back(newCp);
-                        // gMap_.update(x,y);
-                    }
-                    (invetorystart== false)?invetorystart=true: invetorystart= false;
+                    tvt.updateStage(farm);
                 }
             }
             else if(e.type == SDL_KEYDOWN){
@@ -143,9 +163,16 @@ int main(int argc, char* argv[]){
         money.write(renderer, font, to_string(tvt.getMoney()), black);
         money.render(renderer);
 
+        ///
+        icon_inv.render(renderer);
+        icon_market.render(renderer);
+
         //
-        if(invetorystart){
+        if(tvt.getStage() == inventory){
             tvt.getInventory().render(renderer, font);
+        }
+        if(tvt.getStage() == market){
+            Market_.render(renderer, font);
         }
         
 

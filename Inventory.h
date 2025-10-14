@@ -21,7 +21,7 @@ class Inventory{
         void removeItem(ItemType item, int quantity);
         int getQuantity(ItemType item) const ;
         bool saleItem(ItemType item, int quantity, int &playerMoney);
-        void click(int x, int y, int &money);
+        bool click(int x, int y, int &money);
         ItemType getItemAtPosition(int x, int y);
         void render(SDL_Renderer *renderer, TTF_Font* font);
 };

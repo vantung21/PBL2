@@ -17,7 +17,6 @@ Texture :: ~Texture(){
 }
 
 bool Texture :: Loadfromfile(SDL_Renderer *renderer, const string &path){
-    free();
     SDL_Surface* loadsurface = IMG_Load(path.c_str());
     if(!loadsurface){
         cout << "Loi khong load duoc anh " << path << " !\n";

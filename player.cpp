@@ -2,12 +2,17 @@
 
 
 Player::Player(int initialMoney) : money(initialMoney) {
+    this->stage = farm;
     inventory.addItem(RICE_SEED, 10);
     inventory.addItem(CARROT_SEED, 3);
     inventory.addItem(CORN_SEED, 2); 
 }
-void Player::update() {
-    // Update player state if needed
+void Player::updateStage(playerStage st) {
+    this->stage = st;
+}
+
+playerStage Player::getStage(){
+    return this->stage;
 }
 void Player::render(SDL_Renderer *renderer) {
     
