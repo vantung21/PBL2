@@ -6,6 +6,7 @@ SDL_Color blue = {0, 0, 255, 255};
 SDL_Color orange = {200, 100, 0, 255};
 SDL_Color black = {0, 0, 0, 255};
 SDL_Color gray = {255, 255, 224, 225}; 
+SDL_Color yellow = {205, 205, 0, 255};
 
 Texture :: Texture(){
     texture = NULL;

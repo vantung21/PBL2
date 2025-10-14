@@ -6,6 +6,7 @@ Inventory::Inventory(){
     inv_y = screen_height/8;
     inv_height = screen_height*6/8;
     inv_width = screen_width*6/8;
+    slban = 1;
 }
 void Inventory :: addItem(ItemType item, int quantity){
     items[item] += quantity;
@@ -22,7 +23,7 @@ int Inventory :: getQuantity(ItemType item) const{
 bool Inventory :: saleItem(ItemType item, int quantity, int &playerMoney){
     if(items[item] >= quantity){
         removeItem(item, quantity);
-        playerMoney += ItemDataBase::allItems.at(item).BuyPrice*quantity;
+        playerMoney += ItemDataBase::allItems.at(item).sellPrice*quantity;
         return true;
     }
     return false;
@@ -58,7 +59,8 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
 
             // highlight o duoc chon
             if(selectedItem == item.first){
-                itemPositions[item.first].FillRect(renderer, orange);
+                itemPositions[item.first].FillRect(renderer, yellow);
+                itemPositions[item.first].drawRect(renderer, black);
             }
 
             //ve item
@@ -91,7 +93,7 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
     areaSell.drawRect(renderer, black);
 
     //
-    if(selectedItem == ItemType(-1)){
+    if(selectedItem != ItemType(-1)){
         string select = "SELECTED: ";
         select += ItemDataBase::allItems[selectedItem].ItemName
                 + "    Price: " 
@@ -113,31 +115,31 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
         string plus1 = "+1";
         string tru10 = "-10";
         string tru1 = "-1";
-        sl.setRect(inv_x + 32 + quantity.size()*16, inv_y + inv_height - 60, 3*16, 40);
-        sl.FillRect(renderer, red);
-        sl.drawRect(renderer, black);
-        sl.write(renderer, font, tru10, black);
-        sl.render(renderer);
+        tru10_.setRect(inv_x + 32 + quantity.size()*16, inv_y + inv_height - 60, 3*16, 40);
+        tru10_.FillRect(renderer, red);
+        tru10_.drawRect(renderer, black);
+        tru10_.write(renderer, font, tru10, black);
+        tru10_.render(renderer);
 
-        sl.setRect(inv_x + 32 + quantity.size()*16 + 4*16, inv_y + inv_height - 60, 3*16, 40);
-        sl.FillRect(renderer, red);
-        sl.drawRect(renderer, black);
-        sl.write(renderer, font, tru1, black);
-        sl.render(renderer);
+        tru1_.setRect(inv_x + 32 + quantity.size()*16 + 4*16, inv_y + inv_height - 60, 3*16, 40);
+        tru1_.FillRect(renderer, red);
+        tru1_.drawRect(renderer, black);
+        tru1_.write(renderer, font, tru1, black);
+        tru1_.render(renderer);
 
-        sl.setRect(inv_x + 32 + quantity.size()*16 +  14*16, inv_y + inv_height - 60, 3*16, 40);
-        sl.FillRect(renderer, red);
-        sl.drawRect(renderer, black);
-        sl.write(renderer, font, plus1, black);
-        sl.render(renderer);
+        plus1_.setRect(inv_x + 32 + quantity.size()*16 +  14*16, inv_y + inv_height - 60, 3*16, 40);
+        plus1_.FillRect(renderer, red);
+        plus1_.drawRect(renderer, black);
+        plus1_.write(renderer, font, plus1, black);
+        plus1_.render(renderer);
 
-        sl.setRect(inv_x + 32 + quantity.size()*16 + 18*16, inv_y + inv_height - 60, 3*16, 40);
-        sl.FillRect(renderer, red);
-        sl.drawRect(renderer, black);
-        sl.write(renderer, font, plus10, black);
-        sl.render(renderer);
+        plus10_.setRect(inv_x + 32 + quantity.size()*16 + 18*16, inv_y + inv_height - 60, 3*16, 40);
+        plus10_.FillRect(renderer, red);
+        plus10_.drawRect(renderer, black);
+        plus10_.write(renderer, font, plus10, black);
+        plus10_.render(renderer);
 
-        slban = 1;
+        
         sl.setRect(inv_x + 32 + quantity.size()*16 + 7*16 + (7-to_string(slban).size())*16/2, inv_y + inv_height - 60, to_string(slban).size()*16, 35);
         sl.write(renderer, font, to_string(slban), blue);
         sl.render(renderer);
@@ -152,14 +154,72 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
         sl.render(renderer);
 
         string sell = " SELL ";
-        sl.setRect(inv_x + inv_width - 13*16, inv_y + inv_height - 70, 7*16, 60);
-        sl.FillRect(renderer, green);
-        sl.drawRect(renderer, black);
-        sl.write(renderer, font, sell, black);
-        sl.render(renderer);
+        sell_.setRect(inv_x + inv_width - 13*16, inv_y + inv_height - 70, 7*16, 60);
+        sell_.FillRect(renderer, green);
+        sell_.drawRect(renderer, black);
+        sell_.write(renderer, font, sell, black);
+        sell_.render(renderer);
     }
     
     // anh truong dap trai
 
 
+}
+
+ItemType Inventory::getItemAtPosition(int x, int y){
+    for( auto& pair : itemPositions){
+        if(x >= pair.second.getRect().x && x <= pair.second.getRect().x + pair.second.getRect().w &&
+           y >= pair.second.getRect().y && y <= pair.second.getRect().y + pair.second.getRect().h)
+            return pair.first;
+    }
+    return ItemType(-1);
+}
+
+void Inventory::click(int x, int y, int &money){
+    ItemType clickedItem = getItemAtPosition(x, y);
+    if(clickedItem != ItemType(-1)){
+        this->selectedItem = clickedItem;
+    }
+    else{
+        if(x >= sell_.getRect().x && x <= sell_.getRect().x + sell_.getRect().w &&
+            y >= sell_.getRect().y && y <= sell_.getRect().y + sell_.getRect().h){
+                if(this->selectedItem != ItemType(-1)){
+                    saleItem(this->selectedItem, slban, money);
+                    this->selectedItem = ItemType(-1);
+                    slban = 1;
+                }
+        }
+        else if(x >= tru10_.getRect().x && x <= tru10_.getRect().x + tru10_.getRect().w &&
+            y >= tru10_.getRect().y && y <= tru10_.getRect().y + tru10_.getRect().h){
+                if(this->selectedItem != ItemType(-1)){
+                    slban -= 10;
+                    if(slban <= 0) slban = 1;
+                }
+        }
+        else if(x >= tru1_.getRect().x && x <= tru1_.getRect().x + tru1_.getRect().w &&
+            y >= tru1_.getRect().y && y <= tru1_.getRect().y + tru1_.getRect().h){
+                if(this->selectedItem != ItemType(-1)){
+                    slban -= 1;
+                    if(slban <= 0) slban = 1;
+                }
+        }
+        else if(x >= plus10_.getRect().x && x <= plus10_.getRect().x + plus10_.getRect().w &&
+            y >= plus10_.getRect().y && y <= plus10_.getRect().y + plus10_.getRect().h){
+                if(this->selectedItem != ItemType(-1)){
+                    slban += 10;
+                    if(slban >= items[selectedItem]) slban = items[selectedItem];
+                }
+        }
+        else if(x >= plus1_.getRect().x && x <= plus1_.getRect().x + plus1_.getRect().w &&
+            y >= plus1_.getRect().y && y <= plus1_.getRect().y + plus1_.getRect().h){
+                if(this->selectedItem != ItemType(-1)){
+                    slban += 1;
+                    if(slban >= items[selectedItem]) slban = items[selectedItem];
+                }
+        }
+        else{
+            this->selectedItem = ItemType(-1);
+        }
+
+    }
 }

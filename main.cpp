@@ -62,8 +62,9 @@ int main(int argc, char* argv[]){
             else if(e.type == SDL_MOUSEBUTTONDOWN){
                 int x= (e.button.x - root_map_x)/tile_size;
                 int y= (e.button.y - root_map_y)/tile_size;
-                if(e.button.button == SDL_BUTTON_LEFT){     
-                    if((gMap_.getMap().tile[y][x] >=17 && gMap_.getMap().tile[y][x] <= 24 || gMap_.getMap().tile[y][x] == 3) && gMap_.getMap().farmland[y][x] == NULL){
+                if(e.button.button == SDL_BUTTON_LEFT){
+                    if(!invetorystart){
+                        if((gMap_.getMap().tile[y][x] >=17 && gMap_.getMap().tile[y][x] <= 24 || gMap_.getMap().tile[y][x] == 3) && gMap_.getMap().farmland[y][x] == NULL){
                         int t = current_cropTyppe;
                         if(tvt.getInventory().getQuantity((ItemType)t) > 0){
                             Crop* newCp = new Crop(current_cropTyppe, x*tile_size, y*tile_size);
@@ -71,14 +72,19 @@ int main(int argc, char* argv[]){
                             tvt.getInventory().removeItem((ItemType)t, 1);
                         }
                         
-                    }
-                    else if(gMap_.getMap().farmland[y][x] != NULL ){
-                        if((*(gMap_.getMap().farmland[y][x])).isReadyToHarvest()){
-                            tvt.getMoney() += 2;
-                            delete gMap_.getMap().farmland[y][x];
-                            gMap_.getMap().farmland[y][x] = NULL;
+                        }
+                        else if(gMap_.getMap().farmland[y][x] != NULL ){
+                            if((*(gMap_.getMap().farmland[y][x])).isReadyToHarvest()){
+                                tvt.getMoney() += 2;
+                                delete gMap_.getMap().farmland[y][x];
+                                gMap_.getMap().farmland[y][x] = NULL;
+                            }
                         }
                     }
+                    else if(invetorystart){
+                        tvt.getInventory().click(e.button.x, e.button.y, tvt.getMoney());
+                    }     
+                    
                 }
                 if(e.button.button == SDL_BUTTON_RIGHT){
 
