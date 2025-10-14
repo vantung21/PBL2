@@ -22,6 +22,4 @@ class Inventory{
         void render(SDL_Renderer *renderer, TTF_Font* font);
 };
 
-
-// anh tung dep trai
 #endif

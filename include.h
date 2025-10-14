@@ -13,8 +13,8 @@
 
 using namespace std;
 
-#define screen_width 1088
-#define screen_height 768
+#define screen_width 1472
+#define screen_height 896
 #define tile_size 64
 
 //gia tri co ban
