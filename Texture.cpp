@@ -23,7 +23,7 @@ bool Texture :: Loadfromfile(SDL_Renderer *renderer, const string &path){
         cout << "Loi khong load duoc anh " << path << " !\n";
         return false;
     }
-    SDL_SetColorKey(loadsurface, SDL_TRUE, SDL_MapRGB(loadsurface->format, 0, 0, 0)); // lam mau nen den trong suot
+    //SDL_SetColorKey(loadsurface, SDL_TRUE, SDL_MapRGB(loadsurface->format, 0, 0, 0)); // lam mau nen den trong suot
     texture = SDL_CreateTextureFromSurface(renderer, loadsurface);
     if(!texture){
         cout << "Loi khong tao duoc texture tu " << path << " !\n";

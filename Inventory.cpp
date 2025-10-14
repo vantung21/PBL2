@@ -51,6 +51,7 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
     //Tungf depj trai
     // ve cac items
     int item_x = inv_x + 10, item_y = inv_y + 126;
+    itemPositions.clear();
     for(auto &item : items){
         if(item.second > 0){
 
