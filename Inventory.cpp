@@ -221,10 +221,12 @@ bool Inventory::click(int x, int y, int &money){
         else if(x <= inv_x || x >= inv_x + inv_width ||
             y <= inv_y || y >= inv_y + inv_height){
                 this->selectedItem = ItemType(-1);
+                slban = 1;
                 run = false;
         }
         else {
             this->selectedItem = ItemType(-1);
+            slban = 1;
         }
     }
     return run;

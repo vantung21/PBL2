@@ -209,10 +209,12 @@ bool Market::click(int x, int y,Inventory &inventory, int &money){
         else if(x <= mrk_x || x >= mrk_x + mrk_width ||
             y <= mrk_y || y >= mrk_y + mrk_height){
                 this->selectedItem = ItemType(-1);
+                slmua = 1;
                 run = false;
         }
         else {
             this->selectedItem = ItemType(-1);
+            slmua = 1;
         }
     }
     return run;

@@ -3,6 +3,7 @@
 
 #include "Texture.h"
 #include <map>
+#include "Item.h"
 
 enum CropType{
     RICE_cp,
@@ -14,6 +15,7 @@ struct CropData{
     string name;
     int timePerStage; // thoi gian de qua 1 giai doan
     int totalStages; //tong so giai doan phat trien
+    vector<ItemType> harvestedItems;
     vector<Texture> stageTextures;  // load cac anh cua tung trang thai
 };
 

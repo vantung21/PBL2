@@ -35,7 +35,7 @@ int main(int argc, char* argv[]){
     ItemDataBase::init(renderer);
 
     //player
-    Player tvt;
+    Player tvt("Truongdz");
 
     //market
     Market Market_;
@@ -59,11 +59,11 @@ int main(int argc, char* argv[]){
 
 
     name.setRect(10, 10, 100, 30);
-    name.write(renderer, font, "TVT", black);
+    name.write(renderer, font, tvt.getname(), black);
     Texture money;
-    money.setRect(110, 10, 30, 30);
+    //money.setRect(110, 10, 30, 30);
 
-
+    int random = 0;
     // loop game
     bool invetorystart = false;
     Uint32 startTime, endTime, TotalTime;
@@ -96,7 +96,11 @@ int main(int argc, char* argv[]){
                         }
                         else if(gMap_.getMap().farmland[y][x] != NULL ){
                             if((*(gMap_.getMap().farmland[y][x])).isReadyToHarvest()){
-                                tvt.getMoney() += 2;
+                                // tvt.getMoney() += 2;
+                                random = startTime%5;
+                                for(const auto item : CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).harvestedItems){
+                                    tvt.getInventory().addItem(item, (random == 0)?3:2);
+                                }
                                 delete gMap_.getMap().farmland[y][x];
                                 gMap_.getMap().farmland[y][x] = NULL;
                             }
@@ -160,7 +164,9 @@ int main(int argc, char* argv[]){
         }
         name.FillRect(renderer, white);
         name.render(renderer);
-        money.write(renderer, font, to_string(tvt.getMoney()), black);
+        string mn = "$" + to_string(tvt.getMoney());
+        money.write(renderer, font, mn, yellow);
+        money.setRect(130, 10, mn.size()*14, 30);
         money.render(renderer);
 
         ///

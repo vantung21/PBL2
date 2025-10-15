@@ -13,6 +13,7 @@ void CropManager :: init(SDL_Renderer* renderer){
     riceData.stageTextures[1].Loadfromfile(renderer, "image_game/rice_stage1.png");
     riceData.stageTextures[2].Loadfromfile(renderer, "image_game/rice_stage2.png");
     riceData.stageTextures[3].Loadfromfile(renderer, "image_game/rice_stage3.png");
+    riceData.harvestedItems.push_back(RICE);
     allCropData[RICE_cp] = riceData;
 
     //carrot
@@ -25,6 +26,7 @@ void CropManager :: init(SDL_Renderer* renderer){
     carrotData.stageTextures[1].Loadfromfile(renderer, "image_game/carrot_stage1.png");
     carrotData.stageTextures[2].Loadfromfile(renderer, "image_game/carrot_stage2.png");
     carrotData.stageTextures[3].Loadfromfile(renderer, "image_game/carrot_stage3.png");
+    carrotData.harvestedItems.push_back(CARROT);
     allCropData[CARROT_cp] = carrotData;
 
     //corn
@@ -37,6 +39,7 @@ void CropManager :: init(SDL_Renderer* renderer){
     cornData.stageTextures[1].Loadfromfile(renderer, "image_game/corn_stage1.png");
     cornData.stageTextures[2].Loadfromfile(renderer, "image_game/corn_stage2.png");
     cornData.stageTextures[3].Loadfromfile(renderer, "image_game/corn_stage3.png");
+    cornData.harvestedItems.push_back(CORN);
     allCropData[CORN_cp] = cornData;
 }
 

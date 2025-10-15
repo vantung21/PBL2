@@ -6,6 +6,7 @@
 class Inventory{
     private:
         map<ItemType, int > items;
+        int soluongType;
         map<ItemType, Texture> itemPositions;
         ItemType selectedItem;
         int inv_x;
@@ -20,6 +21,7 @@ class Inventory{
         void addItem(ItemType item, int quantity);
         void removeItem(ItemType item, int quantity);
         int getQuantity(ItemType item) const ;
+        int getcountType() const;
         bool saleItem(ItemType item, int quantity, int &playerMoney);
         bool click(int x, int y, int &money);
         ItemType getItemAtPosition(int x, int y);

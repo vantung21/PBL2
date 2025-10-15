@@ -1,7 +1,7 @@
 #include "player.h"
 
 
-Player::Player(int initialMoney) : money(initialMoney) {
+Player::Player(int ID, const string name, int initialMoney) : player_ID(ID), money(initialMoney), playername(name) {
     this->stage = farm;
     inventory.addItem(RICE_SEED, 10);
     inventory.addItem(CARROT_SEED, 3);
@@ -25,4 +25,8 @@ int& Player::getMoney(){
 
 Inventory& Player::getInventory(){
     return this->inventory;
+}
+
+string Player::getname() const{
+    return playername;
 }
