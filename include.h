@@ -23,4 +23,8 @@ const int max_map_y = 64;
 inline int root_map_x = 0;
 inline int root_map_y = 0;
 
+enum gameStage{
+    LOGIN, PLAYING
+};
+
 #endif

@@ -11,13 +11,14 @@ extern SDL_Color orange ;
 extern SDL_Color black;
 extern SDL_Color gray;
 extern SDL_Color yellow;
+extern SDL_Color d_yellow;
 
 class Texture{
     protected:
         SDL_Texture* texture;
         SDL_Rect rect;
     public:
-        Texture();
+        Texture(int x = 0, int y = 0, int w = 50, int h = 30);
         ~Texture();
         bool Loadfromfile(SDL_Renderer *renderer, const string &path);
         void setRect(int x, int y, int w = -1, int h = -1);

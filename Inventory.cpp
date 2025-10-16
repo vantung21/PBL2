@@ -1,6 +1,7 @@
 #include "Inventory.h"
 
 Inventory::Inventory(){
+    soluongType = 0;
     selectedItem = ItemType(-1);
     inv_x = screen_width/8;
     inv_y = screen_height/8;
@@ -9,15 +10,24 @@ Inventory::Inventory(){
     slban = 1;
 }
 void Inventory :: addItem(ItemType item, int quantity){
+    if((items.find(item) == items.end()) || items[item] == 0) this->soluongType++;
     items[item] += quantity;
 }
 void Inventory :: removeItem(ItemType item, int quantity){
     items[item] -= quantity;
-    if(items[item] < 0 ) items[item] = 0;
+    if(items[item] <= 0 ){
+        items[item] = 0;
+        this->soluongType--;
+    } 
+    
 }
 
 int Inventory :: getQuantity(ItemType item) const{
     return items.at(item);
+}
+
+int Inventory::getcountType()const{
+    return soluongType;
 }
 
 bool Inventory :: saleItem(ItemType item, int quantity, int &playerMoney){

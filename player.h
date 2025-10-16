@@ -8,7 +8,7 @@ enum playerStage{
 
 class Player {
 public:
-    Player(const string name, int = 10);
+    Player(int ID, const string name, int = 10);
     void updateStage(playerStage st);
     void render(SDL_Renderer *renderer);
     Inventory& getInventory();
@@ -21,6 +21,7 @@ private:
     playerStage stage;
     string playername ;
     int money;
+    int player_ID;
 };
 
 #endif  
