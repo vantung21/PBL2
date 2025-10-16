@@ -62,10 +62,10 @@ void Market :: render(SDL_Renderer *renderer, TTF_Font *font){
         string s = "$" + to_string(ItemDataBase::allItems[item].buyPrice);
         int lenght = s.size();
         Texture giamua;
+        giamua.write(renderer, font, s, black);
         giamua.setRect(item_x + (100-14*lenght)/2, item_y + 100, 14*lenght, 30);
         giamua.FillRect(renderer, white);
         giamua.drawRect(renderer, black);  
-        giamua.write(renderer, font, s, black);
         giamua.render(renderer);
 
         //dieu chinh vi tri cho o tiep theo
@@ -90,48 +90,47 @@ void Market :: render(SDL_Renderer *renderer, TTF_Font *font){
                 + to_string(ItemDataBase::allItems[selectedItem].buyPrice);
         
         Texture firstline;
-        firstline.setRect(mrk_x + 32, mrk_y + mrk_height - 120, select.size()*16, 40);
         firstline.write(renderer, font, select, black);
+        firstline.setRect(mrk_x + 32, mrk_y + mrk_height - 120, select.size()*16, 40);
         firstline.render(renderer);
 
         //
         string quantity = "Quantity: ";
         Texture sl;
-        sl.setRect(mrk_x + 32, mrk_y + mrk_height - 60, quantity.size()*16, 40);
         sl.write(renderer, font, quantity, black);
+        sl.setRect(mrk_x + 32, mrk_y + mrk_height - 60, quantity.size()*16, 40);
         sl.render(renderer);
         //ve nut + -
         string plus10 = "+10";
         string plus1 = "+1";
         string tru10 = "-10";
         string tru1 = "-1";
+        tru10_.write(renderer, font, tru10, black);
         tru10_.setRect(mrk_x + 32 + quantity.size()*16, mrk_y + mrk_height - 60, 3*16, 40);
         tru10_.FillRect(renderer, red);
         tru10_.drawRect(renderer, black);
-        tru10_.write(renderer, font, tru10, black);
         tru10_.render(renderer);
 
+        tru1_.write(renderer, font, tru1, black);
         tru1_.setRect(mrk_x + 32 + quantity.size()*16 + 4*16, mrk_y + mrk_height - 60, 3*16, 40);
         tru1_.FillRect(renderer, red);
         tru1_.drawRect(renderer, black);
-        tru1_.write(renderer, font, tru1, black);
         tru1_.render(renderer);
 
+        plus1_.write(renderer, font, plus1, black);
         plus1_.setRect(mrk_x + 32 + quantity.size()*16 +  14*16, mrk_y + mrk_height - 60, 3*16, 40);
         plus1_.FillRect(renderer, red);
         plus1_.drawRect(renderer, black);
-        plus1_.write(renderer, font, plus1, black);
         plus1_.render(renderer);
 
+        plus10_.write(renderer, font, plus10, black);
         plus10_.setRect(mrk_x + 32 + quantity.size()*16 + 18*16, mrk_y + mrk_height - 60, 3*16, 40);
         plus10_.FillRect(renderer, red);
         plus10_.drawRect(renderer, black);
-        plus10_.write(renderer, font, plus10, black);
         plus10_.render(renderer);
 
-        
-        sl.setRect(mrk_x + 32 + quantity.size()*16 + 7*16 + (7-to_string(slmua).size())*16/2, mrk_y + mrk_height - 60, to_string(slmua).size()*16, 35);
         sl.write(renderer, font, to_string(slmua), blue);
+        sl.setRect(mrk_x + 32 + quantity.size()*16 + 7*16 + (7-to_string(slmua).size())*16/2, mrk_y + mrk_height - 60, to_string(slmua).size()*16, 35);
         sl.render(renderer);
         sl.setRect(mrk_x + 32 + quantity.size()*16 + 7*16 + 8, mrk_y + mrk_height - 60 + 38, 6*16, 2);
         sl.FillRect(renderer, black);
@@ -139,15 +138,15 @@ void Market :: render(SDL_Renderer *renderer, TTF_Font *font){
         int t = slmua*ItemDataBase::allItems[selectedItem].buyPrice;
         string tong = "Total Cost: ";
         tong += to_string(t);
-        sl.setRect(mrk_x + mrk_width - 20*16, mrk_y + mrk_height - 120, tong.size()*16, 40);
         sl.write(renderer, font, tong, black);
+        sl.setRect(mrk_x + mrk_width - 20*16, mrk_y + mrk_height - 120, tong.size()*16, 40);
         sl.render(renderer);
 
         string buy = " BUY ";
+        buy_.write(renderer, font, buy, black);
         buy_.setRect(mrk_x + mrk_width - 12*16, mrk_y + mrk_height - 70, 6*16, 60);
         buy_.FillRect(renderer, green);
         buy_.drawRect(renderer, black);
-        buy_.write(renderer, font, buy, black);
         buy_.render(renderer);
     }  
     // anh truong dap trai

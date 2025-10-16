@@ -81,10 +81,10 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
             string s = to_string(item.second);
             int lenght = s.size();
             Texture quantityText;
+            quantityText.write(renderer, font, s, black);
             quantityText.setRect(item_x + (100-14*lenght)/2, item_y + 100, 14*lenght, 30);
             quantityText.FillRect(renderer, white);
             quantityText.drawRect(renderer, black);  
-            quantityText.write(renderer, font, s, black);
             quantityText.render(renderer);
 
             //dieu chinh vi tri cho o tiep theo
@@ -110,48 +110,47 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
                 + to_string(ItemDataBase::allItems[selectedItem].sellPrice);
         
         Texture firstline;
-        firstline.setRect(inv_x + 32, inv_y + inv_height - 120, select.size()*16, 40);
         firstline.write(renderer, font, select, black);
+        firstline.setRect(inv_x + 32, inv_y + inv_height - 120, select.size()*16, 40);
         firstline.render(renderer);
 
         //
         string quantity = "Quantity: ";
         Texture sl;
-        sl.setRect(inv_x + 32, inv_y + inv_height - 60, quantity.size()*16, 40);
         sl.write(renderer, font, quantity, black);
+        sl.setRect(inv_x + 32, inv_y + inv_height - 60, quantity.size()*16, 40);
         sl.render(renderer);
         //ve nut + -
         string plus10 = "+10";
         string plus1 = "+1";
         string tru10 = "-10";
         string tru1 = "-1";
+        tru10_.write(renderer, font, tru10, black);
         tru10_.setRect(inv_x + 32 + quantity.size()*16, inv_y + inv_height - 60, 3*16, 40);
         tru10_.FillRect(renderer, red);
         tru10_.drawRect(renderer, black);
-        tru10_.write(renderer, font, tru10, black);
         tru10_.render(renderer);
 
+        tru1_.write(renderer, font, tru1, black);
         tru1_.setRect(inv_x + 32 + quantity.size()*16 + 4*16, inv_y + inv_height - 60, 3*16, 40);
         tru1_.FillRect(renderer, red);
         tru1_.drawRect(renderer, black);
-        tru1_.write(renderer, font, tru1, black);
         tru1_.render(renderer);
 
+        plus1_.write(renderer, font, plus1, black);
         plus1_.setRect(inv_x + 32 + quantity.size()*16 +  14*16, inv_y + inv_height - 60, 3*16, 40);
         plus1_.FillRect(renderer, red);
         plus1_.drawRect(renderer, black);
-        plus1_.write(renderer, font, plus1, black);
         plus1_.render(renderer);
-
+    
+        plus10_.write(renderer, font, plus10, black);
         plus10_.setRect(inv_x + 32 + quantity.size()*16 + 18*16, inv_y + inv_height - 60, 3*16, 40);
         plus10_.FillRect(renderer, red);
         plus10_.drawRect(renderer, black);
-        plus10_.write(renderer, font, plus10, black);
         plus10_.render(renderer);
 
-        
-        sl.setRect(inv_x + 32 + quantity.size()*16 + 7*16 + (7-to_string(slban).size())*16/2, inv_y + inv_height - 60, to_string(slban).size()*16, 35);
         sl.write(renderer, font, to_string(slban), blue);
+        sl.setRect(inv_x + 32 + quantity.size()*16 + 7*16 + (7-to_string(slban).size())*16/2, inv_y + inv_height - 60, to_string(slban).size()*16, 35);
         sl.render(renderer);
         sl.setRect(inv_x + 32 + quantity.size()*16 + 7*16 + 8, inv_y + inv_height - 60 + 38, 6*16, 2);
         sl.FillRect(renderer, black);
@@ -159,15 +158,15 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
         int t = slban*ItemDataBase::allItems[selectedItem].sellPrice;
         string tong = "Total Sales: ";
         tong += to_string(t);
-        sl.setRect(inv_x + inv_width - 20*16, inv_y + inv_height - 120, tong.size()*16, 40);
         sl.write(renderer, font, tong, black);
+        sl.setRect(inv_x + inv_width - 20*16, inv_y + inv_height - 120, tong.size()*16, 40);
         sl.render(renderer);
 
         string sell = " SELL ";
+        sell_.write(renderer, font, sell, black);
         sell_.setRect(inv_x + inv_width - 13*16, inv_y + inv_height - 70, 7*16, 60);
         sell_.FillRect(renderer, green);
         sell_.drawRect(renderer, black);
-        sell_.write(renderer, font, sell, black);
         sell_.render(renderer);
     }
     
