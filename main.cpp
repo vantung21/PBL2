@@ -304,6 +304,7 @@ int main(int argc, char* argv[]){
         gMap_.save(saveFile);
 
         saveFile.close();
+        cout << "Game da duoc luu! (ID: " << tvt.getID() << ")" << endl;
     }
 
      //SDL_StopTextInput();

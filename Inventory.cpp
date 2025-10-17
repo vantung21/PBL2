@@ -244,7 +244,8 @@ bool Inventory::click(int x, int y, int &money){
 void Inventory::save(ofstream &saveFile){
     saveFile << soluongType << endl;
     for(auto &item : items){
-        saveFile << item.first << " " << item.second << endl;
+        if(item.second > 0)
+            saveFile << item.first << " " << item.second << endl;
     }
 }
 void Inventory::clear(){
