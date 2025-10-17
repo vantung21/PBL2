@@ -1,6 +1,7 @@
 .vscode/
 image_game/
 SDL2/
+savegame/
 
 main
 

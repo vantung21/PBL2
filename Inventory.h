@@ -26,6 +26,8 @@ class Inventory{
         bool click(int x, int y, int &money);
         ItemType getItemAtPosition(int x, int y);
         void render(SDL_Renderer *renderer, TTF_Font* font);
+        void save(ofstream &saveFile);
+        void clear();
 };
 
 #endif

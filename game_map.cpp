@@ -57,3 +57,29 @@ void GameMap :: DrawMap(SDL_Renderer* renderer){
     }
 } 
 
+void GameMap :: save(ofstream &saveFile){
+    saveFile << Crop::count << endl;
+    //save farmland
+    for(int i =0; i<max_map_y; i++){
+        for(int j = 0; j< max_map_x; j++){
+            if(game_map.farmland[i][j] != NULL){
+                saveFile << i << " " << j << " " << game_map.farmland[i][j]->getType() << " " 
+                         << game_map.farmland[i][j]->getGrowthStage() << " "
+                         << game_map.farmland[i][j]->getGrowthTimer() << endl;
+            }
+        }
+    }
+    saveFile << -1 << endl; //dau hieu ket thuc danh sach
+}
+
+void GameMap :: clear(){
+    for(int i = 0; i < max_map_y ; i++){
+        for(int j =0 ; j < max_map_x; j++){
+            if(game_map.farmland[i][j] != NULL){
+                delete game_map.farmland[i][j];
+                game_map.farmland[i][j] = NULL;
+            }
+        }
+    }
+}
+

@@ -240,3 +240,16 @@ bool Inventory::click(int x, int y, int &money){
     }
     return run;
 }
+
+void Inventory::save(ofstream &saveFile){
+    saveFile << soluongType << endl;
+    for(auto &item : items){
+        saveFile << item.first << " " << item.second << endl;
+    }
+}
+void Inventory::clear(){
+    items.clear();
+    soluongType = 0;
+    selectedItem = ItemType(-1);
+    slban = 1;
+}

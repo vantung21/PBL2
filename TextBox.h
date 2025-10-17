@@ -9,6 +9,7 @@ private:
     Texture box;
     string text;
     bool is_active; 
+    int startPos;
 
 public:
     TextBox(int x = 0, int y = 0, int w = 50, int h = 30); 

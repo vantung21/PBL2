@@ -47,8 +47,9 @@ const CropData&  CropManager :: getData(CropType type){
     return allCropData.at(type);
 }
 
-
+int Crop::count = 0;
 Crop :: Crop(CropType type, int x, int y): type(type){
+    count++;
     growthStage = growthTimer = 0;
     position = {x, y, tile_size, tile_size};
 }

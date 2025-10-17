@@ -3,6 +3,7 @@
 TextBox::TextBox(int x, int y, int w, int h ):box({x,y,w,h}){
     this->text = "";
     this->is_active = false;
+    startPos = 0;
 }
 
 void TextBox::handleEvent(SDL_Event& e){
@@ -12,10 +13,11 @@ void TextBox::handleEvent(SDL_Event& e){
         if (strlen(e.text.text) > 0) {
             text += e.text.text;
         }
-    } else if (e.type == SDL_KEYDOWN) {
+    } else if (e.type == SDL_KEYDOWN){
         // Xử lý phím đặc biệt (Backspace)
         if (e.key.keysym.sym == SDLK_BACKSPACE && text.length() > 0) {
             text.pop_back(); // Xóa ký tự cuối
+            if (startPos > 0) startPos--;
         }
     }
 }
@@ -35,13 +37,21 @@ void TextBox::render(SDL_Renderer* renderer, TTF_Font* font){
 
     //ve chu
     if(!text.empty()){
-        Texture textTexture;
-        textTexture.write(renderer, font, text, black);
+        string displayText = text.substr(startPos, text.size() - startPos);
 
-        // int length = text.size()*box.getRect().h/2;
+        Texture textTexture;    
+        textTexture.write(renderer, font, displayText, black);
         int length = textTexture.getRect().w*box.getRect().h/textTexture.getRect().h;
-        // length = (length > box.getRect().w - 10 )?box.getRect().w - 10 : length;
         textTexture.setRect(box.getRect().x + 5, box.getRect().y + box.getRect().h*2/10, length, box.getRect().h*7/10);
+        
+        while(textTexture.getRect().w > box.getRect().w -10){
+            startPos++;
+            displayText = text.substr(startPos, text.size() - startPos);
+            textTexture.write(renderer, font, displayText, black);
+            length = textTexture.getRect().w*box.getRect().h/textTexture.getRect().h;
+            textTexture.setRect(box.getRect().x + 5, box.getRect().y + box.getRect().h*2/10, length, box.getRect().h*7/10);
+        }
+        
         textTexture.render(renderer);
         if(this->is_active && (SDL_GetTicks()/500)%2){
             Texture tro;

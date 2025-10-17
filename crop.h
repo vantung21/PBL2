@@ -34,14 +34,17 @@ class Crop{
         int growthTimer;
         SDL_Rect position;  //vi tri va kich thuoc tren mang hinh
     public:
-        Crop(CropType type, int , int );
-        ~Crop(){;}
+        static int count;
+        Crop(CropType type, int = 0 , int = 0 );
+        ~Crop(){count--;}
         void update(int deltaTime);
         void render(SDL_Renderer* renderer);
         bool isReadyToHarvest() const;
         CropType getType() const;
         int getTile_x() const;
-        int getTile_y() const;        
+        int getTile_y() const;
+        int& getGrowthStage() { return growthStage; }    
+        int& getGrowthTimer() { return growthTimer; }   
 };
 
 #endif

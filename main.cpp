@@ -6,6 +6,53 @@
 #include "Market.h"
 #include "TextBox.h"
 
+void LoadGame(Player &player , GameMap &gMap_){
+    string id = to_string(player.getID());
+    ifstream loadFile("savegame/" + id + ".txt");
+    if(!loadFile.is_open()){
+        cout << "loi! Khong the mo file save." << endl;
+        return;
+    }
+    //load player
+    string load;
+    loadFile >> load;
+    player.getID() = stoi(load);
+    loadFile >> load;
+    player.getname() = load;
+    loadFile >> load;
+    player.getMoney() = stoi(load);
+    //load inventory
+    int countType;
+    loadFile >> countType;
+    player.getInventory().clear();
+    for(int i =0; i< countType; i++){
+        int itemInt, quantity;
+        loadFile >> itemInt >> quantity;
+        player.getInventory().addItem(ItemType(itemInt), quantity);
+    }
+    
+    //load map
+    int cntcrop;
+    loadFile >> cntcrop;
+    gMap_.clear();
+    for(int i =0; i< cntcrop; i++){
+        int x, y, typeInt, stage, timer;
+        loadFile >> x >> y >> typeInt >> stage >> timer;
+        Crop* newCp = new Crop(CropType(typeInt), y*tile_size, x*tile_size);
+        newCp->getGrowthStage() = stage;
+        newCp->getGrowthTimer() = timer;
+        gMap_.getMap().farmland[x][y] = newCp;
+    }
+    int end;
+    loadFile >> end;
+    if(end == -1){
+        cout << "load game thanh cong! (ID: " << player.getID() << ")" << endl;
+    }
+    else{
+        cout << "load game that bai!" << endl;
+    }
+}
+
 int main(int argc, char* argv[]){
      //khoi tao
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -50,7 +97,7 @@ int main(int argc, char* argv[]){
     ItemDataBase::init(renderer);
 
     //player
-    Player tvt(0001, "Truongdz");
+    Player tvt;
 
     //market
     Market Market_;
@@ -79,6 +126,7 @@ int main(int argc, char* argv[]){
     //money.setRect(110, 10, 30, 30);
 
     int random = 0;
+    SDL_StartTextInput(); 
     // loop game
     bool invetorystart = false;
     Uint32 startTime, endTime, TotalTime;
@@ -165,7 +213,6 @@ int main(int argc, char* argv[]){
                 }
             }
             else if(current_gamestage == LOGIN){
-                SDL_StartTextInput(); 
                 if(e.type == SDL_MOUSEBUTTONDOWN){
                     if(e.button.button == SDL_BUTTON_LEFT){
                         int mouseX = e.button.x;
@@ -178,10 +225,18 @@ int main(int argc, char* argv[]){
                         current_gamestage = PLAYING;
                     }
                 }
+                if(e.type == SDL_KEYDOWN){
+                    if(e.key.keysym.sym == SDLK_SPACE){
+                        // cout << "Username: " << usernameBox.getText() << endl;
+                        // cout << "Password: " << passwordBox.getText() << endl;
+                    }
+                    else if(e.key.keysym.sym == SDLK_z){
+                        LoadGame(tvt, gMap_);
+                    }
+                }
                 //xu ly van ban
                 usernameBox.handleEvent(e);
                 passwordBox.handleEvent(e);
-
             }
         }
 
@@ -231,11 +286,29 @@ int main(int argc, char* argv[]){
 
         endTime = SDL_GetTicks();
         TotalTime = endTime - startTime;
-        cout << TotalTime <<endl;
+        //cout << TotalTime <<endl;
         //SDL_Delay((40 - TotalTime > 0)?40 - TotalTime: 0);
         
     }
 
+    //save game
+    string id = to_string(tvt.getID());
+    ofstream saveFile("savegame/" + id + ".txt");
+    if(saveFile.is_open()){
+        saveFile << tvt.getID() << endl;
+        saveFile << tvt.getname() << endl;
+        saveFile << tvt.getMoney() << endl;
+        //save inventory
+        tvt.getInventory().save(saveFile);
+        //save map
+        gMap_.save(saveFile);
+
+        saveFile.close();
+    }
+
+     //SDL_StopTextInput();
+    TTF_CloseFont(font);
+    font = NULL;
     IMG_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

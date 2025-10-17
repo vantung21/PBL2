@@ -33,6 +33,8 @@ class GameMap{
         void DrawMap(SDL_Renderer* renderer);
         Map& getMap() { return game_map; }
         void update(int, int);
+        void save(ofstream &saveFile);
+        void clear();
 };
 
 #endif

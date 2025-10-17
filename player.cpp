@@ -27,6 +27,6 @@ Inventory& Player::getInventory(){
     return this->inventory;
 }
 
-string Player::getname() const{
+string& Player::getname(){
     return playername;
 }
