@@ -23,6 +23,7 @@ void Inventory :: removeItem(ItemType item, int quantity){
 }
 
 int Inventory :: getQuantity(ItemType item) const{
+    if(items.find(item) == items.end()) return -1;
     return items.at(item);
 }
 

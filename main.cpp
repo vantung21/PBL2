@@ -5,6 +5,7 @@
 #include "player.h"
 #include "Market.h"
 #include "TextBox.h"
+#include "AccountManager.h"
 
 void LoadGame(Player &player , GameMap &gMap_){
     string id = to_string(player.getID());
@@ -53,6 +54,25 @@ void LoadGame(Player &player , GameMap &gMap_){
     }
 }
 
+void saveGame(Player &player, GameMap &gMap_){
+    string id = to_string(player.getID());
+    ofstream saveFile("savegame/" + id + ".txt");
+    if(!saveFile.is_open()){
+        cout << "loi! Khong the tao file save." << endl;
+        return;
+    }
+    //save player
+    saveFile << player.getID() << endl;
+    saveFile << player.getname() << endl;
+    saveFile << player.getMoney() << endl;
+    //save inventory
+    player.getInventory().save(saveFile);
+    //save map
+    gMap_.save(saveFile);
+
+    cout << "Game da duoc luu! (ID: " << player.getID() << ")" << endl;
+}
+
 int main(int argc, char* argv[]){
      //khoi tao
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -75,20 +95,37 @@ int main(int argc, char* argv[]){
     //tai font chu
     TTF_Font* font = TTF_OpenFont("font.ttf", 32);
 
+    // account manager
+    AccountManager accountManager;
+
     //gameStage
     gameStage current_gamestage = LOGIN;
 
-    // 
+    // login screen
     Texture login_bg;
     login_bg.Loadfromfile(renderer, "image_game/LOGIN_BG.png");
     login_bg.setRect(0, 0 , screen_width, screen_height);
-    Texture lgTitles;
-    lgTitles.write(renderer, font, " FARM GAME ", d_yellow);
-    lgTitles.setRect(screen_width/2 - (lgTitles.getRect().w*150/lgTitles.getRect().h)/2, 50, lgTitles.getRect().w*150/lgTitles.getRect().h, 150);
+    Texture login_box;
+    login_box.Loadfromfile(renderer, "image_game/board_login.png");
+    login_box.setRect(0, 0 , screen_width, screen_height);
 
-    TextBox usernameBox(screen_width/2 - 200, screen_height/2 - 50, 400, 50);
-    TextBox passwordBox(screen_width/2 - 200, screen_height/2 + 20, 400, 50);
-    
+    Texture login_button;
+    login_button.write(renderer, font, " LOGIN " , black);
+    login_button.setRect(screen_width/2 -200, screen_height/2 + 10, 180, 60);
+
+    Texture register_button;
+    register_button.write(renderer, font, "REGISTER" , black);
+    register_button.setRect(screen_width/2 + 20, screen_height/2 + 10, 180, 60);
+
+    bool login_button_hover = true;
+
+    Texture enter_button;
+    enter_button.write(renderer, font, " ENTER " , black);
+    enter_button.setRect(screen_width/2 -100, screen_height/2 + 220, 200, 60);
+
+    TextBox usernameBox("Username", screen_width/2 - 200, screen_height/2 + 80, 400, 50);
+    TextBox passwordBox("Password", screen_width/2 - 200, screen_height/2 + 150, 400, 50);
+
     //crop
     CropManager :: init( renderer);
     CropType current_cropTyppe = CropType :: RICE_cp;
@@ -182,6 +219,7 @@ int main(int argc, char* argv[]){
                     if(e.button.button == SDL_BUTTON_RIGHT){
                         //tvt.updateStage(farm);
                         current_gamestage = LOGIN;
+                        saveGame(tvt, gMap_);
                     }
                 }
                 else if(e.type == SDL_KEYDOWN){
@@ -233,6 +271,30 @@ int main(int argc, char* argv[]){
                     else if(e.key.keysym.sym == SDLK_z){
                         LoadGame(tvt, gMap_);
                     }
+                    else if(e.key.keysym.sym == SDLK_l){
+                        int userID = accountManager.login(usernameBox.getText(), passwordBox.getText());
+                        if(userID != -1){
+                            tvt.getID() = userID;
+                            LoadGame(tvt, gMap_);
+                            current_gamestage = PLAYING;
+                        }
+                        else{
+                            cout << "Dang nhap that bai! Vui long kiem tra lai tai khoan." << endl;
+                        }
+                        usernameBox.clearText(); usernameBox.setActive(false);
+                        passwordBox.clearText(); passwordBox.setActive(false);
+                    }
+                    else if(e.key.keysym.sym == SDLK_r){
+                        bool success = accountManager.registerAccount(usernameBox.getText(), passwordBox.getText());
+                        if(success){
+                            cout << "Dang ky thanh cong! Ban co the dang nhap bang tai khoan vua tao." << endl;
+                        }
+                        else{
+                            cout << "Dang ky that bai! Tai khoan da ton tai." << endl;
+                        }
+                        usernameBox.clearText(); usernameBox.setActive(false);
+                        passwordBox.clearText(); passwordBox.setActive(false);
+                    }
                 }
                 //xu ly van ban
                 usernameBox.handleEvent(e);
@@ -275,7 +337,18 @@ int main(int argc, char* argv[]){
         }
         else if(current_gamestage == LOGIN){
             login_bg.render(renderer);
-            lgTitles.render(renderer);
+            login_box.render(renderer);
+
+            login_button.FillRect(renderer, (login_button_hover)? green : gray);
+            login_button.drawRect(renderer, black);
+            login_button.render(renderer);
+            register_button.FillRect(renderer, (login_button_hover)? gray : green);
+            register_button.drawRect(renderer, black);
+            register_button.render(renderer);
+            enter_button.FillRect(renderer, (usernameBox.getText() != "" && passwordBox.getText() != "") ? green : gray);
+            enter_button.drawRect(renderer, black);
+            enter_button.render(renderer);
+
             usernameBox.render(renderer, font);
             passwordBox.render(renderer, font);
         }
@@ -292,20 +365,7 @@ int main(int argc, char* argv[]){
     }
 
     //save game
-    string id = to_string(tvt.getID());
-    ofstream saveFile("savegame/" + id + ".txt");
-    if(saveFile.is_open()){
-        saveFile << tvt.getID() << endl;
-        saveFile << tvt.getname() << endl;
-        saveFile << tvt.getMoney() << endl;
-        //save inventory
-        tvt.getInventory().save(saveFile);
-        //save map
-        gMap_.save(saveFile);
-
-        saveFile.close();
-        cout << "Game da duoc luu! (ID: " << tvt.getID() << ")" << endl;
-    }
+    saveGame(tvt, gMap_);
 
      //SDL_StopTextInput();
     TTF_CloseFont(font);

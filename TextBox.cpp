@@ -1,9 +1,11 @@
 #include "TextBox.h"
 
-TextBox::TextBox(int x, int y, int w, int h ):box({x,y,w,h}){
+TextBox::TextBox(string placeholder, int x, int y, int w, int h, typeBox boxType):box({x,y,w,h}){
     this->text = "";
     this->is_active = false;
     startPos = 0;
+    this->placeholder = placeholder;
+    this->boxType = boxType;
 }
 
 void TextBox::handleEvent(SDL_Event& e){
@@ -23,9 +25,28 @@ void TextBox::handleEvent(SDL_Event& e){
 }
 
 void TextBox::render(SDL_Renderer* renderer, TTF_Font* font){
-    this->box.FillRect(renderer, white);
-    this->box.drawRect(renderer, black);
-    //ve contro |
+    if(boxType == FILL){
+        box.FillRect(renderer, white);
+        box.drawRect(renderer, black);
+    }
+    else if(boxType == UNDERLINE){
+        box.drawRect(renderer, black);
+        Texture line;
+        line.setRect(box.getRect().x, box.getRect().y + box.getRect().h - 4, box.getRect().w, 4);
+        line.FillRect(renderer, black);
+    }
+
+    // ve placeholder
+    if(!is_active && text.empty()){
+        Texture placeholderText;
+        placeholderText.write(renderer, font, placeholder, gray);
+        int length = placeholderText.getRect().w*box.getRect().h/placeholderText.getRect().h;
+        placeholderText.setRect(box.getRect().x + 5, box    .getRect().y + box.getRect().h*2/10, length, box.getRect().h*7/10);
+        placeholderText.render(renderer);
+        return;
+    }
+
+    //ve con tro |
     if(this->is_active && (SDL_GetTicks()/500)%2 && text.empty()){
         //int length = text.size()*box.getRect().h/2;
         //int length = textTexture.getRect().w*box.getRect().h/textTexture.getRect().h;
@@ -70,3 +91,7 @@ bool TextBox::checkClick(int mouseX, int mouseY){
 string TextBox::getText() const { return text; }
 
 void TextBox::setActive(bool state) { is_active = state; }
+void TextBox::clearText(){
+    this->text = "";
+    this->startPos = 0;
+}
