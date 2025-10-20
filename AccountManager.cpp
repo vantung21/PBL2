@@ -2,7 +2,7 @@
 
 AccountManager::AccountManager(){
     ifstream infile("savegame/accounts.txt");
-    nextUserID = 100000;
+    nextUserID = 100001;
     if (infile.is_open()) {
         string username, password;
         int userID;

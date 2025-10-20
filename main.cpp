@@ -6,12 +6,13 @@
 #include "Market.h"
 #include "TextBox.h"
 #include "AccountManager.h"
+#include "Login_Interface.h"
 
 void LoadGame(Player &player , GameMap &gMap_){
     string id = to_string(player.getID());
     ifstream loadFile("savegame/" + id + ".txt");
     if(!loadFile.is_open()){
-        cout << "loi! Khong the mo file save." << endl;
+        cout << "loi! Khong the mo file save. (ID: " << id << ")" << endl;
         return;
     }
     //load player
@@ -102,29 +103,31 @@ int main(int argc, char* argv[]){
     gameStage current_gamestage = LOGIN;
 
     // login screen
-    Texture login_bg;
-    login_bg.Loadfromfile(renderer, "image_game/LOGIN_BG.png");
-    login_bg.setRect(0, 0 , screen_width, screen_height);
-    Texture login_box;
-    login_box.Loadfromfile(renderer, "image_game/board_login.png");
-    login_box.setRect(0, 0 , screen_width, screen_height);
 
-    Texture login_button;
-    login_button.write(renderer, font, " LOGIN " , black);
-    login_button.setRect(screen_width/2 -200, screen_height/2 + 10, 180, 60);
+    Login_Interface loginInterface(renderer, font);
+    // Texture login_bg;
+    // login_bg.Loadfromfile(renderer, "image_game/LOGIN_BG.png");
+    // login_bg.setRect(0, 0 , screen_width, screen_height);
+    // Texture login_box;
+    // login_box.Loadfromfile(renderer, "image_game/board_login.png");
+    // login_box.setRect(0, 0 , screen_width, screen_height);
 
-    Texture register_button;
-    register_button.write(renderer, font, "REGISTER" , black);
-    register_button.setRect(screen_width/2 + 20, screen_height/2 + 10, 180, 60);
+    // Texture login_button;
+    // login_button.write(renderer, font, " LOGIN " , black);
+    // login_button.setRect(screen_width/2 -200, screen_height/2 + 10, 180, 60);
 
-    bool login_button_hover = true;
+    // Texture register_button;
+    // register_button.write(renderer, font, "REGISTER" , black);
+    // register_button.setRect(screen_width/2 + 20, screen_height/2 + 10, 180, 60);
 
-    Texture enter_button;
-    enter_button.write(renderer, font, " ENTER " , black);
-    enter_button.setRect(screen_width/2 -100, screen_height/2 + 220, 200, 60);
+    // bool login_button_hover = true;
 
-    TextBox usernameBox("Username", screen_width/2 - 200, screen_height/2 + 80, 400, 50);
-    TextBox passwordBox("Password", screen_width/2 - 200, screen_height/2 + 150, 400, 50);
+    // Texture enter_button;
+    // enter_button.write(renderer, font, " ENTER " , black);
+    // enter_button.setRect(screen_width/2 -100, screen_height/2 + 220, 200, 60);
+
+    // TextBox usernameBox("Username", screen_width/2 - 200, screen_height/2 + 80, 400, 50);
+    // TextBox passwordBox("Password", screen_width/2 - 200, screen_height/2 + 150, 400, 50);
 
     //crop
     CropManager :: init( renderer);
@@ -145,7 +148,7 @@ int main(int argc, char* argv[]){
 
     Texture House;
     House.Loadfromfile(renderer, "image_game/House.png");
-    House.setRect(64, 64, 64*5, 64*7);
+    House.setRect(tile_size, tile_size, tile_size*5, tile_size*7);
     Texture name;
 
     Texture icon_inv;
@@ -256,8 +259,37 @@ int main(int argc, char* argv[]){
                         int mouseX = e.button.x;
                         int mouseY = e.button.y;
                         //kiem tra co chon o nay khong
-                        usernameBox.setActive(usernameBox.checkClick(mouseX, mouseY));
-                        passwordBox.setActive(passwordBox.checkClick(mouseX, mouseY));
+                        // usernameBox.setActive(usernameBox.checkClick(mouseX, mouseY));
+                        // passwordBox.setActive(passwordBox.checkClick(mouseX, mouseY));
+                        loginInterface.getUsernameBox().setActive(loginInterface.getUsernameBox().checkClick(mouseX, mouseY));
+                        loginInterface.getPasswordBox().setActive(loginInterface.getPasswordBox().checkClick(mouseX, mouseY));
+                        //kiem tra co bam nut login/register/enter khong
+                        if(loginInterface.checkClick(mouseX, mouseY)){
+                            if(loginInterface.getLoginButtonHover()){
+                                //login
+                                int userID = accountManager.login(loginInterface.getUsernameBox().getText(), loginInterface.getPasswordBox().getText());
+                                if(userID != -1){
+                                    tvt.getID() = userID;
+                                    LoadGame(tvt, gMap_);
+                                    current_gamestage = PLAYING;
+                                }
+                                else{
+                                    cout << "Dang nhap that bai! Vui long kiem tra lai tai khoan." << endl;
+                                }
+                                loginInterface.getUsernameBox().clearText(); loginInterface.getUsernameBox().setActive(false);
+                                loginInterface.getPasswordBox().clearText(); loginInterface.getPasswordBox().setActive(false);
+                            }
+                            else{
+                                //register
+                                bool success = accountManager.registerAccount(loginInterface.getUsernameBox().getText(), loginInterface.getPasswordBox().getText());
+                                if(success){
+                                    cout << "Dang ky thanh cong! Ban co the dang nhap bang tai khoan vua tao." << endl;
+                                }
+                                else{
+                                    cout << "Dang ky that bai! Tai khoan da ton tai." << endl;
+                                }
+                            }
+                        }
                     }
                     else if(e.button.button == SDL_BUTTON_RIGHT){
                         current_gamestage = PLAYING;
@@ -268,37 +300,39 @@ int main(int argc, char* argv[]){
                         // cout << "Username: " << usernameBox.getText() << endl;
                         // cout << "Password: " << passwordBox.getText() << endl;
                     }
-                    else if(e.key.keysym.sym == SDLK_z){
-                        LoadGame(tvt, gMap_);
-                    }
-                    else if(e.key.keysym.sym == SDLK_l){
-                        int userID = accountManager.login(usernameBox.getText(), passwordBox.getText());
-                        if(userID != -1){
-                            tvt.getID() = userID;
-                            LoadGame(tvt, gMap_);
-                            current_gamestage = PLAYING;
-                        }
-                        else{
-                            cout << "Dang nhap that bai! Vui long kiem tra lai tai khoan." << endl;
-                        }
-                        usernameBox.clearText(); usernameBox.setActive(false);
-                        passwordBox.clearText(); passwordBox.setActive(false);
-                    }
-                    else if(e.key.keysym.sym == SDLK_r){
-                        bool success = accountManager.registerAccount(usernameBox.getText(), passwordBox.getText());
-                        if(success){
-                            cout << "Dang ky thanh cong! Ban co the dang nhap bang tai khoan vua tao." << endl;
-                        }
-                        else{
-                            cout << "Dang ky that bai! Tai khoan da ton tai." << endl;
-                        }
-                        usernameBox.clearText(); usernameBox.setActive(false);
-                        passwordBox.clearText(); passwordBox.setActive(false);
-                    }
+                    // else if(e.key.keysym.sym == SDLK_z){
+                    //     LoadGame(tvt, gMap_);
+                    // }
+                    // else if(e.key.keysym.sym == SDLK_l){
+                    //     int userID = accountManager.login(usernameBox.getText(), passwordBox.getText());
+                    //     if(userID != -1){
+                    //         tvt.getID() = userID;
+                    //         LoadGame(tvt, gMap_);
+                    //         current_gamestage = PLAYING;
+                    //     }
+                    //     else{
+                    //         cout << "Dang nhap that bai! Vui long kiem tra lai tai khoan." << endl;
+                    //     }
+                    //     usernameBox.clearText(); usernameBox.setActive(false);
+                    //     passwordBox.clearText(); passwordBox.setActive(false);
+                    // }
+                    // else if(e.key.keysym.sym == SDLK_r){
+                    //     bool success = accountManager.registerAccount(usernameBox.getText(), passwordBox.getText());
+                    //     if(success){
+                    //         cout << "Dang ky thanh cong! Ban co the dang nhap bang tai khoan vua tao." << endl;
+                    //     }
+                    //     else{
+                    //         cout << "Dang ky that bai! Tai khoan da ton tai." << endl;
+                    //     }
+                    //     usernameBox.clearText(); usernameBox.setActive(false);
+                    //     passwordBox.clearText(); passwordBox.setActive(false);
+                    // }
                 }
                 //xu ly van ban
-                usernameBox.handleEvent(e);
-                passwordBox.handleEvent(e);
+                // usernameBox.handleEvent(e);
+                // passwordBox.handleEvent(e);
+                loginInterface.getUsernameBox().handleEvent(e);
+                loginInterface.getPasswordBox().handleEvent(e);
             }
         }
 
@@ -316,6 +350,8 @@ int main(int argc, char* argv[]){
                     }
                 }
             }
+            House.setRect(tile_size + root_map_x, tile_size + root_map_y, tile_size*5, tile_size*7);
+            House.render(renderer);
             name.FillRect(renderer, white);
             name.render(renderer);
             string mn = "$" + to_string(tvt.getMoney());
@@ -336,25 +372,25 @@ int main(int argc, char* argv[]){
             }
         }
         else if(current_gamestage == LOGIN){
-            login_bg.render(renderer);
-            login_box.render(renderer);
+            // login_bg.render(renderer);
+            // login_box.render(renderer);
 
-            login_button.FillRect(renderer, (login_button_hover)? green : gray);
-            login_button.drawRect(renderer, black);
-            login_button.render(renderer);
-            register_button.FillRect(renderer, (login_button_hover)? gray : green);
-            register_button.drawRect(renderer, black);
-            register_button.render(renderer);
-            enter_button.FillRect(renderer, (usernameBox.getText() != "" && passwordBox.getText() != "") ? green : gray);
-            enter_button.drawRect(renderer, black);
-            enter_button.render(renderer);
+            // login_button.FillRect(renderer, (login_button_hover)? green : gray);
+            // login_button.drawRect(renderer, black);
+            // login_button.render(renderer);
+            // register_button.FillRect(renderer, (login_button_hover)? gray : green);
+            // register_button.drawRect(renderer, black);
+            // register_button.render(renderer);
+            // enter_button.FillRect(renderer, (usernameBox.getText() != "" && passwordBox.getText() != "") ? green : gray);
+            // enter_button.drawRect(renderer, black);
+            // enter_button.render(renderer);
 
-            usernameBox.render(renderer, font);
-            passwordBox.render(renderer, font);
+            // usernameBox.render(renderer, font);
+            // passwordBox.render(renderer, font);
+            loginInterface.render(renderer, font);
         }
         
 
-        //House.render(renderer);
         SDL_RenderPresent(renderer);
 
         endTime = SDL_GetTicks();

@@ -21,7 +21,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
     corn_seed.ItemName = "corn_seed";
     corn_seed.buyPrice = 10;
     corn_seed.sellPrice = 4;
-    corn_seed.icon.Loadfromfile(renderer, "image_game/corn.png");
+    corn_seed.icon.Loadfromfile(renderer, "image_game/corn_seed.png");
     allItems[CORN_SEED] = corn_seed;
 
     static ItemInfo rice;
