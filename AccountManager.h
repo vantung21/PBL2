@@ -11,7 +11,7 @@ class AccountManager {
         AccountManager();
         bool registerAccount(const string& username, const string& password);
         int login(const string& username, const string& password);
-        string hashPassword(const string& password);
+        //string hashPassword(const string& password);
         
 };
 
