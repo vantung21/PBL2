@@ -9,6 +9,8 @@ enum ItemType{
     //hat giong
     RICE_SEED, CARROT_SEED, CORN_SEED,
 
+    COUNT_SEED,
+
     // SAN PHAM
     RICE, CARROT, CORN,
 

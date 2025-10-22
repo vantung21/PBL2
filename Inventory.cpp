@@ -170,10 +170,6 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
         sell_.drawRect(renderer, black);
         sell_.render(renderer);
     }
-    
-    // anh truong dap trai
-
-
 }
 
 ItemType Inventory::getItemAtPosition(int x, int y){

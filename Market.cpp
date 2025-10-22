@@ -2,8 +2,10 @@
 
 Market::Market(){
     for(int c = RICE_SEED; c < COUNT; c++){
+        if(c == COUNT_SEED) continue;
         this->itemForSale.push_back(ItemType(c));
     }
+
     slmua = 1;
     selectedItem = ItemType(-1);
     mrk_x = screen_width/8;
@@ -149,7 +151,6 @@ void Market :: render(SDL_Renderer *renderer, TTF_Font *font){
         buy_.drawRect(renderer, black);
         buy_.render(renderer);
     }  
-    // anh truong dap trai
 }
 
 
