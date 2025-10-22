@@ -146,6 +146,17 @@ int main(int argc, char* argv[]){
     gMap_.LoadMap("newmap.txt");
     gMap_.LoadTiles(renderer);
 
+    //khu vuc chon hat giong
+    Texture areaItemSelection;
+    areaItemSelection.setRect(128, screen_height - 100, 64*5, 94);
+    Texture arrowLeft, arrowRight;
+    arrowLeft.Loadfromfile(renderer, "image_game/arrow_Left.png");
+    arrowLeft.setRect(64, screen_height - 85 , 64, 64);  
+    arrowRight.Loadfromfile(renderer, "image_game/arrow_Right.png");
+    arrowRight.setRect(64 + 64*6, screen_height - 85 , 64, 64);
+    int itemOffset = 0; // chi so cua ItemType dau tien dc hien thi
+    int displayIndex = 0; // dung de ve cac icon 
+
     Texture House;
     House.Loadfromfile(renderer, "image_game/House.png");
     House.setRect(tile_size, tile_size, tile_size*5, tile_size*7);
@@ -189,6 +200,43 @@ int main(int argc, char* argv[]){
                             else if( e.button.x >= icon_market.getRect().x && e.button.x <= icon_market.getRect().x + icon_market.getRect().w && 
                                     e.button.y >= icon_market.getRect().y && e.button.y <= icon_market.getRect().y + icon_market. getRect().h){
                                         tvt.updateStage(market);
+                            }
+                            // chon hat giong khac
+                            else if (e.button.x  >= areaItemSelection.getRect().x - 64 && e.button.x  <= areaItemSelection.getRect().x + areaItemSelection.getRect().w + 64 &&
+                                     e.button.y  >= areaItemSelection.getRect().y && e.button.y  <= areaItemSelection.getRect().y + areaItemSelection.getRect().h) {
+                                int baseX = areaItemSelection.getRect().x;
+                                int baseY = areaItemSelection.getRect().y;
+                                // kiem tra xem co click vao mui ten trai hay phai khong
+                                if(e.button.x >= arrowLeft.getRect().x && e.button.x <= arrowLeft.getRect().x + arrowLeft.getRect().w &&
+                                    e.button.y >= arrowLeft.getRect().y && e.button.y <= arrowLeft.getRect().y + arrowLeft.getRect().h){
+                                    if(itemOffset > 0) itemOffset--;
+                                    //cout << "Da nhan mui ten trai" << endl;
+                                }
+                                else if(e.button.x >= arrowRight.getRect().x && e.button.x <= arrowRight.getRect().x + arrowRight.getRect().w &&
+                                        e.button.y >= arrowRight.getRect().y && e.button.y <= arrowRight.getRect().y + arrowRight.getRect().h){
+                                    if(itemOffset + 5 < RICE && displayIndex != 0) itemOffset++;
+                                    //cout << "Da nhan mui ten phai" << endl;
+                                }
+                                else{
+                                    // Duyet qua cac icon hien thi de kiem tra click
+                                    displayIndex = 0;
+                                    for (int i = itemOffset; i < RICE; i++) {
+                                        if (displayIndex >= 5) break; // chi hien thi toi da 5 icon
+                                        ItemType it = ItemType(i);
+
+                                        if (tvt.getInventory().getQuantity(it) > 0) {
+                                            int iconX1 = baseX + displayIndex * 64;
+                                            int iconX2 = iconX1 + 64;
+                                            // kiem tra xem co kich vao icon nay k
+                                            if (e.button.x >= iconX1 && e.button.x <= iconX2) {
+                                                current_cropTyppe = CropType(i);
+                                                //cout << "Da chon " << ItemDataBase::allItems[it].ItemName << endl;
+                                                break; // dung khi da chon item
+                                            }
+                                            displayIndex++;
+                                        }
+                                    }
+                                }
                             }
                             else if((gMap_.getMap().tile[y][x] >=17 && gMap_.getMap().tile[y][x] <= 24 || gMap_.getMap().tile[y][x] == 3) && gMap_.getMap().farmland[y][x] == NULL){
                                 int t = current_cropTyppe;
@@ -362,6 +410,45 @@ int main(int argc, char* argv[]){
             ///
             icon_inv.render(renderer);
             icon_market.render(renderer);
+
+            //
+            if(tvt.getStage() == farm){
+                // ve vung chon giong cay
+                areaItemSelection.FillRect(renderer, gray);
+                areaItemSelection.drawRect(renderer, black); 
+                arrowLeft.render(renderer);
+                arrowRight.render(renderer);
+                int x_icon = 128;
+                int y_icon = screen_height - 100;
+
+                displayIndex = 0;
+                for(int i = itemOffset; i < RICE && displayIndex < 5; i++){
+                    ItemType it = ItemType(i);
+                    if(tvt.getInventory().getQuantity(it) > 0){
+                        // highlight neu dc chon
+                        if(CropType(i) == current_cropTyppe){
+                            Texture highlight;
+                            highlight.setRect(x_icon, y_icon, 64, 94);
+                            highlight.FillRect(renderer, orange);
+                            highlight.drawRect(renderer, black);
+                        }
+
+                        // ve icon
+                        ItemDataBase::allItems[it].icon.setRect(x_icon, y_icon, 64, 64);
+                        ItemDataBase::allItems[it].icon.render(renderer);
+
+                        // ve so luong
+                        Texture qtyText;
+                        string qty = "x" + to_string(tvt.getInventory().getQuantity(it));
+                        qtyText.write(renderer, font, qty, black);
+                        qtyText.setRect(x_icon + 32 - (qty.size()*12)/2, y_icon + 70, qty.size()*12, 20);
+                        qtyText.render(renderer);
+
+                        x_icon += 64;
+                        displayIndex++;
+                    }
+                }
+            }
 
             //
             if(tvt.getStage() == inventory){
