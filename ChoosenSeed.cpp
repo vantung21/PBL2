@@ -2,11 +2,11 @@
 
 ChoosenSeed::ChoosenSeed(SDL_Renderer *renderer){
     areaItemSelection.setRect(128, screen_height - 100, 64*5, 94);
-    openChoosenSeed.Loadfromfile(renderer, "image_game/cow.png");
+    openChoosenSeed.Loadfromfile(renderer, "image_game/open_choosenSeed.png");
     openChoosenSeed.setRect(128, screen_height - 32 , 64, 32);
-    arrowLeft.Loadfromfile(renderer, "image_game/arrow_Left.png");
+    arrowLeft.Loadfromfile(renderer, "image_game/arrow_left.png");
     arrowLeft.setRect(64, screen_height - 85 , 64, 64);   
-    arrowRight.Loadfromfile(renderer, "image_game/arrow_Right.png");
+    arrowRight.Loadfromfile(renderer, "image_game/arrow_right.png");
     arrowRight.setRect(64 + 64*6, screen_height - 85 , 64, 64);
     
     itemOffset = 0;

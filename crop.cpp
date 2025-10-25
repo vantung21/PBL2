@@ -6,7 +6,7 @@ void CropManager :: init(SDL_Renderer* renderer){
     //khoi tao du lieu cho rice
     static CropData riceData;
     riceData.name = "Rice";
-    riceData.timePerStage = 2500; //ms
+    riceData.timePerStage = 25000; //ms
     riceData.totalStages = 4;
     riceData.stageTextures.resize(4);
     riceData.stageTextures[0].Loadfromfile(renderer, "image_game/rice_stage0.png");
@@ -19,7 +19,7 @@ void CropManager :: init(SDL_Renderer* renderer){
     //carrot
     static CropData carrotData;
     carrotData.name = "Carrot";
-    carrotData.timePerStage = 4000;
+    carrotData.timePerStage = 40000;
     carrotData.totalStages = 4;
     carrotData.stageTextures.resize(4);
     carrotData.stageTextures[0].Loadfromfile(renderer, "image_game/carrot_stage0.png");
@@ -32,7 +32,7 @@ void CropManager :: init(SDL_Renderer* renderer){
     //corn
     static CropData cornData;
     cornData.name = "Corn";
-    cornData.timePerStage = 6000;
+    cornData.timePerStage = 60000;
     cornData.totalStages = 4;
     cornData.stageTextures.resize(4);
     cornData.stageTextures[0].Loadfromfile(renderer, "image_game/corn_stage0.png");
