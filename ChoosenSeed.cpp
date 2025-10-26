@@ -60,7 +60,7 @@ bool ChoosenSeed::checkclick(int x, int y){
 
 void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropType){
     if(isOpen){
-        // kiem tra co click vao tat khung chon hat hay k
+        // Kiem tra co click vao nut "Tat" khung chon hat hay khong
         if(x >= openChoosenSeed.getRect().x && x <= openChoosenSeed.getRect().x + openChoosenSeed.getRect().w &&
            y >= openChoosenSeed.getRect().y && y <= openChoosenSeed.getRect().y + openChoosenSeed.getRect().h){
             
@@ -69,42 +69,39 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
             return; 
         }
 
-        // lay danh sach cac hat giong dang co
+        // Lay danh sach hat giong hien co
         availableItems = getAvailableSeeds(tvt);
 
-        // neu k co hat giong nao thi thoat
+        // Neu khong co hat giong nao thi thoat
         if (availableItems.empty()) {
             selectedIndex = -1;
             itemOffset = 0;
             return;
         } 
 
-        //kiem tra selectedIndex khong hop le hoac không khop current_cropType
-        // actualIndex: chi so thuc te cua Item trong toan bo availableItems = chi so bat dau + chi so trong khung
-        int actualIndex = itemOffset + selectedIndex;
-        if (selectedIndex == -1 || actualIndex >= availableItems.size() || availableItems[actualIndex] != ItemType(current_cropType)) 
-        {
-            // Tim vi tri cua current_cropType trong vector
-            int foundIndex = findItemIndex(availableItems, ItemType(current_cropType));
-            
-            if (foundIndex != -1) {
-                actualIndex = foundIndex;
-                if(actualIndex < 5) itemOffset = 0;
-                else if(5 <= actualIndex < 10) itemOffset = 5;
-                else itemOffset = 10;
-                selectedIndex = actualIndex - itemOffset;
-            } 
-            // khong thay thi chon hat dau tien trong vector
-            else {
-                selectedIndex = 0;
-                itemOffset = 0;
-                current_cropType = CropType(availableItems[0]); 
+        int baseX = areaItemSelection.getRect().x;
+        bool itemClicked = false; 
+
+        if (x >= baseX && x < baseX + areaItemSelection.getRect().w) {
+            for (int displayIndex = 0; displayIndex < 5; displayIndex++) {
+                int i = itemOffset + displayIndex; // i la chi so thuc te trong availableItems
+                if (i >= availableItems.size()) break; 
+
+                ItemType it = availableItems[i];
+                int iconX1 = baseX + displayIndex * 64;
+                int iconX2 = iconX1 + 64;
+                
+                // Neu click trung vao icon nay
+                if (x >= iconX1 && x < iconX2) {
+                    current_cropType = CropType(it); 
+                    selectedIndex = displayIndex; 
+                    itemClicked = true;
+                    break; 
+                }
             }
         }
 
-        
-        int baseX = areaItemSelection.getRect().x;
-        // mui ten trai
+        //mui ten trai
         if(x >= arrowLeft.getRect().x && x <= arrowLeft.getRect().x + arrowLeft.getRect().w &&
            y >= arrowLeft.getRect().y && y <= arrowLeft.getRect().y + arrowLeft.getRect().h){
             
@@ -115,6 +112,10 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
                 itemOffset -= 5;
                 selectedIndex = 4;
             }
+
+            // if(itemOffset + selectedIndex >= availableItems.size()){
+            //     selectedIndex = (availableItems.size() - 1) % 5;
+            // }
             current_cropType = CropType(availableItems[itemOffset + selectedIndex]);
         }
         // mui ten phai
@@ -130,21 +131,22 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
             }
             current_cropType = CropType(availableItems[itemOffset + selectedIndex]);
         }
-        // Click vao icon
-        else {
-            for (int displayIndex = 0; displayIndex < 5; displayIndex++) {
-                int i = itemOffset + displayIndex; 
-                if (i >= availableItems.size()) break; 
-
-                ItemType it = availableItems[i];
-                int iconX1 = baseX + displayIndex * 64;
-                int iconX2 = iconX1 + 64;
-                
-                if (x >= iconX1 && x <= iconX2) {
-                    current_cropType = CropType(it); 
-                    selectedIndex = displayIndex; 
-                    break; 
-                }
+        
+        int actualIndex = itemOffset + selectedIndex;
+        if (!itemClicked && (selectedIndex == -1 || actualIndex >= availableItems.size() || availableItems[actualIndex] != ItemType(current_cropType))) 
+        {
+            int foundIndex = findItemIndex(availableItems, ItemType(current_cropType));
+            
+            if (foundIndex != -1) {
+                actualIndex = foundIndex;
+                // tinh lại itemOffset
+                itemOffset = (actualIndex / 5) * 5; 
+                selectedIndex = actualIndex - itemOffset;
+            } 
+            else {
+                selectedIndex = 0;
+                itemOffset = 0;
+                current_cropType = CropType(availableItems[0]); 
             }
         }
     } 
@@ -163,9 +165,9 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
             
             if (foundIndex != -1) {
                 int actualIndex = foundIndex;
-                if(actualIndex < 5) itemOffset = 0;
-                else if(5 <= actualIndex < 10) itemOffset = 5;
-                else itemOffset = 10;
+
+                // Tinh toan lai itemOffset
+                itemOffset = (actualIndex / 5) * 5;
                 selectedIndex = actualIndex - itemOffset;
             } else {
                 selectedIndex = 0;

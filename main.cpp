@@ -196,12 +196,36 @@ int main(int argc, char* argv[]){
     Uint32 startTime, endTime, TotalTime;
     SDL_Event e;
     bool running = true;
+    bool isWindowActive = true; // trang thai cua cua so
     while(running){
         startTime = SDL_GetTicks();
         while(SDL_PollEvent(&e)){
             if(e.type == SDL_QUIT) {
                 running = false;
                 break;
+            }
+            else if(e.type == SDL_WINDOWEVENT) {
+                // xu ly su kien cua so
+                if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
+                    isWindowActive = false;
+                    cout << "Window lost focus" << endl;
+                    // dung nhac
+                    Mix_PauseMusic();
+                }
+                else if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
+                    isWindowActive = true;
+                    cout << "Window gained focus" << endl;
+                    // tiep tuc nhac
+                    Mix_ResumeMusic();
+                }
+                else if (e.window.event == SDL_WINDOWEVENT_MINIMIZED) {
+                    isWindowActive = false;
+                    Mix_PauseMusic();
+                }
+                else if (e.window.event == SDL_WINDOWEVENT_RESTORED) {
+                    isWindowActive = true;
+                    Mix_ResumeMusic();
+                }
             }
             else if(current_gamestage == PLAYING){
                 if(e.type == SDL_MOUSEBUTTONDOWN){
@@ -367,80 +391,88 @@ int main(int argc, char* argv[]){
                 loginInterface.getPasswordBox().handleEvent(e);
             }
         }
+
         if(!running) break;
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // mau nen (den)
-        SDL_RenderClear(renderer);
+        else if(isWindowActive){
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // mau nen (den)
+            SDL_RenderClear(renderer);
 
-        if(current_gamestage == PLAYING){
-            gMap_.DrawMap(renderer);
+            if(current_gamestage == PLAYING){
+                gMap_.DrawMap(renderer);
 
-            for(int i = 0; i < max_map_y ; i++){
-                for(int j =0 ; j < max_map_x; j++){
-                    if(gMap_.getMap().farmland[i][j] != NULL){
-                        gMap_.getMap().farmland[i][j]->update(40);
-                        gMap_.getMap().farmland[i][j]->render(renderer) ;
+                for(int i = 0; i < max_map_y ; i++){
+                    for(int j =0 ; j < max_map_x; j++){
+                        if(gMap_.getMap().farmland[i][j] != NULL){
+                            gMap_.getMap().farmland[i][j]->update(40);
+                            gMap_.getMap().farmland[i][j]->render(renderer) ;
+                        }
                     }
                 }
-            }
-            House.setRect(tile_size + root_map_x, tile_size + root_map_y, tile_size*5, tile_size*7);
-            House.render(renderer);
-            name.FillRect(renderer, white);
-            name.render(renderer);
-            string mn = "$" + to_string(tvt.getMoney());
-            money.write(renderer, font, mn, yellow);
-            money.setRect(130, 10, mn.size()*14, 30);
-            money.render(renderer);
+                House.setRect(tile_size + root_map_x, tile_size + root_map_y, tile_size*5, tile_size*7);
+                House.render(renderer);
+                name.FillRect(renderer, white);
+                name.render(renderer);
+                string mn = "$" + to_string(tvt.getMoney());
+                money.write(renderer, font, mn, yellow);
+                money.setRect(130, 10, mn.size()*14, 30);
+                money.render(renderer);
 
-            ///
-            icon_inv.render(renderer);
-            icon_market.render(renderer);
+                ///
+                icon_inv.render(renderer);
+                icon_market.render(renderer);
+
+                //
+                if(tvt.getStage() == farm){
+                    choosen_seed.render(renderer, font, tvt, current_cropTyppe);
+                }
+
+                //
+                if(tvt.getStage() == inventory){
+                    tvt.getInventory().render(renderer, font);
+                }
+                if(tvt.getStage() == market){
+                    Market_.render(renderer, font);
+                }
+            }
+            else if(current_gamestage == LOGIN){
+                // login_bg.render(renderer);
+                // login_box.render(renderer);
+
+                // login_button.FillRect(renderer, (login_button_hover)? green : gray);
+                // login_button.drawRect(renderer, black);
+                // login_button.render(renderer);
+                // register_button.FillRect(renderer, (login_button_hover)? gray : green);
+                // register_button.drawRect(renderer, black);
+                // register_button.render(renderer);
+                // enter_button.FillRect(renderer, (usernameBox.getText() != "" && passwordBox.getText() != "") ? green : gray);
+                // enter_button.drawRect(renderer, black);
+                // enter_button.render(renderer);
+
+                // usernameBox.render(renderer, font);
+                // passwordBox.render(renderer, font);
+                loginInterface.render(renderer, font);
+            }
 
             //
-            if(tvt.getStage() == farm){
-                choosen_seed.render(renderer, font, tvt, current_cropTyppe);
-            }
+            // if(!Mix_PlayingMusic()){
+            //     cout << -1 <<endl;
+            //     Mix_PlayMusic(music_game, -1);
+            // }
+            
 
-            //
-            if(tvt.getStage() == inventory){
-                tvt.getInventory().render(renderer, font);
-            }
-            if(tvt.getStage() == market){
-                Market_.render(renderer, font);
-            }
+            SDL_RenderPresent(renderer);
+
+            endTime = SDL_GetTicks();
+            TotalTime = endTime - startTime;
+            //cout << TotalTime <<endl;
+            SDL_Delay((40 - TotalTime > 0)?40 - TotalTime: 0);
         }
-        else if(current_gamestage == LOGIN){
-            // login_bg.render(renderer);
-            // login_box.render(renderer);
-
-            // login_button.FillRect(renderer, (login_button_hover)? green : gray);
-            // login_button.drawRect(renderer, black);
-            // login_button.render(renderer);
-            // register_button.FillRect(renderer, (login_button_hover)? gray : green);
-            // register_button.drawRect(renderer, black);
-            // register_button.render(renderer);
-            // enter_button.FillRect(renderer, (usernameBox.getText() != "" && passwordBox.getText() != "") ? green : gray);
-            // enter_button.drawRect(renderer, black);
-            // enter_button.render(renderer);
-
-            // usernameBox.render(renderer, font);
-            // passwordBox.render(renderer, font);
-            loginInterface.render(renderer, font);
+        else {
+            cout << "Delay" << endl;
+            SDL_Delay(500);
         }
-
-        //
-        // if(!Mix_PlayingMusic()){
-        //     cout << -1 <<endl;
-        //     Mix_PlayMusic(music_game, -1);
-        // }
         
-
-        SDL_RenderPresent(renderer);
-
-        endTime = SDL_GetTicks();
-        TotalTime = endTime - startTime;
-        //cout << TotalTime <<endl;
-        SDL_Delay((40 - TotalTime > 0)?40 - TotalTime: 0);
         
     }
 
