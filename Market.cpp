@@ -44,7 +44,7 @@ void Market :: render(SDL_Renderer *renderer, TTF_Font *font){
 
 
     // ve cac items
-    int item_x = mrk_x + 10, item_y = mrk_y + 126;
+    int item_x = mrk_x + 50, item_y = mrk_y + 120;
     itemPositions.clear();
     for(auto &item : itemForSale){
         //luu vi tri cac item trong inv
@@ -73,7 +73,7 @@ void Market :: render(SDL_Renderer *renderer, TTF_Font *font){
         //dieu chinh vi tri cho o tiep theo
         item_x += 100;
         if(item_x > mrk_x + mrk_width- 110){
-            item_x = mrk_x + 10;
+            item_x = mrk_x + 50;
             item_y += 140;
         }   
     }

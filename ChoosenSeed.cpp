@@ -109,8 +109,9 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
             if (selectedIndex > 0) {
                 selectedIndex--;
             } 
-            else if (itemOffset > 0) {
-                itemOffset--;
+            else if (itemOffset - 4 > 0) {
+                itemOffset -= 5;
+                selectedIndex = 4;
             }
             current_cropType = CropType(availableItems[itemOffset + selectedIndex]);
         }
@@ -122,7 +123,8 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
                 selectedIndex++;
             } 
             else if (itemOffset + 5 < availableItems.size()) {
-                itemOffset++;
+                itemOffset += 5;
+                selectedIndex = 0;
             }
             current_cropType = CropType(availableItems[itemOffset + selectedIndex]);
         }

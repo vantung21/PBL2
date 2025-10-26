@@ -8,7 +8,17 @@
 enum CropType{
     RICE_cp,
     CARROT_cp,
-    CORN_cp
+    CORN_cp,
+    BLUEBERRY_cp,
+    CAULIFLOWER_cp,
+    CHILI_cp,
+    LEEK_cp,
+    POTATO_cp,
+    PUMPKIN_cp,
+    //RED_CABBAGE_cp,
+    STRAWBERRY_cp,
+    TOMATO_cp,
+    WATERMELON_cp
 };
 
 struct CropData{

@@ -95,13 +95,13 @@ int main(int argc, char* argv[]){
     }
 
     // tai nhac nen
-    // Mix_Music* music_game = Mix_LoadMUS("sound/farm_theme.wav");
-    // if(!music_game){
-    //     cout << "loi khong the tai nhac nen!\n";
-    // }
-    // else{
-    //     Mix_PlayMusic(music_game, -1);
-    // }
+    Mix_Music* music_game = Mix_LoadMUS("sound/farm_theme.wav");
+    if(!music_game){
+        cout << "loi khong the tai nhac nen!\n";
+    }
+    else{
+        Mix_PlayMusic(music_game, -1);
+    }
     
     //tai font chu
     TTF_Font* font = TTF_OpenFont("font.ttf", 32);
@@ -199,7 +199,10 @@ int main(int argc, char* argv[]){
     while(running){
         startTime = SDL_GetTicks();
         while(SDL_PollEvent(&e)){
-            if(e.type == SDL_QUIT) running = false;
+            if(e.type == SDL_QUIT) {
+                running = false;
+                break;
+            }
             else if(current_gamestage == PLAYING){
                 if(e.type == SDL_MOUSEBUTTONDOWN){
                     int x= (e.button.x - root_map_x)/tile_size;
@@ -364,6 +367,7 @@ int main(int argc, char* argv[]){
                 loginInterface.getPasswordBox().handleEvent(e);
             }
         }
+        if(!running) break;
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // mau nen (den)
         SDL_RenderClear(renderer);
@@ -435,7 +439,7 @@ int main(int argc, char* argv[]){
 
         endTime = SDL_GetTicks();
         TotalTime = endTime - startTime;
-        cout << TotalTime <<endl;
+        //cout << TotalTime <<endl;
         SDL_Delay((40 - TotalTime > 0)?40 - TotalTime: 0);
         
     }
@@ -447,8 +451,8 @@ int main(int argc, char* argv[]){
     TTF_CloseFont(font);
     font = NULL;
 
-    // Mix_FreeMusic(music_game);
-    // Mix_CloseAudio();
+    Mix_FreeMusic(music_game);
+    Mix_CloseAudio();
     IMG_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

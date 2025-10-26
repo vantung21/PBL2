@@ -60,7 +60,7 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
     line.FillRect(renderer, black);
 
     // ve cac items
-    int item_x = inv_x + 10, item_y = inv_y + 126;
+    int item_x = inv_x + 50, item_y = inv_y + 120;
     itemPositions.clear();
     for(auto &item : items){
         if(item.second > 0){
@@ -91,7 +91,7 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
             //dieu chinh vi tri cho o tiep theo
             item_x += 100;
             if(item_x > inv_x + inv_width- 110){
-                item_x = inv_x + 10;
+                item_x = inv_x + 50;
                 item_y += 140;
             }
         }
