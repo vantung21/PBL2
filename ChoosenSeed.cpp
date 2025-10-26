@@ -89,7 +89,9 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
             
             if (foundIndex != -1) {
                 actualIndex = foundIndex;
-                itemOffset = max(0, min(actualIndex, (int)availableItems.size() - 5)); 
+                if(actualIndex < 5) itemOffset = 0;
+                else if(5 <= actualIndex < 10) itemOffset = 5;
+                else itemOffset = 10;
                 selectedIndex = actualIndex - itemOffset;
             } 
             // khong thay thi chon hat dau tien trong vector
@@ -109,7 +111,7 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
             if (selectedIndex > 0) {
                 selectedIndex--;
             } 
-            else if (itemOffset - 4 > 0) {
+            else if (itemOffset - 5 >= 0) {
                 itemOffset -= 5;
                 selectedIndex = 4;
             }
@@ -161,7 +163,9 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
             
             if (foundIndex != -1) {
                 int actualIndex = foundIndex;
-                itemOffset = max(0, min(actualIndex, (int)availableItems.size() - 5));
+                if(actualIndex < 5) itemOffset = 0;
+                else if(5 <= actualIndex < 10) itemOffset = 5;
+                else itemOffset = 10;
                 selectedIndex = actualIndex - itemOffset;
             } else {
                 selectedIndex = 0;
