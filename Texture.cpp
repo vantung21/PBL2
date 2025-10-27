@@ -18,6 +18,7 @@ Texture :: ~Texture(){
 }
 
 bool Texture :: Loadfromfile(SDL_Renderer *renderer, const string &path){
+    free();
     SDL_Surface* loadsurface = IMG_Load(path.c_str());
     if(!loadsurface){
         cout << "Loi khong load duoc anh " << path << " !\n";
@@ -69,6 +70,7 @@ void Texture :: free(){
 }
 
 void Texture::write(SDL_Renderer *renderer, TTF_Font* font, string letter, SDL_Color c){
+    free();
     SDL_Surface* textSurface = TTF_RenderText_Solid(font, letter.c_str(), c);
     this->texture = SDL_CreateTextureFromSurface(renderer, textSurface);
     rect.w = textSurface->w;

@@ -95,13 +95,13 @@ int main(int argc, char* argv[]){
     }
 
     // tai nhac nen
-    Mix_Music* music_game = Mix_LoadMUS("sound/farm_theme.wav");
-    if(!music_game){
-        cout << "loi khong the tai nhac nen!\n";
-    }
-    else{
-        Mix_PlayMusic(music_game, -1);
-    }
+    // Mix_Music* music_game = Mix_LoadMUS("sound/farm_theme.wav");
+    // if(!music_game){
+    //     cout << "loi khong the tai nhac nen!\n";
+    // }
+    // else{
+    //     Mix_PlayMusic(music_game, -1);
+    // }
     
     //tai font chu
     TTF_Font* font = TTF_OpenFont("font.ttf", 32);
@@ -439,8 +439,8 @@ int main(int argc, char* argv[]){
 
         endTime = SDL_GetTicks();
         TotalTime = endTime - startTime;
-        //cout << TotalTime <<endl;
-        SDL_Delay((40 - TotalTime > 0)?40 - TotalTime: 0);
+        cout << TotalTime <<endl;
+        //SDL_Delay((40 - TotalTime > 0)?40 - TotalTime: 0);
         
     }
 
@@ -451,8 +451,8 @@ int main(int argc, char* argv[]){
     TTF_CloseFont(font);
     font = NULL;
 
-    Mix_FreeMusic(music_game);
-    Mix_CloseAudio();
+    // Mix_FreeMusic(music_game);
+    // Mix_CloseAudio();
     IMG_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
