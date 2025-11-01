@@ -329,6 +329,7 @@ int main(int argc, char* argv[]){
                                     setting_.reLoadAccountSetting(tvt, renderer, font, loginInterface.getUsernameBox().getText());
                                     name.write(renderer, font, tvt.getname(), black);
                                     current_gamestage = PLAYING;
+                                    tvt.updateStage(farm);
                                 }
                                 else{
                                     cout << "Dang nhap that bai! Vui long kiem tra lai tai khoan." << endl;

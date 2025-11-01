@@ -126,7 +126,7 @@ void Setting::reLoadAccountSetting(Player& tvt, SDL_Renderer *renderer, TTF_Font
     string temp = "ID: " + to_string(tvt.getID());
     id.write(renderer, font, temp, black);
     int len = id.getRect().w*50/id.getRect().h;
-    id.setRect(st_x + 30, line.getRect().y + 30, len, 50);
+    id.setRect(st_x + 50, line.getRect().y + 30, len, 50);
 
     temp = "Username: " + strUsername;
     username.write(renderer, font, temp, black);
