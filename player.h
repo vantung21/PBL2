@@ -2,13 +2,15 @@
 #define PLAYER_H
 
 #include "Inventory.h"
+#include "include.h"
+
 enum playerStage{
-    farm, inventory, market
+    farm, inventory, market, setting
 };
 
 class Player {
 public:
-    Player(int ID = 100000, const string name = "player", int = 10);
+    Player(SDL_Renderer* renderer = nullptr, TTF_Font* font = nullptr, int ID = 100000, const string name = "player", int = 10);
     void updateStage(playerStage st);
     void render(SDL_Renderer *renderer);
     Inventory& getInventory();
@@ -23,6 +25,8 @@ private:
     string playername ;
     int money;
     int player_ID;
+    int exp, level;
+    Texture nameTexture, levelTexture, expTexture, moneyTexture;  
 };
 
 #endif  

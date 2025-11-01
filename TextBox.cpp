@@ -12,7 +12,8 @@ void TextBox::handleEvent(SDL_Event& e){
     if (!is_active) return;
     if (e.type == SDL_TEXTINPUT) {
         // Thêm ký tự vào chuỗi (Nếu không phải là ký tự điều khiển)
-        if (strlen(e.text.text) > 0) {
+        string temp = e.text.text;
+        if (strlen(e.text.text) > 0 && temp != " ") {
             text += e.text.text;
         }
     } else if (e.type == SDL_KEYDOWN){
@@ -39,9 +40,9 @@ void TextBox::render(SDL_Renderer* renderer, TTF_Font* font){
     // ve placeholder
     if(!is_active && text.empty()){
         Texture placeholderText;
-        placeholderText.write(renderer, font, placeholder, gray);
+        placeholderText.write(renderer, font, placeholder, (boxType == FILL)? d_yellow : gray);
         int length = placeholderText.getRect().w*box.getRect().h/placeholderText.getRect().h;
-        placeholderText.setRect(box.getRect().x + 5, box    .getRect().y + box.getRect().h*2/10, length, box.getRect().h*7/10);
+        placeholderText.setRect(box.getRect().x + 5, box.getRect().y + box.getRect().h*2/10, length, box.getRect().h*7/10);
         placeholderText.render(renderer);
         return;
     }

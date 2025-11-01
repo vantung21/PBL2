@@ -185,17 +185,25 @@ void Crop::update(int deltaTime){
 }
 void Crop::render(SDL_Renderer* renderer){
     const CropData& data = CropManager::getData(this->type);
-    if(data.name == "Corn"){
-        Texture& t =(Texture&)data.stageTextures[this->growthStage];
-        t.setRect(position.x +root_map_x, position.y-tile_size + root_map_y, position.w, position.h*2);
-        t.render(renderer);
-        return;
-    }
 
     if(this->growthStage < data.totalStages){
-        Texture& t =(Texture&)data.stageTextures[this->growthStage];
-        t.setRect(position.x + root_map_x, position.y + root_map_y, position.w, position.h);
-        t.render(renderer);
+        if(data.name == "Corn"){
+            Texture& t =(Texture&)data.stageTextures[this->growthStage];
+            t.setRect(position.x +root_map_x, position.y-tile_size + root_map_y, position.w, position.h*2);
+            t.render(renderer);
+            return;
+        }
+        else if(data.name == "Rice" || data.name == "Carrot" || data.name == "Pumpkin" || data.name == "Watermelon"){
+            Texture& t =(Texture&)data.stageTextures[this->growthStage];
+            t.setRect(position.x + root_map_x, position.y + root_map_y, position.w, position.h);
+            t.render(renderer);
+        }
+        else {
+            Texture& t =(Texture&)data.stageTextures[this->growthStage];
+            t.setRect(position.x + root_map_x, position.y + root_map_y - tile_size/5, position.w, position.h);
+            t.render(renderer);
+        }
+        
     }
 }
 
