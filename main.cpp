@@ -96,14 +96,14 @@ int main(int argc, char* argv[]){
     }
 
     //tai nhac nen
-    Mix_Music* music_game = Mix_LoadMUS("sound/farm_theme.wav");
-    if(!music_game){
-        cout << "loi khong the tai nhac nen!\n";
-    }
-    else{
-        Mix_PlayMusic(music_game, -1);
-    }
-    Mix_VolumeMusic(64);
+    // Mix_Music* music_game = Mix_LoadMUS("sound/farm_theme.wav");
+    // if(!music_game){
+    //     cout << "loi khong the tai nhac nen!\n";
+    // }
+    // else{
+    //     Mix_PlayMusic(music_game, -1);
+    // }
+    // Mix_VolumeMusic(64);
     
     //tai font chu
     TTF_Font* font = TTF_OpenFont("font.ttf", 32);
@@ -439,7 +439,7 @@ int main(int argc, char* argv[]){
     TTF_CloseFont(font);
     font = NULL;
 
-    Mix_FreeMusic(music_game);
+    //Mix_FreeMusic(music_game);
     Mix_CloseAudio();
     IMG_Quit();
     TTF_Quit();
