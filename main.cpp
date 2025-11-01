@@ -126,7 +126,7 @@ int main(int argc, char* argv[]){
     ItemDataBase::init(renderer);
 
     //player
-    Player tvt;
+    Player tvt(renderer, font);
 
     //market
     Market Market_;
@@ -435,7 +435,7 @@ int main(int argc, char* argv[]){
     //save game
     saveGame(tvt, gMap_);
 
-     //SDL_StopTextInput();
+    SDL_StopTextInput();
     TTF_CloseFont(font);
     font = NULL;
 

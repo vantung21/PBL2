@@ -20,7 +20,7 @@ Player::Player(SDL_Renderer* renderer, TTF_Font* font, int ID, const string name
     expTexture.write(renderer, font, temp, black);
     expTexture.setRect(60, 45, 400, 15);
 
-    moneyTexture.
+    //moneyTexture.
 }
 void Player::updateStage(playerStage st) {
     this->stage = st;

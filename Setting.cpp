@@ -34,7 +34,7 @@ Setting::Setting(SDL_Renderer* renderer, TTF_Font* font)
     name.setRect(id.getRect().x , id.getRect().y + id.getRect().h + 30, len, 50);
 
     renameOK.write(renderer, font, "OK", black);
-    renameOK.setRect(screen_width/6 + 30 + 450, screen_height/6 + 300, 50, 50);
+    renameOK.setRect(screen_width/6 + 50 + 450, screen_height/6 + 300, 50, 50);
 
     volumeText.write(renderer, font, "Volume: ", black);
     len = volumeText.getRect().w*50/volumeText.getRect().h;
