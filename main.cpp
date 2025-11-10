@@ -157,6 +157,12 @@ int main(int argc, char* argv[]){
     //water
     Water water_(renderer, font);
 
+
+    //rain
+    Rain rain_(renderer);
+
+
+
     GameMap gMap_;
     gMap_.LoadMap("newmap.txt");
     gMap_.LoadTiles(renderer);
@@ -260,7 +266,7 @@ int main(int argc, char* argv[]){
                                     for(const auto item : CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).harvestedItems){
                                         tvt.getInventory().addItem(item, (random == 0)?3:2);
                                     }
-                                    tvt.updateExp(renderer, font, CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).exp);
+                                    tvt.updateExp(renderer, font, rain_, CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).exp);
                                     delete gMap_.getMap().farmland[y][x];
                                     gMap_.getMap().farmland[y][x] = NULL;
                                 }
@@ -395,7 +401,7 @@ int main(int argc, char* argv[]){
                                     tvt.updateStage(farm);
                                     tvt.update_moneyTexture(renderer, font);
                                     tvt.update_nameText(renderer, font);
-                                    tvt.updateExp(renderer, font, 0);
+                                    tvt.updateExp(renderer, font, rain_, 0);
                                 }
                                 else{
                                     cout << "Dang nhap that bai! Vui long kiem tra lai tai khoan." << endl;
@@ -439,11 +445,19 @@ int main(int argc, char* argv[]){
                     for(int j =0 ; j < max_map_x; j++){
                         if(gMap_.getMap().farmland[i][j] != NULL){
                             gMap_.getMap().farmland[i][j]->update(40);
+                            if(rain_.getIsRaining()){
+                                gMap_.getMap().farmland[i][j]->update(40);
+                            }
                             gMap_.getMap().farmland[i][j]->render(renderer) ;
                         }
                     }
                 }
                 water_.updateQuatity(renderer, font, 40);
+                if(rain_.getIsRaining()){
+                    water_.updateQuatity(renderer, font, 40);
+                    rain_.updateTime(40);
+                }
+            
 
                 House.setRect(tile_size + root_map_x, tile_size + root_map_y, tile_size*5, tile_size*7);
                 House.render(renderer);
@@ -455,6 +469,11 @@ int main(int argc, char* argv[]){
                 icon_setting.render(renderer);
                 shovel_.render(renderer);
                 water_.render(renderer);
+
+                //rain
+                if(rain_.getIsRaining()){
+                    rain_.execute(renderer);
+                }
 
                 //
                 if(tvt.getStage() == farm){
@@ -471,6 +490,8 @@ int main(int argc, char* argv[]){
                 if(tvt.getStage() == setting){
                     setting_.render(renderer, font);
                 }
+
+                
             }
             else if(current_gamestage == LOGIN){
                 loginInterface.render(renderer, font);
@@ -489,15 +510,21 @@ int main(int argc, char* argv[]){
                 for(int j =0 ; j < max_map_x; j++){
                     if(gMap_.getMap().farmland[i][j] != NULL){
                         gMap_.getMap().farmland[i][j]->update(500);
+                        if(rain_.getIsRaining()){
+                            gMap_.getMap().farmland[i][j]->update(500);
+                        }
                     }
                 }
             }
             water_.updateQuatity(renderer, font, 500);
+            if(rain_.getIsRaining()){
+                water_.updateQuatity(renderer, font, 500);
+                rain_.updateTime(500);
+            }
+            
             cout << "Delay" << endl;
             SDL_Delay(500);
-        }
-        
-        
+        }      
     }
 
     //save game

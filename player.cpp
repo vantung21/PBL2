@@ -35,11 +35,15 @@ void Player::updateStage(playerStage st) {
     this->stage = st;
 }
 
-void Player::updateExp(SDL_Renderer *renderer, TTF_Font* font, int x){
+void Player::updateExp(SDL_Renderer *renderer, TTF_Font* font, Rain &rain_, int x){
     this->exp += x;
     while(this->exp >= (50+50*this->level)){
         this->exp -= (50+50*this->level);
         level++;
+        if(level%3 == 0){
+            rain_.setIsRaining(true);
+            rain_.resetCurrTime();
+        }
     } 
     levelTexture.write(renderer, font, to_string(level), black);
     levelTexture.setRect(10, 10, 50, 50);
