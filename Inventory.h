@@ -15,9 +15,12 @@ class Inventory{
         int inv_width;
         int slban;
         Texture sell_, plus10_, plus1_, tru10_, tru1_;
+        Texture bgInventory, areaSell, line;
+        Texture titleInv;
+        string quantity, sell, tru1, tru10, plus1, plus10;
         
     public:
-        Inventory();
+        Inventory(SDL_Renderer* renderer, TTF_Font* font);
         void addItem(ItemType item, int quantity);
         void removeItem(ItemType item, int quantity);
         int getQuantity(ItemType item) const ;

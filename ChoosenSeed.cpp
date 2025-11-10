@@ -4,8 +4,13 @@ ChoosenSeed::ChoosenSeed(SDL_Renderer *renderer){
     areaItemSelection.setRect(128, screen_height - 100, 64*5, 94);
     openChoosenSeed.Loadfromfile(renderer, "image_game/open_choosenSeed.png");
     openChoosenSeed.setRect(128, screen_height - 32 , 64, 32);
+
+    closeChoosenSeed.Loadfromfile(renderer, "image_game/close_choosenSeed.png");
+    closeChoosenSeed.setRect(128, screen_height - 132 , 64, 32);
+
     arrowLeft.Loadfromfile(renderer, "image_game/arrow_left.png");
     arrowLeft.setRect(64, screen_height - 85 , 64, 64);   
+
     arrowRight.Loadfromfile(renderer, "image_game/arrow_right.png");
     arrowRight.setRect(64 + 64*6, screen_height - 85 , 64, 64);
     
@@ -43,8 +48,8 @@ bool ChoosenSeed::checkclick(int x, int y){
             y  >= areaItemSelection.getRect().y && y  <= areaItemSelection.getRect().y + areaItemSelection.getRect().h) {
             return true;
         }   
-        else if (x >= openChoosenSeed.getRect().x && x <= openChoosenSeed.getRect().x + openChoosenSeed.getRect().w &&
-            y >= openChoosenSeed.getRect().y && y <= openChoosenSeed.getRect().y + openChoosenSeed.getRect().h){
+        else if (x >= closeChoosenSeed.getRect().x && x <= closeChoosenSeed.getRect().x + closeChoosenSeed.getRect().w &&
+            y >= closeChoosenSeed.getRect().y && y <= closeChoosenSeed.getRect().y + closeChoosenSeed.getRect().h){
             return true;
         }
     }
@@ -61,8 +66,8 @@ bool ChoosenSeed::checkclick(int x, int y){
 void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropType){
     if(isOpen){
         // Kiem tra co click vao nut "Tat" khung chon hat hay khong
-        if(x >= openChoosenSeed.getRect().x && x <= openChoosenSeed.getRect().x + openChoosenSeed.getRect().w &&
-           y >= openChoosenSeed.getRect().y && y <= openChoosenSeed.getRect().y + openChoosenSeed.getRect().h){
+        if(x >= closeChoosenSeed.getRect().x && x <= closeChoosenSeed.getRect().x + closeChoosenSeed.getRect().w &&
+           y >= closeChoosenSeed.getRect().y && y <= closeChoosenSeed.getRect().y + closeChoosenSeed.getRect().h){
             
             isOpen = false;
             openChoosenSeed.setRect(128, screen_height - 32 , 64, 32);
@@ -152,8 +157,7 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
     } 
     else { 
         isOpen = true;
-        openChoosenSeed.setRect(128, screen_height - 132 , 64, 32);
-        
+
         availableItems = getAvailableSeeds(tvt);
 
         if (availableItems.empty()) {
@@ -216,7 +220,7 @@ void ChoosenSeed::render(SDL_Renderer *renderer, TTF_Font *font, Player &tvt, Cr
             x_icon += 64;
         }
 
-        openChoosenSeed.render(renderer);
+        closeChoosenSeed.render(renderer);
     } 
     else {
         openChoosenSeed.render(renderer);

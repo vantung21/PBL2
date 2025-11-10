@@ -15,7 +15,6 @@ enum CropType{
     LEEK_cp,
     POTATO_cp,
     PUMPKIN_cp,
-    //RED_CABBAGE_cp,
     STRAWBERRY_cp,
     TOMATO_cp,
     WATERMELON_cp
@@ -25,6 +24,7 @@ struct CropData{
     string name;
     int timePerStage; // thoi gian de qua 1 giai doan
     int totalStages; //tong so giai doan phat trien
+    int exp; // kinh nghiem 
     vector<ItemType> harvestedItems;
     vector<Texture> stageTextures;  // load cac anh cua tung trang thai
 };

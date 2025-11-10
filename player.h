@@ -5,7 +5,7 @@
 #include "include.h"
 
 enum playerStage{
-    farm, inventory, market, setting, shovel
+    farm, inventory, market, setting, shovel, watering
 };
 
 class Player {
@@ -23,6 +23,7 @@ public:
     int& getID() { return player_ID; }
     int& getLevel(){return level;}
     int& getExp(){return exp;}
+    void clear();
 
 private:
     Inventory inventory;

@@ -8,7 +8,7 @@ Setting::Setting(SDL_Renderer* renderer, TTF_Font* font)
     st_wight = screen_width*4/6;
     st_height = screen_height*4/6;
 
-    volumeMusic = 64;
+    volumeMusic = 32;
 
     isRenameOK = false;
 

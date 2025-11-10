@@ -10,8 +10,13 @@
 #include "ChoosenSeed.h"
 #include "Setting.h"
 #include "shovel.h"
+#include "Water.h"
 
-void LoadGame(Player &player , GameMap &gMap_){
+void LoadGame(Player &player , GameMap &gMap_, Water &water_){
+    player.clear();
+    player.getInventory().clear();
+    gMap_.clear();
+    
     string id = to_string(player.getID());
     ifstream loadFile("savegame/" + id + ".txt");
     if(!loadFile.is_open()){
@@ -19,6 +24,7 @@ void LoadGame(Player &player , GameMap &gMap_){
         return;
     }
     //load player
+   
     string load;
     loadFile >> load;
     player.getID() = stoi(load);
@@ -30,10 +36,12 @@ void LoadGame(Player &player , GameMap &gMap_){
     player.getLevel() = stoi(load);
     loadFile >> load;
     player.getExp() = stoi(load);
+    loadFile >> load;
+    water_.setQuantity(stoi(load));
+
     //load inventory
     int countType;
     loadFile >> countType;
-    player.getInventory().clear();
     for(int i =0; i< countType; i++){
         int itemInt, quantity;
         loadFile >> itemInt >> quantity;
@@ -43,7 +51,6 @@ void LoadGame(Player &player , GameMap &gMap_){
     //load map
     int cntcrop;
     loadFile >> cntcrop;
-    gMap_.clear();
     for(int i =0; i< cntcrop; i++){
         int x, y, typeInt, stage, timer;
         loadFile >> x >> y >> typeInt >> stage >> timer;
@@ -62,7 +69,8 @@ void LoadGame(Player &player , GameMap &gMap_){
     }
 }
 
-void saveGame(Player &player, GameMap &gMap_){
+void saveGame(Player &player, GameMap &gMap_, Water &water_){
+
     string id = to_string(player.getID());
     ofstream saveFile("savegame/" + id + ".txt");
     if(!saveFile.is_open()){
@@ -75,6 +83,7 @@ void saveGame(Player &player, GameMap &gMap_){
     saveFile << player.getMoney() << endl;
     saveFile << player.getLevel() << endl;
     saveFile << player.getExp() << endl;
+    saveFile << water_.getQuantity() << endl;
     //save inventory
     player.getInventory().save(saveFile);
     //save map
@@ -108,9 +117,10 @@ int main(int argc, char* argv[]){
         cout << "loi khong the tai nhac nen!\n";
     }
     else{
+        Mix_VolumeMusic(32);
         Mix_PlayMusic(music_game, -1);
     }
-    Mix_VolumeMusic(64);
+    
     
     //tai font chu
     TTF_Font* font = TTF_OpenFont("font.ttf", 32);
@@ -136,13 +146,16 @@ int main(int argc, char* argv[]){
     Player tvt(renderer, font);
 
     //market
-    Market Market_;
+    Market Market_(renderer, font);
 
     //setting
     Setting setting_(renderer, font);
 
     //shovel
     Shovel shovel_(renderer);
+
+    //water
+    Water water_(renderer, font);
 
     GameMap gMap_;
     gMap_.LoadMap("newmap.txt");
@@ -228,6 +241,10 @@ int main(int argc, char* argv[]){
                                 shovel_.setHold(true);
                                 tvt.updateStage(shovel);
                             }
+                            else if(water_.checkClick(mouseX, mouseY)){
+                                water_.setHold(true);
+                                tvt.updateStage(watering);
+                            }
                             
                             else if((gMap_.getMap().tile[y][x] >=17 && gMap_.getMap().tile[y][x] <= 24 || gMap_.getMap().tile[y][x] == 3) && gMap_.getMap().farmland[y][x] == NULL){
                                 int t = current_cropTyppe;
@@ -238,12 +255,12 @@ int main(int argc, char* argv[]){
                                 }
                             }
                             else if(gMap_.getMap().farmland[y][x] != NULL ){
-                                if((*(gMap_.getMap().farmland[y][x])).isReadyToHarvest()){
+                                if((gMap_.getMap().farmland[y][x])->isReadyToHarvest()){
                                     random = startTime%5;
                                     for(const auto item : CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).harvestedItems){
                                         tvt.getInventory().addItem(item, (random == 0)?3:2);
                                     }
-                                    tvt.updateExp(renderer, font, (random == 0)?5:4);
+                                    tvt.updateExp(renderer, font, CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).exp);
                                     delete gMap_.getMap().farmland[y][x];
                                     gMap_.getMap().farmland[y][x] = NULL;
                                 }
@@ -255,17 +272,18 @@ int main(int argc, char* argv[]){
                             if(!check) tvt.updateStage(farm); 
                         } 
                         else if(tvt.getStage() == market){
-                            bool check = Market_.click(mouseX, mouseY,tvt.getInventory(), tvt.getMoney());
+                            bool check = Market_.click(mouseX, mouseY,tvt.getInventory(), tvt);
                             tvt.update_moneyTexture(renderer, font);
                             if(!check) tvt.updateStage(farm);
                         }  
                         else if(tvt.getStage() == setting){
                             if(setting_.checkLogOut(mouseX, mouseY)) {
+                                saveGame(tvt, gMap_, water_);
                                 current_gamestage = LOGIN;
                             }
 
                             if(setting_.checkSaveGame(mouseX, mouseY)) {
-                                saveGame(tvt, gMap_);
+                                saveGame(tvt, gMap_, water_);
                                 //can them ghi chu save thanh cong
                             }
 
@@ -294,6 +312,18 @@ int main(int argc, char* argv[]){
                                 gMap_.getMap().farmland[y][x] = NULL;
                             }
                         } 
+                        else if(tvt.getStage() == watering){
+                            if(water_.checkClick(mouseX, mouseY)){
+                                water_.drop();
+                                tvt.updateStage(farm);
+                            }
+                            else if(gMap_.getMap().farmland[y][x] != NULL){
+                                if(water_.getQuantity() > 0){
+                                    water_.Watering();
+                                    gMap_.getMap().farmland[y][x]->update(20000);
+                                }
+                            }
+                        }
                         
                     }
                     if(e.button.button == SDL_BUTTON_RIGHT){
@@ -310,9 +340,12 @@ int main(int argc, char* argv[]){
                     if(shovel_.getHold() == true){
                         shovel_.setPos(mouseX, mouseY);
                     }
+                    else if(water_.getHold() == true){
+                        water_.setPos(mouseX, mouseY);
+                    }
                 }
                 else if(e.type == SDL_KEYDOWN){
-                    if(tvt.getStage() == farm){
+                    if(tvt.getStage() == farm || tvt.getStage() == shovel || tvt.getStage() == watering){
                         if(e.key.keysym.sym == SDLK_s){
                             root_map_y -= tile_size/2;
                             if(root_map_y <= 960 - 64*tile_size) root_map_y = 960 - 64*tile_size;
@@ -356,7 +389,7 @@ int main(int argc, char* argv[]){
                                 int userID = accountManager.login(loginInterface.getUsernameBox().getText(), loginInterface.getPasswordBox().getText());
                                 if(userID != -1){
                                     tvt.getID() = userID;
-                                    LoadGame(tvt, gMap_);
+                                    LoadGame(tvt, gMap_, water_);
                                     setting_.reLoadAccountSetting(tvt, renderer, font, loginInterface.getUsernameBox().getText());
                                     current_gamestage = PLAYING;
                                     tvt.updateStage(farm);
@@ -410,15 +443,18 @@ int main(int argc, char* argv[]){
                         }
                     }
                 }
+                water_.updateQuatity(renderer, font, 40);
+
                 House.setRect(tile_size + root_map_x, tile_size + root_map_y, tile_size*5, tile_size*7);
                 House.render(renderer);
 
                 //
+                tvt.render(renderer);
                 icon_inv.render(renderer);
                 icon_market.render(renderer);
                 icon_setting.render(renderer);
                 shovel_.render(renderer);
-                tvt.render(renderer);
+                water_.render(renderer);
 
                 //
                 if(tvt.getStage() == farm){
@@ -430,7 +466,7 @@ int main(int argc, char* argv[]){
                     tvt.getInventory().render(renderer, font);
                 }
                 if(tvt.getStage() == market){
-                    Market_.render(renderer, font);
+                    Market_.render(renderer, font, tvt);
                 }
                 if(tvt.getStage() == setting){
                     setting_.render(renderer, font);
@@ -456,6 +492,7 @@ int main(int argc, char* argv[]){
                     }
                 }
             }
+            water_.updateQuatity(renderer, font, 500);
             cout << "Delay" << endl;
             SDL_Delay(500);
         }
@@ -464,7 +501,7 @@ int main(int argc, char* argv[]){
     }
 
     //save game
-    saveGame(tvt, gMap_);
+    saveGame(tvt, gMap_, water_);
 
     SDL_StopTextInput();
     TTF_CloseFont(font);

@@ -48,6 +48,7 @@ struct ItemInfo{
     Texture icon;
     int sellPrice;
     int buyPrice;
+    int levelToUnlock;
 };
 
 class ItemDataBase{

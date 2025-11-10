@@ -1,6 +1,6 @@
 #include "Inventory.h"
 
-Inventory::Inventory(){
+Inventory::Inventory(SDL_Renderer* renderer, TTF_Font* font){
     soluongType = 0;
     selectedItem = ItemType(-1);
     inv_x = screen_width/8;
@@ -8,6 +8,36 @@ Inventory::Inventory(){
     inv_height = screen_height*6/8;
     inv_width = screen_width*6/8;
     slban = 1;
+
+    bgInventory.Loadfromfile(renderer, "image_game/BG_Inventory2.png");
+    bgInventory.setRect(inv_x,inv_y, inv_width, inv_height);
+
+    titleInv.write(renderer, font, "INVENTORY" , black);
+    titleInv.setRect((inv_x + inv_width/2 - 64*3), (inv_y+32), 64*6, 64);
+
+    line.setRect(inv_x + inv_width/2 - 64*3 - 32, inv_y + 106, 64*7, 4);
+
+    areaSell.setRect(inv_x, inv_y + inv_height - 140, inv_width, 140);
+
+    quantity = "Quantity: ";
+    plus10 = "+10";
+    plus1 = "+1";
+    tru10 = "-10";
+    tru1 = "-1";
+    tru10_.write(renderer, font, tru10, black);
+    tru10_.setRect(inv_x + 32 + quantity.size()*16, inv_y + inv_height - 60, 3*16, 40);
+    tru1_.write(renderer, font, tru1, black);
+    tru1_.setRect(inv_x + 32 + quantity.size()*16 + 4*16, inv_y + inv_height - 60, 3*16, 40);
+    plus1_.write(renderer, font, plus1, black);
+    plus1_.setRect(inv_x + 32 + quantity.size()*16 +  14*16, inv_y + inv_height - 60, 3*16, 40);
+    plus10_.write(renderer, font, plus10, black);
+    plus10_.setRect(inv_x + 32 + quantity.size()*16 + 18*16, inv_y + inv_height - 60, 3*16, 40);
+
+    sell = " SELL ";
+    sell_.write(renderer, font, sell, black);
+    sell_.setRect(inv_x + inv_width - 13*16, inv_y + inv_height - 70, 7*16, 60);
+
+
 }
 void Inventory :: addItem(ItemType item, int quantity){
     if((items.find(item) == items.end()) || items[item] == 0) this->soluongType++;
@@ -43,20 +73,12 @@ bool Inventory :: saleItem(ItemType item, int quantity, int &playerMoney){
 void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
     
     // load anh nen
-    Texture bgInventory;
-    bgInventory.Loadfromfile(renderer, "image_game/BG_Inventory2.png");
-    bgInventory.setRect(inv_x,inv_y, inv_width, inv_height);
     bgInventory.render(renderer);
     bgInventory.drawRect(renderer, black);
 
     // ve tieu de
-    Texture titleInv;
-    titleInv.write(renderer, font, "INVENTORY" , black);
-    titleInv.setRect((inv_x + inv_width/2 - 64*3), (inv_y+32), 64*6, 64);
     titleInv.render(renderer);
 
-    Texture line;
-    line.setRect(inv_x + inv_width/2 - 64*3 - 32, inv_y + 106, 64*7, 4);
     line.FillRect(renderer, black);
 
     // ve cac items
@@ -98,14 +120,12 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
     }
 
     //ve khu vuc ban hang
-    Texture areaSell;
-    areaSell.setRect(inv_x, inv_y + inv_height - 140, inv_width, 140);
     areaSell.FillRect(renderer, gray);
     areaSell.drawRect(renderer, black);
 
     //
     if(selectedItem != ItemType(-1)){
-        string select = "SELECTED: ";
+        string select = "Selected: ";
         select += ItemDataBase::allItems[selectedItem].ItemName
                 + "    Price: " 
                 + to_string(ItemDataBase::allItems[selectedItem].sellPrice);
@@ -116,36 +136,24 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
         firstline.render(renderer);
 
         //
-        string quantity = "Quantity: ";
+        
         Texture sl;
         sl.write(renderer, font, quantity, black);
         sl.setRect(inv_x + 32, inv_y + inv_height - 60, quantity.size()*16, 40);
         sl.render(renderer);
         //ve nut + -
-        string plus10 = "+10";
-        string plus1 = "+1";
-        string tru10 = "-10";
-        string tru1 = "-1";
-        tru10_.write(renderer, font, tru10, black);
-        tru10_.setRect(inv_x + 32 + quantity.size()*16, inv_y + inv_height - 60, 3*16, 40);
         tru10_.FillRect(renderer, red);
         tru10_.drawRect(renderer, black);
         tru10_.render(renderer);
 
-        tru1_.write(renderer, font, tru1, black);
-        tru1_.setRect(inv_x + 32 + quantity.size()*16 + 4*16, inv_y + inv_height - 60, 3*16, 40);
         tru1_.FillRect(renderer, red);
         tru1_.drawRect(renderer, black);
         tru1_.render(renderer);
 
-        plus1_.write(renderer, font, plus1, black);
-        plus1_.setRect(inv_x + 32 + quantity.size()*16 +  14*16, inv_y + inv_height - 60, 3*16, 40);
         plus1_.FillRect(renderer, red);
         plus1_.drawRect(renderer, black);
         plus1_.render(renderer);
     
-        plus10_.write(renderer, font, plus10, black);
-        plus10_.setRect(inv_x + 32 + quantity.size()*16 + 18*16, inv_y + inv_height - 60, 3*16, 40);
         plus10_.FillRect(renderer, red);
         plus10_.drawRect(renderer, black);
         plus10_.render(renderer);
@@ -163,9 +171,6 @@ void Inventory :: render(SDL_Renderer *renderer, TTF_Font *font){
         sl.setRect(inv_x + inv_width - 20*16, inv_y + inv_height - 120, tong.size()*16, 40);
         sl.render(renderer);
 
-        string sell = " SELL ";
-        sell_.write(renderer, font, sell, black);
-        sell_.setRect(inv_x + inv_width - 13*16, inv_y + inv_height - 70, 7*16, 60);
         sell_.FillRect(renderer, green);
         sell_.drawRect(renderer, black);
         sell_.render(renderer);

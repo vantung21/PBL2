@@ -5,6 +5,7 @@ Shovel::Shovel(SDL_Renderer* renderer) {
     s_x = 10;
     s_y = screen_height - 100;
     shovel.setRect(s_x, s_y, 60, 80);
+    bgS.setRect(s_x, s_y, 60, 80);
     hold = false;
 }
 void Shovel::setHold(bool h) {
@@ -14,6 +15,7 @@ bool Shovel::getHold() {
     return hold;
 }
 void Shovel::render(SDL_Renderer* renderer) {
+    bgS.drawRect(renderer, black);
     shovel.render(renderer);
 }
 void Shovel::setPos(int x, int y) {

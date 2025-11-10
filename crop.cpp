@@ -8,6 +8,7 @@ void CropManager :: init(SDL_Renderer* renderer){
     riceData.name = "Rice";
     riceData.timePerStage = 25000; //ms
     riceData.totalStages = 4;
+    riceData.exp = 2;
     riceData.stageTextures.resize(4);
     riceData.stageTextures[0].Loadfromfile(renderer, "image_game/rice_stage0.png");
     riceData.stageTextures[1].Loadfromfile(renderer, "image_game/rice_stage1.png");
@@ -21,6 +22,7 @@ void CropManager :: init(SDL_Renderer* renderer){
     carrotData.name = "Carrot";
     carrotData.timePerStage = 40000;
     carrotData.totalStages = 4;
+    carrotData.exp = 3;
     carrotData.stageTextures.resize(4);
     carrotData.stageTextures[0].Loadfromfile(renderer, "image_game/carrot_stage0.png");
     carrotData.stageTextures[1].Loadfromfile(renderer, "image_game/carrot_stage1.png");
@@ -32,8 +34,9 @@ void CropManager :: init(SDL_Renderer* renderer){
     //corn
     static CropData cornData;
     cornData.name = "Corn";
-    cornData.timePerStage = 60000;
+    cornData.timePerStage = 50000;
     cornData.totalStages = 4;
+    cornData.exp = 4;
     cornData.stageTextures.resize(4);
     cornData.stageTextures[0].Loadfromfile(renderer, "image_game/corn_stage0.png");
     cornData.stageTextures[1].Loadfromfile(renderer, "image_game/corn_stage1.png");
@@ -44,8 +47,9 @@ void CropManager :: init(SDL_Renderer* renderer){
 
     static CropData blueberryData;
     blueberryData.name = "Blueberry";
-    blueberryData.timePerStage = 60000;
+    blueberryData.timePerStage = 70000;
     blueberryData.totalStages = 4;
+    blueberryData.exp = 7;
     blueberryData.stageTextures.resize(4);
     blueberryData.stageTextures[0].Loadfromfile(renderer, "image_game/blueberry_stage0.png");
     blueberryData.stageTextures[1].Loadfromfile(renderer, "image_game/blueberry_stage1.png");
@@ -58,6 +62,7 @@ void CropManager :: init(SDL_Renderer* renderer){
     cauliflowerData.name = "Cauliflower";
     cauliflowerData.timePerStage = 60000;
     cauliflowerData.totalStages = 4;
+    cauliflowerData.exp = 6;
     cauliflowerData.stageTextures.resize(4);
     cauliflowerData.stageTextures[0].Loadfromfile(renderer, "image_game/cauliflower_stage0.png");
     cauliflowerData.stageTextures[1].Loadfromfile(renderer, "image_game/cauliflower_stage1.png");
@@ -68,8 +73,9 @@ void CropManager :: init(SDL_Renderer* renderer){
 
     static CropData chiliData;
     chiliData.name = "Chili";
-    chiliData.timePerStage = 60000;
+    chiliData.timePerStage = 50000;
     chiliData.totalStages = 4;
+    chiliData.exp = 5;
     chiliData.stageTextures.resize(4);
     chiliData.stageTextures[0].Loadfromfile(renderer, "image_game/chili_stage0.png");
     chiliData.stageTextures[1].Loadfromfile(renderer, "image_game/chili_stage1.png");
@@ -80,8 +86,9 @@ void CropManager :: init(SDL_Renderer* renderer){
 
     static CropData leekData;
     leekData.name = "Leek";
-    leekData.timePerStage = 60000;
+    leekData.timePerStage = 40000;
     leekData.totalStages = 4;
+    leekData.exp = 5;
     leekData.stageTextures.resize(4);
     leekData.stageTextures[0].Loadfromfile(renderer, "image_game/leek_stage0.png");
     leekData.stageTextures[1].Loadfromfile(renderer, "image_game/leek_stage1.png");
@@ -92,8 +99,9 @@ void CropManager :: init(SDL_Renderer* renderer){
 
     static CropData potatoData;
     potatoData.name = "Potato";
-    potatoData.timePerStage = 60000;
+    potatoData.timePerStage = 100000;
     potatoData.totalStages = 4;
+    potatoData.exp = 15;
     potatoData.stageTextures.resize(4);
     potatoData.stageTextures[0].Loadfromfile(renderer, "image_game/potato_stage0.png");
     potatoData.stageTextures[1].Loadfromfile(renderer, "image_game/potato_stage1.png");
@@ -104,8 +112,9 @@ void CropManager :: init(SDL_Renderer* renderer){
 
     static CropData pumpkinData;
     pumpkinData.name = "Pumpkin";
-    pumpkinData.timePerStage = 60000;
+    pumpkinData.timePerStage = 120000;
     pumpkinData.totalStages = 4;
+    pumpkinData.exp = 25;
     pumpkinData.stageTextures.resize(4);
     pumpkinData.stageTextures[0].Loadfromfile(renderer, "image_game/pumpkin_stage0.png");
     pumpkinData.stageTextures[1].Loadfromfile(renderer, "image_game/pumpkin_stage1.png");
@@ -114,22 +123,11 @@ void CropManager :: init(SDL_Renderer* renderer){
     pumpkinData.harvestedItems.push_back(PUMPKIN);
     allCropData[PUMPKIN_cp] = pumpkinData;
 
-    // static CropData redCabbageData;
-    // redCabbageData.name = "Red Cabbage";
-    // redCabbageData.timePerStage = 60000;
-    // redCabbageData.totalStages = 4;
-    // redCabbageData.stageTextures.resize(4);
-    // redCabbageData.stageTextures[0].Loadfromfile(renderer, "image_game/red_cabbage_stage0.png");
-    // redCabbageData.stageTextures[1].Loadfromfile(renderer, "image_game/red_cabbage_stage1.png");
-    // redCabbageData.stageTextures[2].Loadfromfile(renderer, "image_game/red_cabbage_stage2.png");
-    // redCabbageData.stageTextures[3].Loadfromfile(renderer, "image_game/red_cabbage_stage3.png");
-    // redCabbageData.harvestedItems.push_back(RED_CABBAGE);
-    // allCropData[RED_CABBAGE_cp] = redCabbageData;
-
     static CropData strawberryData;
     strawberryData.name = "Strawberry";
-    strawberryData.timePerStage = 60000;
+    strawberryData.timePerStage = 70000;
     strawberryData.totalStages = 4;
+    strawberryData.exp = 10;
     strawberryData.stageTextures.resize(4);
     strawberryData.stageTextures[0].Loadfromfile(renderer, "image_game/strawberry_stage0.png");
     strawberryData.stageTextures[1].Loadfromfile(renderer, "image_game/strawberry_stage1.png");
@@ -142,6 +140,7 @@ void CropManager :: init(SDL_Renderer* renderer){
     tomatoData.name = "Tomato";
     tomatoData.timePerStage = 60000;
     tomatoData.totalStages = 4;
+    tomatoData.exp = 8;
     tomatoData.stageTextures.resize(4);
     tomatoData.stageTextures[0].Loadfromfile(renderer, "image_game/tomato_stage0.png");
     tomatoData.stageTextures[1].Loadfromfile(renderer, "image_game/tomato_stage1.png");
@@ -152,8 +151,9 @@ void CropManager :: init(SDL_Renderer* renderer){
 
     static CropData watermelonData;
     watermelonData.name = "Watermelon";
-    watermelonData.timePerStage = 70000;
+    watermelonData.timePerStage = 150000;
     watermelonData.totalStages = 4;
+    watermelonData.exp = 30;
     watermelonData.stageTextures.resize(4);
     watermelonData.stageTextures[0].Loadfromfile(renderer, "image_game/watermelon_stage0.png");
     watermelonData.stageTextures[1].Loadfromfile(renderer, "image_game/watermelon_stage1.png");
@@ -178,7 +178,7 @@ void Crop::update(int deltaTime){
     growthTimer += deltaTime;
     const CropData& data = CropManager::getData(this->type);
     if(growthTimer >= data.timePerStage){
-        growthTimer = 0;
+        growthTimer = growthTimer - data.timePerStage;
         growthStage++;
         if(growthStage >= 4) growthStage = 3;
     }

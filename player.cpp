@@ -1,7 +1,9 @@
 #include "player.h"
 
 
-Player::Player(SDL_Renderer* renderer, TTF_Font* font, int ID, const string name, int initialMoney) : player_ID(ID), money(initialMoney), playername(name) {
+Player::Player(SDL_Renderer* renderer, TTF_Font* font, int ID, const string name, int initialMoney)
+: player_ID(ID), money(initialMoney), playername(name), inventory(renderer, font){
+
     this->stage = farm;
     inventory.addItem(RICE_SEED, 10);
     inventory.addItem(CARROT_SEED, 3);
@@ -9,7 +11,7 @@ Player::Player(SDL_Renderer* renderer, TTF_Font* font, int ID, const string name
 
     level = 1;
     exp = 0;
-
+    
     levelTexture.write(renderer, font, to_string(level), black);
     levelTexture.setRect(10, 10, 50, 50);
     
@@ -91,4 +93,11 @@ Inventory& Player::getInventory(){
 
 string& Player::getname(){
     return playername;
+}
+
+void Player::clear(){
+    playername = "player";
+    money = 10;
+    level = 1;
+    exp = 0;
 }

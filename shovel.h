@@ -6,7 +6,7 @@
 
 class  Shovel{
     private:
-        Texture shovel;
+        Texture shovel, bgS;
         int  s_x, s_y;
         bool hold;
     public:

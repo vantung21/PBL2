@@ -10,7 +10,7 @@ class ChoosenSeed {
     private:
         vector<ItemType> availableItems; // luu cac item dang co
         Texture areaItemSelection;
-        Texture openChoosenSeed;
+        Texture openChoosenSeed, closeChoosenSeed;
         Texture arrowLeft, arrowRight;
         int itemOffset; // chi so bat dau hien thi
         int selectedIndex; // chi so cua item dc chon trong khung hien thi (0-4)
