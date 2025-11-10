@@ -12,6 +12,7 @@ extern SDL_Color black;
 extern SDL_Color gray;
 extern SDL_Color yellow;
 extern SDL_Color d_yellow;
+extern SDL_Color l_blue;
 
 class Texture{
     protected:

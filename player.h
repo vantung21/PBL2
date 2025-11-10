@@ -5,19 +5,24 @@
 #include "include.h"
 
 enum playerStage{
-    farm, inventory, market, setting
+    farm, inventory, market, setting, shovel
 };
 
 class Player {
 public:
-    Player(SDL_Renderer* renderer = nullptr, TTF_Font* font = nullptr, int ID = 100000, const string name = "player", int = 10);
+    Player(SDL_Renderer* renderer = NULL, TTF_Font* font = NULL, int ID = 100000, const string name = "player", int = 10);
     void updateStage(playerStage st);
+    void updateExp(SDL_Renderer *renderer, TTF_Font* font, int x);
+    void update_nameText(SDL_Renderer *renderer, TTF_Font* font);
+    void update_moneyTexture(SDL_Renderer *renderer, TTF_Font* font);
     void render(SDL_Renderer *renderer);
     Inventory& getInventory();
     int &getMoney();
     playerStage getStage();
     string& getname();
     int& getID() { return player_ID; }
+    int& getLevel(){return level;}
+    int& getExp(){return exp;}
 
 private:
     Inventory inventory;
@@ -26,7 +31,7 @@ private:
     int money;
     int player_ID;
     int exp, level;
-    Texture nameTexture, levelTexture, expTexture, moneyTexture;  
+    Texture nameTexture,nameText , levelTexture, expTexture, currExp, moneyTexture;  
 };
 
 #endif  

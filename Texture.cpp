@@ -8,6 +8,7 @@ SDL_Color black = {0, 0, 0, 255};
 SDL_Color gray = {255, 255, 224, 225}; 
 SDL_Color yellow = {205, 205, 0, 255};
 SDL_Color d_yellow = {175, 175, 0, 255};
+SDL_Color l_blue = {0, 150, 155, 255};
 
 Texture :: Texture(int x, int y, int w, int h): rect({x,y,w,h}){
     texture = NULL;
