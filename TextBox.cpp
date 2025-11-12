@@ -1,11 +1,12 @@
 #include "TextBox.h"
 
-TextBox::TextBox(string placeholder, int x, int y, int w, int h, typeBox boxType):box({x,y,w,h}){
+TextBox::TextBox(string placeholder, int x, int y, int w, int h, typeBox boxType, bool hide):box({x,y,w,h}){
     this->text = "";
     this->is_active = false;
     startPos = 0;
     this->placeholder = placeholder;
     this->boxType = boxType;
+    this->hide_characters = hide;
 }
 
 void TextBox::handleEvent(SDL_Event& e){
@@ -59,19 +60,42 @@ void TextBox::render(SDL_Renderer* renderer, TTF_Font* font){
 
     //ve chu
     if(!text.empty()){
-        string displayText = text.substr(startPos, text.size() - startPos);
-
-        Texture textTexture;    
-        textTexture.write(renderer, font, displayText, black);
-        int length = textTexture.getRect().w*box.getRect().h/textTexture.getRect().h;
-        textTexture.setRect(box.getRect().x + 5, box.getRect().y + box.getRect().h*2/10, length, box.getRect().h*7/10);
-        
-        while(textTexture.getRect().w > box.getRect().w -10){
-            startPos++;
-            displayText = text.substr(startPos, text.size() - startPos);
+        Texture textTexture;
+        if(hide_characters == false){
+            string displayText = text.substr(startPos, text.size() - startPos);
+    
             textTexture.write(renderer, font, displayText, black);
-            length = textTexture.getRect().w*box.getRect().h/textTexture.getRect().h;
+            int length = textTexture.getRect().w*box.getRect().h/textTexture.getRect().h;
             textTexture.setRect(box.getRect().x + 5, box.getRect().y + box.getRect().h*2/10, length, box.getRect().h*7/10);
+            
+            while(textTexture.getRect().w > box.getRect().w -10){
+                startPos++;
+                displayText = text.substr(startPos, text.size() - startPos);
+                textTexture.write(renderer, font, displayText, black);
+                length = textTexture.getRect().w*box.getRect().h/textTexture.getRect().h;
+                textTexture.setRect(box.getRect().x + 5, box.getRect().y + box.getRect().h*2/10, length, box.getRect().h*7/10);
+            }
+        }
+        else if(hide_characters == true){
+            string hideText = "";
+            for(int i = 0; i< text.size(); i++){ 
+                hideText += "*";
+            }
+
+            string displayText = hideText.substr(startPos, hideText.size() - startPos);
+    
+            textTexture.write(renderer, font, displayText, black);
+            int length = textTexture.getRect().w*box.getRect().h/textTexture.getRect().h;
+            textTexture.setRect(box.getRect().x + 5, box.getRect().y + box.getRect().h*2/10, length, box.getRect().h*7/10);
+            
+            while(textTexture.getRect().w > box.getRect().w -10){
+                startPos++;
+                displayText = hideText.substr(startPos, hideText.size() - startPos);
+                textTexture.write(renderer, font, displayText, black);
+                length = textTexture.getRect().w*box.getRect().h/textTexture.getRect().h;
+                textTexture.setRect(box.getRect().x + 5, box.getRect().y + box.getRect().h*2/10, length, box.getRect().h*7/10);
+            }
+
         }
         
         textTexture.render(renderer);

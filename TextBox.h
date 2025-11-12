@@ -16,9 +16,10 @@ private:
     bool is_active; 
     int startPos;
     typeBox boxType;
+    bool hide_characters;
 
 public:
-    TextBox(string placeholder, int x = 0, int y = 0, int w = 50, int h = 30, typeBox boxType = UNDERLINE);
+    TextBox(string placeholder, int x = 0, int y = 0, int w = 50, int h = 30, typeBox boxType = UNDERLINE, bool hide = false);
 
     // 1.  (Input)
     void handleEvent(SDL_Event& e);

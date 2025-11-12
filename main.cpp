@@ -425,7 +425,8 @@ int main(int argc, char* argv[]){
                                     tvt.updateExp(renderer, font, rain_, 0);
                                 }
                                 else{
-                                    cout << "Dang nhap that bai! Vui long kiem tra lai tai khoan." << endl;
+                                    //cout << "Dang nhap that bai! Vui long kiem tra lai tai khoan." << endl;
+                                    loginInterface.write_note(renderer, font, "Dang nhap that bai! Vui long kiem tra lai tai khoan.");
                                 }
                                 loginInterface.getUsernameBox().clearText(); loginInterface.getUsernameBox().setActive(false);
                                 loginInterface.getPasswordBox().clearText(); loginInterface.getPasswordBox().setActive(false);
@@ -434,10 +435,12 @@ int main(int argc, char* argv[]){
                                 //register
                                 bool success = accountManager.registerAccount(loginInterface.getUsernameBox().getText(), loginInterface.getPasswordBox().getText());
                                 if(success){
-                                    cout << "Dang ky thanh cong! Ban co the dang nhap bang tai khoan vua tao." << endl;
+                                    //cout << "Dang ky thanh cong! Ban co the dang nhap bang tai khoan vua tao." << endl;
+                                    loginInterface.write_note(renderer, font, "Dang ky thanh cong! Ban co the dang nhap bang tai khoan vua tao.");
                                 }
                                 else{
-                                    cout << "Dang ky that bai! Tai khoan da ton tai." << endl;
+                                    //cout << "Dang ky that bai! Tai khoan da ton tai." << endl;
+                                    loginInterface.write_note(renderer, font, "Dang ky that bai! Tai khoan da ton tai.");
                                 }
                             }
                         }

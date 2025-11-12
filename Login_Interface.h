@@ -9,6 +9,7 @@ class Login_Interface {
         Texture login_button;
         Texture register_button;
         Texture enter_button;
+        Texture note;
         bool login_button_hover;
 
         TextBox usernameBox;
@@ -20,6 +21,7 @@ class Login_Interface {
         bool getLoginButtonHover() const { return login_button_hover; }
         TextBox& getUsernameBox();
         TextBox& getPasswordBox();
+        void write_note(SDL_Renderer* renderer, TTF_Font* font, string text);
 };
 
 

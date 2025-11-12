@@ -1,7 +1,7 @@
 #include "Login_Interface.h"
 
 Login_Interface::Login_Interface(SDL_Renderer* renderer, TTF_Font* font) : usernameBox("Username", screen_width/2 - 200, screen_height/2 + 80, 400, 50, UNDERLINE),
-                                                        passwordBox("Password", screen_width/2 -200, screen_height/2 + 150, 400, 50, UNDERLINE){
+                                                        passwordBox("Password", screen_width/2 -200, screen_height/2 + 150, 400, 50, UNDERLINE, true){
     login_bg.Loadfromfile(renderer, "image_game/LOGIN_BG.png");
     login_bg.setRect(0, 0 , screen_width, screen_height);
     
@@ -18,6 +18,8 @@ Login_Interface::Login_Interface(SDL_Renderer* renderer, TTF_Font* font) : usern
     
     enter_button.write(renderer, font, " ENTER " , black);
     enter_button.setRect(screen_width/2 -100, screen_height/2 + 220, 200, 60);
+
+    note.setRect(0, enter_button.getRect().y + enter_button.getRect().h + 30, 400, 40);
 }
 
 TextBox& Login_Interface::getPasswordBox(){
@@ -40,7 +42,10 @@ void Login_Interface::render(SDL_Renderer* renderer, TTF_Font* font){
     enter_button.FillRect(renderer, (usernameBox.getText() != "" && passwordBox.getText() != "") ? green : gray);
     enter_button.drawRect(renderer, black);
     enter_button.render(renderer);
-
+    if(note.getTexture()){
+        note.render(renderer);
+    }
+    
     usernameBox.render(renderer, font);
     passwordBox.render(renderer, font);
 }
@@ -63,4 +68,11 @@ bool Login_Interface::checkClick(int x, int y){
                 return true;
     }
     return false;
+}
+
+
+void Login_Interface::write_note(SDL_Renderer* renderer, TTF_Font* font, string text){
+    note.write(renderer, font, text, red);
+    int len = note.getRect().w*40/note.getRect().h;
+    note.setRect(screen_width/2 - len/2, enter_button.getRect().y + enter_button.getRect().h + 30, len, 40);
 }
