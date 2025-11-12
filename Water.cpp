@@ -1,11 +1,10 @@
 #include "Water.h"
 
-Water::Water(SDL_Renderer* renderer, TTF_Font *font) {
+Water::Water(SDL_Renderer* renderer, TTF_Font *font) : Tool(false) {
     water.Loadfromfile(renderer, "image_game/Water.png");
     watering.Loadfromfile(renderer, "image_game/Watering.png");
     w_x = 10;
     w_y = screen_height - 200;
-    hold = false;
     quantity = 10;
     isWatering = false;
     loop = 5;
@@ -16,12 +15,7 @@ Water::Water(SDL_Renderer* renderer, TTF_Font *font) {
     quantityTexture.setRect(w_x + water.getRect().w/2 - len/2, w_y + water.getRect().h, len, 20);
     bgW.setRect(w_x, w_y, 64, 64 + quantityTexture.getRect().h);
 }
-void Water::setHold(bool h) {
-    hold = h;
-}
-bool Water::getHold() {
-    return hold;
-}
+
 void Water::render(SDL_Renderer* renderer) {
     bgW.drawRect(renderer, black);
     if(isWatering){
@@ -70,8 +64,8 @@ void Water::updateQuatity(SDL_Renderer* renderer, TTF_Font *font, int x){
     currTime += x;
     if(currTime >= recoveryTime){
         quantity += 2;
-        if(quantity >= maxQuatity){
-            quantity = maxQuatity;
+        if(quantity >= maxQuantity){
+            quantity = maxQuantity;
         }
         currTime = currTime - recoveryTime;
     }
