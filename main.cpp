@@ -418,6 +418,7 @@ int main(int argc, char* argv[]){
                                     tvt.getID() = userID;
                                     LoadGame(tvt, gMap_, water_);
                                     setting_.reLoadAccountSetting(tvt, renderer, font, loginInterface.getUsernameBox().getText());
+                                    loginInterface.write_note(renderer, font, " ");
                                     current_gamestage = PLAYING;
                                     tvt.updateStage(farm);
                                     tvt.update_moneyTexture(renderer, font);
@@ -426,7 +427,9 @@ int main(int argc, char* argv[]){
                                 }
                                 else{
                                     //cout << "Dang nhap that bai! Vui long kiem tra lai tai khoan." << endl;
-                                    loginInterface.write_note(renderer, font, "Dang nhap that bai! Vui long kiem tra lai tai khoan.");
+                                    if(loginInterface.getUsernameBox().getText() != "" && loginInterface.getPasswordBox().getText() != ""){
+                                        loginInterface.write_note(renderer, font, "Dang nhap that bai! Vui long kiem tra lai tai khoan.");
+                                    }
                                 }
                                 loginInterface.getUsernameBox().clearText(); loginInterface.getUsernameBox().setActive(false);
                                 loginInterface.getPasswordBox().clearText(); loginInterface.getPasswordBox().setActive(false);
@@ -440,7 +443,9 @@ int main(int argc, char* argv[]){
                                 }
                                 else{
                                     //cout << "Dang ky that bai! Tai khoan da ton tai." << endl;
-                                    loginInterface.write_note(renderer, font, "Dang ky that bai! Tai khoan da ton tai.");
+                                    if(loginInterface.getUsernameBox().getText() != "" && loginInterface.getPasswordBox().getText() != ""){
+                                        loginInterface.write_note(renderer, font, "Dang ky that bai! Tai khoan da ton tai.");
+                                    }
                                 }
                             }
                         }

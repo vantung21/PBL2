@@ -120,3 +120,10 @@ void TextBox::clearText(){
     this->text = "";
     this->startPos = 0;
 }
+
+bool TextBox::getHide(){
+    return hide_characters;
+}
+void TextBox::setHide(bool hide){
+    this->hide_characters = hide;
+}

@@ -19,6 +19,12 @@ Login_Interface::Login_Interface(SDL_Renderer* renderer, TTF_Font* font) : usern
     enter_button.write(renderer, font, " ENTER " , black);
     enter_button.setRect(screen_width/2 -100, screen_height/2 + 220, 200, 60);
 
+    close_eye.Loadfromfile(renderer, "image_game/close_eye.png");
+    close_eye.setRect(screen_width/2 + 220, screen_height/2 + 155, 40, 40);
+    open_eye.Loadfromfile(renderer, "image_game/open_eye.png");
+    open_eye.setRect(screen_width/2 + 220, screen_height/2 + 155, 40, 40);
+
+
     note.setRect(0, enter_button.getRect().y + enter_button.getRect().h + 30, 400, 40);
 }
 
@@ -42,6 +48,12 @@ void Login_Interface::render(SDL_Renderer* renderer, TTF_Font* font){
     enter_button.FillRect(renderer, (usernameBox.getText() != "" && passwordBox.getText() != "") ? green : gray);
     enter_button.drawRect(renderer, black);
     enter_button.render(renderer);
+    if(passwordBox.getHide()){
+        close_eye.render(renderer);
+    }
+    else {
+        open_eye.render(renderer);
+    }
     if(note.getTexture()){
         note.render(renderer);
     }
@@ -63,6 +75,10 @@ bool Login_Interface::checkClick(int x, int y){
                 usernameBox.clearText();
                 passwordBox.clearText();
     }
+    else if(close_eye.getRect().x <= x && x <= close_eye.getRect().x + close_eye.getRect().w &&
+            close_eye.getRect().y <= y && y <= close_eye.getRect().y + close_eye.getRect().h){
+                passwordBox.setHide(!passwordBox.getHide());
+    }
     else if(enter_button.getRect().x <= x && x <= enter_button.getRect().x + enter_button.getRect().w &&
             enter_button.getRect().y <= y && y <= enter_button.getRect().y + enter_button.getRect().h){
                 return true;
@@ -72,7 +88,9 @@ bool Login_Interface::checkClick(int x, int y){
 
 
 void Login_Interface::write_note(SDL_Renderer* renderer, TTF_Font* font, string text){
-    note.write(renderer, font, text, red);
-    int len = note.getRect().w*40/note.getRect().h;
-    note.setRect(screen_width/2 - len/2, enter_button.getRect().y + enter_button.getRect().h + 30, len, 40);
+    if(text != ""){
+        note.write(renderer, font, text, red);
+        int len = note.getRect().w*40/note.getRect().h;
+        note.setRect(screen_width/2 - len/2, enter_button.getRect().y + enter_button.getRect().h + 30, len, 40);
+    }
 }

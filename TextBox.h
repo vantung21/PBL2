@@ -32,6 +32,8 @@ public:
     string getText() const; 
     void setActive(bool state);
     void clearText();
+    bool getHide();
+    void setHide(bool hide);
 };
 
 #endif

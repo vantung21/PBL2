@@ -10,6 +10,7 @@ class Login_Interface {
         Texture register_button;
         Texture enter_button;
         Texture note;
+        Texture close_eye, open_eye;
         bool login_button_hover;
 
         TextBox usernameBox;
