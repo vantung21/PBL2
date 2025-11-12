@@ -11,6 +11,7 @@ class Setting{
         int st_x, st_y, st_height, st_wight;
         int volumeMusic;
         bool isRenameOK;
+        int saved;
     public:
         Setting(SDL_Renderer* renderer, TTF_Font* font);
         TextBox& get_renameTextBox();

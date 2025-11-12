@@ -8,6 +8,8 @@ Setting::Setting(SDL_Renderer* renderer, TTF_Font* font)
     st_wight = screen_width*4/6;
     st_height = screen_height*4/6;
 
+    saved = 0;
+
     volumeMusic = 32;
 
     isRenameOK = false;
@@ -118,8 +120,12 @@ bool Setting::checkLogOut(int x, int y){
 }
 
 bool Setting::checkSaveGame(int x, int y){
-    return (x >= savegame.getRect().x && x <= savegame.getRect().x + savegame.getRect().w &&
-            y >= savegame.getRect().y && y <= savegame.getRect().y + savegame.getRect().h);
+    if(x >= savegame.getRect().x && x <= savegame.getRect().x + savegame.getRect().w &&
+            y >= savegame.getRect().y && y <= savegame.getRect().y + savegame.getRect().h){
+                saved = 10;
+                return true;
+    }
+    return false;
 }
 
 void Setting::reLoadAccountSetting(Player& tvt, SDL_Renderer *renderer, TTF_Font* font, string strUsername){
@@ -171,7 +177,11 @@ void Setting::render(SDL_Renderer* renderer, TTF_Font* font){
     logOut.drawRect(renderer, black);
     logOut.render(renderer);
 
-    savegame.FillRect(renderer, orange);
+    if(saved > 0){
+        savegame.FillRect(renderer, green);
+        saved--;
+    }
+    else savegame.FillRect(renderer, orange);
     savegame.drawRect(renderer, black);
     savegame.render(renderer);
 
