@@ -17,7 +17,8 @@ enum CropType{
     PUMPKIN_cp,
     STRAWBERRY_cp,
     TOMATO_cp,
-    WATERMELON_cp
+    WATERMELON_cp,
+    APPLE_cp
 };
 
 struct CropData{

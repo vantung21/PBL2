@@ -161,6 +161,22 @@ void CropManager :: init(SDL_Renderer* renderer){
     watermelonData.stageTextures[3].Loadfromfile(renderer, "image_game/watermelon_stage3.png");
     watermelonData.harvestedItems.push_back(WATERMELON);
     allCropData[WATERMELON_cp] = watermelonData;
+
+    static CropData appleData;
+    appleData.name = "Apple";
+    appleData.timePerStage = 100000;
+    appleData.totalStages = 7;
+    appleData.exp = 100;
+    appleData.stageTextures.resize(7);
+    appleData.stageTextures[0].Loadfromfile(renderer, "image_game/Tao_0.png");
+    appleData.stageTextures[1].Loadfromfile(renderer, "image_game/Tao_1.png");
+    appleData.stageTextures[2].Loadfromfile(renderer, "image_game/Tao_2.png");
+    appleData.stageTextures[3].Loadfromfile(renderer, "image_game/Tao_3.png");
+    appleData.stageTextures[4].Loadfromfile(renderer, "image_game/Tao_4.png");
+    appleData.stageTextures[5].Loadfromfile(renderer, "image_game/Tao_5.png");
+    appleData.stageTextures[6].Loadfromfile(renderer, "image_game/Tao_6.png");
+    appleData.harvestedItems.push_back(TAO);
+    allCropData[APPLE_cp] = appleData;
 }
 
 const CropData&  CropManager :: getData(CropType type){
@@ -180,7 +196,7 @@ void Crop::update(int deltaTime){
     if(growthTimer >= data.timePerStage){
         growthTimer = growthTimer - data.timePerStage;
         growthStage++;
-        if(growthStage >= 4) growthStage = 3;
+        if(growthStage >= data.totalStages) growthStage = data.totalStages-1;
     }
 }
 void Crop::render(SDL_Renderer* renderer){
@@ -196,6 +212,11 @@ void Crop::render(SDL_Renderer* renderer){
         else if(data.name == "Rice" || data.name == "Carrot" || data.name == "Pumpkin" || data.name == "Watermelon"){
             Texture& t =(Texture&)data.stageTextures[this->growthStage];
             t.setRect(position.x + root_map_x, position.y + root_map_y, position.w, position.h);
+            t.render(renderer);
+        }
+        else if(data.name == "Apple"){
+            Texture& t =(Texture&)data.stageTextures[this->growthStage];
+            t.setRect(position.x + root_map_x - tile_size, position.y + root_map_y - 3*tile_size, position.w*3, position.h*4);
             t.render(renderer);
         }
         else {

@@ -20,6 +20,7 @@ enum ItemType{
     STRAWBERRY_SEED,
     TOMATO_SEED,
     WATERMELON_SEED,
+    TAO_SEED,
     
     //Tong seed
     COUNT_SEED,
@@ -38,6 +39,7 @@ enum ItemType{
     STRAWBERRY,
     TOMATO,
     WATERMELON,
+    TAO,
 
     //tong
     COUNT

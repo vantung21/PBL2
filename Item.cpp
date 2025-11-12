@@ -99,6 +99,14 @@ void ItemDataBase::init(SDL_Renderer *renderer){
     watermelon_seed.icon.Loadfromfile(renderer, "image_game/watermelon_seed.png");
     allItems[WATERMELON_SEED] = watermelon_seed;
 
+    static ItemInfo apple_seed;
+    apple_seed.ItemName = "Apple_seed";
+    apple_seed.buyPrice = 1000;
+    apple_seed.sellPrice = 100;
+    apple_seed.levelToUnlock = 20;
+    apple_seed.icon.Loadfromfile(renderer, "image_game/Tao_0.png");
+    allItems[TAO_SEED] = apple_seed;
+
     static ItemInfo rice;
     rice.ItemName = "rice";
     rice.buyPrice = 4;
@@ -194,4 +202,12 @@ void ItemDataBase::init(SDL_Renderer *renderer){
     watermelon.levelToUnlock = 11;
     watermelon.icon.Loadfromfile(renderer, "image_game/watermelon.png");
     allItems[WATERMELON] = watermelon;
+
+    static ItemInfo apple;
+    apple.ItemName = "Apple";
+    apple.buyPrice = 50;
+    apple.sellPrice = 30;
+    apple.levelToUnlock = 20;
+    apple.icon.Loadfromfile(renderer, "image_game/Tao.png");
+    allItems[TAO] = apple;
 }

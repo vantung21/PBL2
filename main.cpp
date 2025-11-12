@@ -13,9 +13,7 @@
 #include "Water.h"
 
 void LoadGame(Player &player , GameMap &gMap_, Water &water_){
-    player.clear();
-    player.getInventory().clear();
-    gMap_.clear();
+    
     
     string id = to_string(player.getID());
     ifstream loadFile("savegame/" + id + ".txt");
@@ -23,6 +21,11 @@ void LoadGame(Player &player , GameMap &gMap_, Water &water_){
         cout << "loi! Khong the mo file save. (ID: " << id << ")" << endl;
         return;
     }
+
+
+    player.clear();
+    player.getInventory().clear();
+    gMap_.clear();
     //load player
    
     string load;
@@ -252,21 +255,39 @@ int main(int argc, char* argv[]){
                                 tvt.updateStage(watering);
                             }
                             
-                            else if((gMap_.getMap().tile[y][x] >=17 && gMap_.getMap().tile[y][x] <= 24 || gMap_.getMap().tile[y][x] == 3) && gMap_.getMap().farmland[y][x] == NULL){
-                                int t = current_cropTyppe;
-                                if(tvt.getInventory().getQuantity((ItemType)t) > 0){
-                                    Crop* newCp = new Crop(current_cropTyppe, x*tile_size, y*tile_size);
-                                    gMap_.getMap().farmland[y][x] = newCp;
-                                    tvt.getInventory().removeItem((ItemType)t, 1);
+                            else if( gMap_.getMap().farmland[y][x] == NULL){
+                                if(gMap_.getMap().tile[y][x] >=17 && gMap_.getMap().tile[y][x] <= 24 || gMap_.getMap().tile[y][x] == 3){
+                                    int t = current_cropTyppe;
+                                    if(current_cropTyppe == APPLE_cp) continue;
+                                    if(tvt.getInventory().getQuantity((ItemType)t) > 0){
+                                        Crop* newCp = new Crop(current_cropTyppe, x*tile_size, y*tile_size);
+                                        gMap_.getMap().farmland[y][x] = newCp;
+                                        tvt.getInventory().removeItem((ItemType)t, 1);
+                                    }
+                                }
+                                else if(gMap_.getMap().tile[y][x] == 1){
+                                    int t = current_cropTyppe;
+                                    if(current_cropTyppe != APPLE_cp) continue;
+                                    if(tvt.getInventory().getQuantity((ItemType)t) > 0){
+                                        Crop* newCp = new Crop(current_cropTyppe, x*tile_size, y*tile_size);
+                                        gMap_.getMap().farmland[y][x] = newCp;
+                                        tvt.getInventory().removeItem((ItemType)t, 1);
+                                    }
                                 }
                             }
                             else if(gMap_.getMap().farmland[y][x] != NULL ){
                                 if((gMap_.getMap().farmland[y][x])->isReadyToHarvest()){
+                                    
                                     random = startTime%5;
                                     for(const auto item : CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).harvestedItems){
                                         tvt.getInventory().addItem(item, (random == 0)?3:2);
                                     }
                                     tvt.updateExp(renderer, font, rain_, CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).exp);
+                                    if((gMap_.getMap().farmland[y][x])->getType() == APPLE_cp){
+                                        gMap_.getMap().farmland[y][x]->getGrowthStage() = 3;
+                                        gMap_.getMap().farmland[y][x]->getGrowthTimer() = 0;
+                                        continue;
+                                    }
                                     delete gMap_.getMap().farmland[y][x];
                                     gMap_.getMap().farmland[y][x] = NULL;
                                 }

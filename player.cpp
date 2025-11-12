@@ -5,9 +5,8 @@ Player::Player(SDL_Renderer* renderer, TTF_Font* font, int ID, const string name
 : player_ID(ID), money(initialMoney), playername(name), inventory(renderer, font){
 
     this->stage = farm;
-    inventory.addItem(RICE_SEED, 10);
-    inventory.addItem(CARROT_SEED, 3);
-    inventory.addItem(CORN_SEED, 2); 
+    inventory.addItem(RICE_SEED, 5);
+    inventory.addItem(CARROT_SEED, 2);
 
     level = 1;
     exp = 0;
