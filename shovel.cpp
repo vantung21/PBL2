@@ -8,7 +8,9 @@ Shovel::Shovel(SDL_Renderer* renderer) : Tool(false) {
     bgS.setRect(s_x, s_y, 60, 80);
 }
 void Shovel::render(SDL_Renderer* renderer) {
-    bgS.drawRect(renderer, black);
+    if(this->hold){
+        bgS.drawRect(renderer, black);
+    }
     shovel.render(renderer);
 }
 void Shovel::setPos(int x, int y) {

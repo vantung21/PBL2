@@ -17,7 +17,9 @@ Water::Water(SDL_Renderer* renderer, TTF_Font *font) : Tool(false) {
 }
 
 void Water::render(SDL_Renderer* renderer) {
-    bgW.drawRect(renderer, black);
+    if(this->hold){
+        bgW.drawRect(renderer, black);
+    }
     if(isWatering){
         watering.render(renderer);
         loop--;
