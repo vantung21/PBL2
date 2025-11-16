@@ -26,7 +26,7 @@ class Inventory{
         int getQuantity(ItemType item) const ;
         int getcountType() const;
         bool saleItem(ItemType item, int quantity, int &playerMoney);
-        bool click(int x, int y, int &money);
+        bool click(int x, int y, int &money, Mix_Chunk* sound1 = NULL, Mix_Chunk* sound2 = NULL);
         ItemType getItemAtPosition(int x, int y);
         void render(SDL_Renderer *renderer, TTF_Font* font);
         void save(ofstream &saveFile);

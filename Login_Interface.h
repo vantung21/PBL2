@@ -18,7 +18,7 @@ class Login_Interface {
     public:
         Login_Interface( SDL_Renderer* renderer, TTF_Font* font);
         void render(SDL_Renderer* renderer, TTF_Font* font);
-        bool checkClick(int x, int y);
+        bool checkClick(int x, int y, Mix_Chunk* sound = NULL);
         bool getLoginButtonHover() const { return login_button_hover; }
         TextBox& getUsernameBox();
         TextBox& getPasswordBox();

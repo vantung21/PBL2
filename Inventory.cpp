@@ -186,44 +186,39 @@ ItemType Inventory::getItemAtPosition(int x, int y){
     return ItemType(-1);
 }
 
-bool Inventory::click(int x, int y, int &money){
+bool Inventory::click(int x, int y, int &money, Mix_Chunk* sound1, Mix_Chunk* sound2){
     bool run = true;
     ItemType clickedItem = getItemAtPosition(x, y);
     if(clickedItem != ItemType(-1)){
         this->selectedItem = clickedItem;
     }
     else{
-        if(x >= sell_.getRect().x && x <= sell_.getRect().x + sell_.getRect().w &&
-            y >= sell_.getRect().y && y <= sell_.getRect().y + sell_.getRect().h){
+        if(sell_.checkClickTexture(x, y, sound1)){
                 if(this->selectedItem != ItemType(-1)){
                     saleItem(this->selectedItem, slban, money);
                     this->selectedItem = ItemType(-1);
                     slban = 1;
                 }
         }
-        else if(x >= tru10_.getRect().x && x <= tru10_.getRect().x + tru10_.getRect().w &&
-            y >= tru10_.getRect().y && y <= tru10_.getRect().y + tru10_.getRect().h){
+        else if(tru10_.checkClickTexture(x, y, sound2)){
                 if(this->selectedItem != ItemType(-1)){
                     slban -= 10;
                     if(slban <= 0) slban = 1;
                 }
         }
-        else if(x >= tru1_.getRect().x && x <= tru1_.getRect().x + tru1_.getRect().w &&
-            y >= tru1_.getRect().y && y <= tru1_.getRect().y + tru1_.getRect().h){
+        else if(tru1_.checkClickTexture(x, y, sound2)){
                 if(this->selectedItem != ItemType(-1)){
                     slban -= 1;
                     if(slban <= 0) slban = 1;
                 }
         }
-        else if(x >= plus10_.getRect().x && x <= plus10_.getRect().x + plus10_.getRect().w &&
-            y >= plus10_.getRect().y && y <= plus10_.getRect().y + plus10_.getRect().h){
+        else if(plus10_.checkClickTexture(x, y, sound2)){
                 if(this->selectedItem != ItemType(-1)){
                     slban += 10;
                     if(slban >= items[selectedItem]) slban = items[selectedItem];
                 }
         }
-        else if(x >= plus1_.getRect().x && x <= plus1_.getRect().x + plus1_.getRect().w &&
-            y >= plus1_.getRect().y && y <= plus1_.getRect().y + plus1_.getRect().h){
+        else if(plus1_.checkClickTexture(x, y, sound2)){
                 if(this->selectedItem != ItemType(-1)){
                     slban += 1;
                     if(slban >= items[selectedItem]) slban = items[selectedItem];

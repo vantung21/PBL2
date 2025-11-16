@@ -62,25 +62,21 @@ void Login_Interface::render(SDL_Renderer* renderer, TTF_Font* font){
     passwordBox.render(renderer, font);
 }
 
-bool Login_Interface::checkClick(int x, int y){
-    if(login_button.getRect().x <= x && x <= login_button.getRect().x + login_button.getRect().w &&
-       login_button.getRect().y <= y && y <= login_button.getRect().y + login_button.getRect().h){
+bool Login_Interface::checkClick(int x, int y, Mix_Chunk* sound){
+    if(login_button.checkClickTexture(x,y, sound)){
            login_button_hover = true;
            usernameBox.clearText();
            passwordBox.clearText();
     }
-    else if(register_button.getRect().x <= x && x <= register_button.getRect().x + register_button.getRect().w &&
-            register_button.getRect().y <= y && y <= register_button.getRect().y + register_button.getRect().h){
+    else if(register_button.checkClickTexture(x, y, sound)){
                 login_button_hover = false;
                 usernameBox.clearText();
                 passwordBox.clearText();
     }
-    else if(close_eye.getRect().x <= x && x <= close_eye.getRect().x + close_eye.getRect().w &&
-            close_eye.getRect().y <= y && y <= close_eye.getRect().y + close_eye.getRect().h){
+    else if(close_eye.checkClickTexture(x,y, sound)){
                 passwordBox.setHide(!passwordBox.getHide());
     }
-    else if(enter_button.getRect().x <= x && x <= enter_button.getRect().x + enter_button.getRect().w &&
-            enter_button.getRect().y <= y && y <= enter_button.getRect().y + enter_button.getRect().h){
+    else if(enter_button.checkClickTexture(x,y, sound)){
                 return true;
     }
     return false;

@@ -97,7 +97,7 @@ int main(int argc, char* argv[]){
     IMG_Init(IMG_INIT_PNG);
     TTF_Init();
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    SDL_Window *window = SDL_CreateWindow("FARM MAP", SDL_WINDOWPOS_UNDEFINED, 
+    SDL_Window *window = SDL_CreateWindow("MY FARM", SDL_WINDOWPOS_UNDEFINED, 
                                                     SDL_WINDOWPOS_UNDEFINED, 
                                                     screen_width, 
                                                     screen_height, 
@@ -111,7 +111,7 @@ int main(int argc, char* argv[]){
     }
 
     //tai nhac nen
-    Mix_Music* music_game = Mix_LoadMUS("sound/subesu.mp3");
+    Mix_Music* music_game = Mix_LoadMUS("sound/farm_theme.mp3");
     if(!music_game){
         cout << "loi khong the tai nhac nen!\n";
     }
@@ -124,7 +124,7 @@ int main(int argc, char* argv[]){
     Mix_Chunk* thuhoachSound = Mix_LoadWAV("sound/thuhoach.wav");
     Mix_Chunk* leveupSound = Mix_LoadWAV("sound/levelup.wav");
     Mix_Chunk* openDoorSound = Mix_LoadWAV("sound/opening_door.wav");
-
+    Mix_Chunk* tingTingSound = Mix_LoadWAV("sound/tingting.wav");
     
     //tai font chu
     TTF_Font* font = TTF_OpenFont("font.ttf", 32);
@@ -278,7 +278,8 @@ int main(int argc, char* argv[]){
                                     for(const auto item : CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).harvestedItems){
                                         tvt.getInventory().addItem(item, (random == 0)?3:2);
                                     }
-                                    tvt.updateExp(renderer, font, rain_, CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).exp);
+                                    bool levelup = tvt.updateExp(renderer, font, rain_, CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).exp);
+                                    if(levelup) Mix_PlayChannel(-1, leveupSound, 0);
                                     if((gMap_.getMap().farmland[y][x])->getType() == APPLE_cp){
                                         gMap_.getMap().farmland[y][x]->getGrowthStage() = 3;
                                         gMap_.getMap().farmland[y][x]->getGrowthTimer() = 0;
@@ -290,7 +291,7 @@ int main(int argc, char* argv[]){
                             }
                         }
                         else if(tvt.getStage() == inventory){
-                            bool check = tvt.getInventory().click(mouseX, mouseY, tvt.getMoney());
+                            bool check = tvt.getInventory().click(mouseX, mouseY, tvt.getMoney(), tingTingSound, buttonSound);
                             tvt.update_moneyTexture(renderer, font);
                             if(!check) tvt.updateStage(farm); 
                         } 
@@ -417,7 +418,7 @@ int main(int argc, char* argv[]){
                         loginInterface.getUsernameBox().setActive(loginInterface.getUsernameBox().checkClick(mouseX, mouseY));
                         loginInterface.getPasswordBox().setActive(loginInterface.getPasswordBox().checkClick(mouseX, mouseY));
                         //kiem tra co bam nut login/register/enter khong
-                        if(loginInterface.checkClick(mouseX, mouseY)){
+                        if(loginInterface.checkClick(mouseX, mouseY, buttonSound)){
                             if(loginInterface.getLoginButtonHover()){
                                 //login
                                 int userID = accountManager.login(loginInterface.getUsernameBox().getText(), loginInterface.getPasswordBox().getText());
@@ -463,6 +464,7 @@ int main(int argc, char* argv[]){
                 }
                 else if(e.type == SDL_KEYDOWN){
                     if(e.key.keysym.sym == SDLK_RETURN){
+                        Mix_PlayChannel(-1, buttonSound, 0);
                         if(loginInterface.getLoginButtonHover()){
                             //login
                             int userID = accountManager.login(loginInterface.getUsernameBox().getText(), loginInterface.getPasswordBox().getText());
@@ -621,6 +623,7 @@ int main(int argc, char* argv[]){
     Mix_FreeChunk(thuhoachSound);
     Mix_FreeChunk(leveupSound);
     Mix_FreeChunk(openDoorSound);
+    Mix_FreeChunk(tingTingSound);
     Mix_CloseAudio();
     IMG_Quit();
     TTF_Quit();

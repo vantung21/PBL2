@@ -13,7 +13,7 @@ class Player {
 public:
     Player(SDL_Renderer* renderer = NULL, TTF_Font* font = NULL, int ID = 100000, const string name = "player", int = 10);
     void updateStage(playerStage st);
-    void updateExp(SDL_Renderer *renderer, TTF_Font* font, Rain &rain_, int x);
+    bool updateExp(SDL_Renderer *renderer, TTF_Font* font, Rain &rain_, int x);
     void update_nameText(SDL_Renderer *renderer, TTF_Font* font);
     void update_moneyTexture(SDL_Renderer *renderer, TTF_Font* font);
     void render(SDL_Renderer *renderer);

@@ -34,11 +34,13 @@ void Player::updateStage(playerStage st) {
     this->stage = st;
 }
 
-void Player::updateExp(SDL_Renderer *renderer, TTF_Font* font, Rain &rain_, int x){
+bool Player::updateExp(SDL_Renderer *renderer, TTF_Font* font, Rain &rain_, int x){
+    bool levelup = false;
     this->exp += x;
     while(this->exp >= (50+50*this->level)){
         this->exp -= (50+50*this->level);
         level++;
+        levelup = true;
         if(level%3 == 0){
             rain_.setIsRaining(true);
             rain_.resetCurrTime();
@@ -48,6 +50,7 @@ void Player::updateExp(SDL_Renderer *renderer, TTF_Font* font, Rain &rain_, int 
     levelTexture.setRect(10, 10, 50, 50);
 
     currExp.setRect(expTexture.getRect().x, expTexture.getRect().y, expTexture.getRect().w*exp/(50+level*50), expTexture.getRect().h);
+    return levelup;
 }
 void Player::update_nameText(SDL_Renderer *renderer, TTF_Font* font){
     nameText.write(renderer, font, playername, black);
