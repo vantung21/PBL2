@@ -25,6 +25,7 @@ class Setting{
         bool checkSaveGame(int x, int y);
         void render(SDL_Renderer* renderer, TTF_Font* font);
         void reLoadAccountSetting(Player& tvt, SDL_Renderer *renderer, TTF_Font* font,  string strUsername);
+        void out();
 };
 
 #endif

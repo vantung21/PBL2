@@ -226,3 +226,10 @@ void ChoosenSeed::render(SDL_Renderer *renderer, TTF_Font *font, Player &tvt, Cr
         openChoosenSeed.render(renderer);
     }
 }
+
+bool ChoosenSeed::get_isopen(){
+    return isOpen;
+}
+void ChoosenSeed::set_isopen(bool b){
+    this->isOpen = b;
+}

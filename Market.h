@@ -23,13 +23,16 @@ class Market{
         string tru1;
         string quantity;
         string buy;
+        bool available_to_buy;
     public:
         Market(SDL_Renderer* renderer, TTF_Font *font);
         bool buyItem(ItemType item, int quantity, Inventory &playerInvenetory, int &playerMoney);
         bool click(int x, int y, Inventory &playerInvenetory, Player &player);
         ItemType getItemAtPosition(int x, int y);
-        bool checkUnlook(Player &player, ItemType item);
+        bool checkUnlock(Player &player, ItemType item);
         void render(SDL_Renderer *renderer, TTF_Font* font, Player &player);
+        void out();
+        void set_buy(ItemType item, int quantity, int playerMoney);
 };
 
 #endif

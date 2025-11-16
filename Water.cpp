@@ -31,6 +31,8 @@ void Water::render(SDL_Renderer* renderer) {
     else{
         water.render(renderer);
     }
+    quantityTexture.FillRect(renderer, gray);
+    quantityTexture.drawRect(renderer, black);
     quantityTexture.render(renderer);
 }
 void Water::setPos(int x, int y) {
@@ -71,7 +73,7 @@ void Water::updateQuatity(SDL_Renderer* renderer, TTF_Font *font, int x){
         }
         currTime = currTime - recoveryTime;
     }
-    quantityTexture.write(renderer, font, to_string(quantity), black);
+    quantityTexture.write(renderer, font, " " + to_string(quantity) + " ", black);
     int len = quantityTexture.getRect().w*20/quantityTexture.getRect().h;
     quantityTexture.setRect(w_x + water.getRect().w/2 - len/2, w_y + water.getRect().h, len, 20);
 }

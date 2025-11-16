@@ -7,6 +7,7 @@ Market::Market(SDL_Renderer* renderer, TTF_Font *font){
     }
 
     slmua = 1;
+    available_to_buy = true;
     selectedItem = ItemType(-1);
     mrk_x = screen_width/8;
     mrk_y = screen_height/8;
@@ -54,7 +55,7 @@ bool Market::buyItem(ItemType item, int quantity, Inventory &playerInvenetory, i
     return false;
 }
 
-bool Market::checkUnlook(Player &player, ItemType item){
+bool Market::checkUnlock(Player &player, ItemType item){
     if(player.getLevel() >= ItemDataBase::allItems[item].levelToUnlock){
         return true;
     }
@@ -90,7 +91,7 @@ void Market :: render(SDL_Renderer *renderer, TTF_Font *font, Player &player){
         ItemDataBase::allItems[item].icon.render(renderer);
 
         //ve o khoa
-        if(!checkUnlook(player, item)){
+        if(!checkUnlock(player, item)){
             lock.setRect(item_x, item_y, 100, 100);
             lock.render(renderer);
         }
@@ -164,8 +165,10 @@ void Market :: render(SDL_Renderer *renderer, TTF_Font *font, Player &player){
         sl.write(renderer, font, tong, black);
         sl.setRect(mrk_x + mrk_width - 20*16, mrk_y + mrk_height - 120, tong.size()*16, 40);
         sl.render(renderer);
-
-        buy_.FillRect(renderer, green);
+        if(available_to_buy){
+            buy_.FillRect(renderer, green);
+        }
+        else buy_.FillRect(renderer, gray);  
         buy_.drawRect(renderer, black);
         buy_.render(renderer);
     }  
@@ -184,7 +187,7 @@ ItemType Market::getItemAtPosition(int x, int y){
 bool Market::click(int x, int y,Inventory &inventory, Player &player){
     bool run = true;
     ItemType clickedItem = getItemAtPosition(x, y);
-    if(clickedItem != ItemType(-1) && checkUnlook(player, clickedItem)){
+    if(clickedItem != ItemType(-1) && checkUnlock(player, clickedItem)){
         this->selectedItem = clickedItem;
     }
     else{
@@ -226,14 +229,26 @@ bool Market::click(int x, int y,Inventory &inventory, Player &player){
         }
         else if(x <= mrk_x || x >= mrk_x + mrk_width ||
             y <= mrk_y || y >= mrk_y + mrk_height){
-                this->selectedItem = ItemType(-1);
-                slmua = 1;
+                out();
                 run = false;
         }
         else {
-            this->selectedItem = ItemType(-1);
-            slmua = 1;
+            out();
         }
     }
+    if(this->selectedItem != ItemType(-1))
+    set_buy(this->selectedItem, slmua, player.getMoney());
     return run;
+}
+
+void Market::out(){
+    this->selectedItem = ItemType(-1);
+    this->slmua = 1;
+}
+
+void Market::set_buy(ItemType item, int quantity, int playerMoney){
+    if(playerMoney >= ItemDataBase::allItems.at(item).buyPrice*quantity){
+        this->available_to_buy = true;
+    }
+    else this->available_to_buy = false;
 }

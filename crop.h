@@ -46,6 +46,8 @@ class Crop{
         SDL_Rect position;  //vi tri va kich thuoc tren mang hinh
     public:
         static int count;
+        static Texture blingbling;
+        static void loadBlingBling(SDL_Renderer* renderer);
         Crop(CropType type, int = 0 , int = 0 );
         ~Crop(){count--;}
         void update(int deltaTime);

@@ -23,6 +23,8 @@ class ChoosenSeed {
         void render(SDL_Renderer *renderer, TTF_Font *font, Player &tvt, CropType &current_cropTyppe);
         vector<ItemType> getAvailableSeeds(Player &tvt); // duyet qua cac item de lay ra cac item dang co 
         int findItemIndex(const vector<ItemType>& items, const ItemType& item); // tim vi tri cua item trong vector availableItems
+        bool get_isopen();
+        void set_isopen(bool b);
 
 };
 

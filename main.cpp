@@ -13,8 +13,6 @@
 #include "Water.h"
 
 void LoadGame(Player &player , GameMap &gMap_, Water &water_){
-    
-    
     string id = to_string(player.getID());
     ifstream loadFile("savegame/" + id + ".txt");
     if(!loadFile.is_open()){
@@ -22,12 +20,11 @@ void LoadGame(Player &player , GameMap &gMap_, Water &water_){
         return;
     }
 
-
     player.clear();
     player.getInventory().clear();
     gMap_.clear();
+
     //load player
-   
     string load;
     loadFile >> load;
     player.getID() = stoi(load);
@@ -73,7 +70,6 @@ void LoadGame(Player &player , GameMap &gMap_, Water &water_){
 }
 
 void saveGame(Player &player, GameMap &gMap_, Water &water_){
-
     string id = to_string(player.getID());
     ofstream saveFile("savegame/" + id + ".txt");
     if(!saveFile.is_open()){
@@ -123,7 +119,12 @@ int main(int argc, char* argv[]){
         Mix_VolumeMusic(32);
         Mix_PlayMusic(music_game, -1);
     }
-    
+    Mix_Chunk* buttonSound = Mix_LoadWAV("sound/button.wav");
+    Mix_Chunk* trongcaySound = Mix_LoadWAV("sound/trongcay.wav");
+    Mix_Chunk* thuhoachSound = Mix_LoadWAV("sound/thuhoach.wav");
+    Mix_Chunk* leveupSound = Mix_LoadWAV("sound/levelup.wav");
+    Mix_Chunk* openDoorSound = Mix_LoadWAV("sound/opening_door.wav");
+
     
     //tai font chu
     TTF_Font* font = TTF_OpenFont("font.ttf", 32);
@@ -140,7 +141,7 @@ int main(int argc, char* argv[]){
     //crop
     CropManager::init( renderer);
     CropType current_cropTyppe = CropType::RICE_cp;
-    
+    Crop::loadBlingBling(renderer);
 
     //items
     ItemDataBase::init(renderer);
@@ -160,11 +161,8 @@ int main(int argc, char* argv[]){
     //water
     Water water_(renderer, font);
 
-
     //rain
     Rain rain_(renderer);
-
-
 
     GameMap gMap_;
     gMap_.LoadMap("newmap.txt");
@@ -230,17 +228,13 @@ int main(int argc, char* argv[]){
 
                     if(e.button.button == SDL_BUTTON_LEFT){
                         if(tvt.getStage() == farm){
-                            if( mouseX >= icon_inv.getRect().x && mouseX <= icon_inv.getRect().x + icon_inv.getRect().w && 
-                                    mouseY >= icon_inv.getRect().y && mouseY <= icon_inv.getRect().y + icon_inv. getRect().h){
+                            if(icon_inv.checkClickTexture(mouseX, mouseY, buttonSound) || House.checkClickTexture(mouseX, mouseY, openDoorSound)){
                                         tvt.updateStage(inventory);
                             }
-                            else if( mouseX >= icon_market.getRect().x && mouseX <= icon_market.getRect().x + icon_market.getRect().w && 
-                                    mouseY >= icon_market.getRect().y && mouseY <= icon_market.getRect().y + icon_market. getRect().h){
+                            else if(icon_market.checkClickTexture(mouseX, mouseY, buttonSound)){
                                         tvt.updateStage(market);
                             }
-
-                            else if(mouseX >= icon_setting.getRect().x && mouseX <= icon_setting.getRect().x + icon_setting.getRect().w && 
-                                    mouseY >= icon_setting.getRect().y && mouseY <= icon_setting.getRect().y + icon_setting. getRect().h){
+                            else if(icon_setting.checkClickTexture(mouseX, mouseY, buttonSound)){
                                         tvt.updateStage(setting);
                             }
                             else if(choosen_seed.checkclick(mouseX, mouseY)){
@@ -260,6 +254,7 @@ int main(int argc, char* argv[]){
                                     int t = current_cropTyppe;
                                     if(current_cropTyppe == APPLE_cp) continue;
                                     if(tvt.getInventory().getQuantity((ItemType)t) > 0){
+                                        Mix_PlayChannel(-1, trongcaySound, 0);
                                         Crop* newCp = new Crop(current_cropTyppe, x*tile_size, y*tile_size);
                                         gMap_.getMap().farmland[y][x] = newCp;
                                         tvt.getInventory().removeItem((ItemType)t, 1);
@@ -269,6 +264,7 @@ int main(int argc, char* argv[]){
                                     int t = current_cropTyppe;
                                     if(current_cropTyppe != APPLE_cp) continue;
                                     if(tvt.getInventory().getQuantity((ItemType)t) > 0){
+                                        Mix_PlayChannel(-1, trongcaySound, 0);
                                         Crop* newCp = new Crop(current_cropTyppe, x*tile_size, y*tile_size);
                                         gMap_.getMap().farmland[y][x] = newCp;
                                         tvt.getInventory().removeItem((ItemType)t, 1);
@@ -277,7 +273,7 @@ int main(int argc, char* argv[]){
                             }
                             else if(gMap_.getMap().farmland[y][x] != NULL ){
                                 if((gMap_.getMap().farmland[y][x])->isReadyToHarvest()){
-                                    
+                                    Mix_PlayChannel(-1, thuhoachSound, 0);
                                     random = startTime%5;
                                     for(const auto item : CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).harvestedItems){
                                         tvt.getInventory().addItem(item, (random == 0)?3:2);
@@ -308,12 +304,9 @@ int main(int argc, char* argv[]){
                                 saveGame(tvt, gMap_, water_);
                                 current_gamestage = LOGIN;
                             }
-
                             if(setting_.checkSaveGame(mouseX, mouseY)) {
                                 saveGame(tvt, gMap_, water_);
-                                //can them ghi chu save thanh cong
                             }
-
                             if(setting_.xulyAmThanh(mouseX, mouseY)) {
                                 Mix_VolumeMusic(setting_.getVolume());
                             }
@@ -325,7 +318,7 @@ int main(int argc, char* argv[]){
                             }
 
                             if(setting_.checkOutSetting(mouseX, mouseY)){
-                                setting_.get_renameTextBox().clearText();
+                                setting_.out();
                                 tvt.updateStage(farm);
                             }
                         }
@@ -352,12 +345,6 @@ int main(int argc, char* argv[]){
                             }
                         }
                         
-                    }
-                    if(e.button.button == SDL_BUTTON_RIGHT){
-                        //tvt.updateStage(farm);
-                        // current_gamestage = LOGIN;
-                        //tvt.updateStage(setting);
-                        // saveGame(tvt, gMap_);
                     }
                 }
                 else if(e.type == SDL_MOUSEMOTION){
@@ -390,6 +377,26 @@ int main(int argc, char* argv[]){
                             if(root_map_x >= 0) root_map_x = 0;
                         }
                     }
+                    if(tvt.getStage() == farm){
+                        if(e.key.keysym.sym == SDLK_i) tvt.updateStage(inventory);
+                        else if(e.key.keysym.sym == SDLK_b) tvt.updateStage(market);
+                        else if(e.key.keysym.sym == SDLK_TAB) tvt.updateStage(setting);
+                        else if(e.key.keysym.sym == SDLK_SPACE){
+                            choosen_seed.set_isopen(!choosen_seed.get_isopen());
+                        }
+                    }
+                    else if(tvt.getStage() == inventory && e.key.keysym.sym == SDLK_i){
+                        tvt.getInventory().out();
+                        tvt.updateStage(farm);
+                    } 
+                    else if(tvt.getStage() == market && e.key.keysym.sym == SDLK_b){
+                        Market_.out();
+                        tvt.updateStage(farm);
+                    } 
+                    else if(tvt.getStage() == setting && e.key.keysym.sym == SDLK_TAB){
+                        setting_.out();
+                        tvt.updateStage(farm);
+                    } 
                 }
 
                 //
@@ -428,7 +435,7 @@ int main(int argc, char* argv[]){
                                 else{
                                     //cout << "Dang nhap that bai! Vui long kiem tra lai tai khoan." << endl;
                                     if(loginInterface.getUsernameBox().getText() != "" && loginInterface.getPasswordBox().getText() != ""){
-                                        loginInterface.write_note(renderer, font, "Dang nhap that bai! Vui long kiem tra lai tai khoan.");
+                                        loginInterface.write_note(renderer, font, "Login failed! Please check your account again.");
                                     }
                                 }
                                 loginInterface.getUsernameBox().clearText(); loginInterface.getUsernameBox().setActive(false);
@@ -439,12 +446,12 @@ int main(int argc, char* argv[]){
                                 bool success = accountManager.registerAccount(loginInterface.getUsernameBox().getText(), loginInterface.getPasswordBox().getText());
                                 if(success){
                                     //cout << "Dang ky thanh cong! Ban co the dang nhap bang tai khoan vua tao." << endl;
-                                    loginInterface.write_note(renderer, font, "Dang ky thanh cong! Ban co the dang nhap bang tai khoan vua tao.");
+                                    loginInterface.write_note(renderer, font, "Registration successful!");
                                 }
                                 else{
                                     //cout << "Dang ky that bai! Tai khoan da ton tai." << endl;
                                     if(loginInterface.getUsernameBox().getText() != "" && loginInterface.getPasswordBox().getText() != ""){
-                                        loginInterface.write_note(renderer, font, "Dang ky that bai! Tai khoan da ton tai.");
+                                        loginInterface.write_note(renderer, font, "Registration failed! The account already exists.");
                                     }
                                 }
                             }
@@ -454,10 +461,57 @@ int main(int argc, char* argv[]){
                         current_gamestage = PLAYING;
                     }
                 }
+                else if(e.type == SDL_KEYDOWN){
+                    if(e.key.keysym.sym == SDLK_RETURN){
+                        if(loginInterface.getLoginButtonHover()){
+                            //login
+                            int userID = accountManager.login(loginInterface.getUsernameBox().getText(), loginInterface.getPasswordBox().getText());
+                            if(userID != -1){
+                                tvt.getID() = userID;
+                                LoadGame(tvt, gMap_, water_);
+                                setting_.reLoadAccountSetting(tvt, renderer, font, loginInterface.getUsernameBox().getText());
+                                loginInterface.write_note(renderer, font, " ");
+                                current_gamestage = PLAYING;
+                                tvt.updateStage(farm);
+                                tvt.update_moneyTexture(renderer, font);
+                                tvt.update_nameText(renderer, font);
+                                tvt.updateExp(renderer, font, rain_, 0);
+                            }
+                            else{
+                                //cout << "Dang nhap that bai! Vui long kiem tra lai tai khoan." << endl;
+                                if(loginInterface.getUsernameBox().getText() != "" && loginInterface.getPasswordBox().getText() != ""){
+                                    loginInterface.write_note(renderer, font, "Login failed! Please check your account again.");
+                                }
+                            }
+                            loginInterface.getUsernameBox().clearText(); loginInterface.getUsernameBox().setActive(false);
+                            loginInterface.getPasswordBox().clearText(); loginInterface.getPasswordBox().setActive(false);
+                        }
+                        else{
+                            //register
+                            bool success = accountManager.registerAccount(loginInterface.getUsernameBox().getText(), loginInterface.getPasswordBox().getText());
+                            if(success){
+                                //cout << "Dang ky thanh cong! Ban co the dang nhap bang tai khoan vua tao." << endl;
+                                loginInterface.write_note(renderer, font, "Registration successful!");
+                            }
+                            else{
+                                //cout << "Dang ky that bai! Tai khoan da ton tai." << endl;
+                                if(loginInterface.getUsernameBox().getText() != "" && loginInterface.getPasswordBox().getText() != ""){
+                                    loginInterface.write_note(renderer, font, "Registration failed! The account already exists.");
+                                }
+                            }
+                        }
+                    }
+                }
 
                 //xu ly van ban
                 loginInterface.getUsernameBox().handleEvent(e);
                 loginInterface.getPasswordBox().handleEvent(e);
+            }
+            // ESC thoat game
+            if(e.type == SDL_KEYDOWN){
+                if(e.key.keysym.sym == SDLK_ESCAPE){
+                    running = false;
+                }
             }
         }
 
@@ -487,7 +541,6 @@ int main(int argc, char* argv[]){
                     rain_.updateTime(40);
                 }
             
-
                 House.setRect(tile_size + root_map_x, tile_size + root_map_y, tile_size*5, tile_size*7);
                 House.render(renderer);
 
@@ -519,7 +572,6 @@ int main(int argc, char* argv[]){
                 if(tvt.getStage() == setting){
                     setting_.render(renderer, font);
                 }
-
                 
             }
             else if(current_gamestage == LOGIN){
@@ -564,6 +616,11 @@ int main(int argc, char* argv[]){
     font = NULL;
 
     Mix_FreeMusic(music_game);
+    Mix_FreeChunk(buttonSound);
+    Mix_FreeChunk(trongcaySound);
+    Mix_FreeChunk(thuhoachSound);
+    Mix_FreeChunk(leveupSound);
+    Mix_FreeChunk(openDoorSound);
     Mix_CloseAudio();
     IMG_Quit();
     TTF_Quit();

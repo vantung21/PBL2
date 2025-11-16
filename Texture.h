@@ -13,6 +13,7 @@ extern SDL_Color gray;
 extern SDL_Color yellow;
 extern SDL_Color d_yellow;
 extern SDL_Color l_blue;
+extern SDL_Color d_red;
 
 class Texture{
     protected:
@@ -31,6 +32,7 @@ class Texture{
         void free();
         SDL_Texture* getTexture(){ return texture;}
         SDL_Rect getRect(){ return rect;}
+        bool checkClickTexture(int mouseX, int mouseY, Mix_Chunk* sound = NULL);
 };
 
 #endif

@@ -9,6 +9,7 @@ SDL_Color gray = {255, 255, 224, 225};
 SDL_Color yellow = {205, 205, 0, 255};
 SDL_Color d_yellow = {175, 175, 0, 255};
 SDL_Color l_blue = {0, 150, 155, 255};
+SDL_Color d_red = {175, 30, 30, 255};
 
 Texture :: Texture(int x, int y, int w, int h): rect({x,y,w,h}){
     texture = NULL;
@@ -77,4 +78,15 @@ void Texture::write(SDL_Renderer *renderer, TTF_Font* font, string letter, SDL_C
     rect.w = textSurface->w;
     rect.h = textSurface->h;
     SDL_FreeSurface(textSurface);
+}
+
+bool Texture::checkClickTexture(int mouseX, int mouseY, Mix_Chunk* sound){
+    if (mouseX >= rect.x && mouseX <= rect.x + rect.w &&
+        mouseY >= rect.y && mouseY <= rect.y + rect.h){
+            if(sound){
+                Mix_PlayChannel(-1, sound, 0);
+            }
+            return true;
+    }
+    return false;
 }

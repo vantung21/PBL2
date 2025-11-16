@@ -89,8 +89,8 @@ bool Login_Interface::checkClick(int x, int y){
 
 void Login_Interface::write_note(SDL_Renderer* renderer, TTF_Font* font, string text){
     if(text != ""){
-        note.write(renderer, font, text, red);
-        int len = note.getRect().w*40/note.getRect().h;
-        note.setRect(screen_width/2 - len/2, enter_button.getRect().y + enter_button.getRect().h + 30, len, 40);
+        note.write(renderer, font, text, d_yellow);
+        int len = note.getRect().w*35/note.getRect().h;
+        note.setRect(screen_width/2 - len/2, enter_button.getRect().y + enter_button.getRect().h + 25, len, 35);
     }
 }

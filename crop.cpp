@@ -184,6 +184,10 @@ const CropData&  CropManager :: getData(CropType type){
 }
 
 int Crop::count = 0;
+Texture Crop::blingbling;
+void Crop::loadBlingBling(SDL_Renderer* renderer){
+    blingbling.Loadfromfile(renderer, "image_game/blingbling.png");
+}
 Crop :: Crop(CropType type, int x, int y): type(type){
     count++;
     growthStage = growthTimer = 0;
@@ -207,24 +211,32 @@ void Crop::render(SDL_Renderer* renderer){
             Texture& t =(Texture&)data.stageTextures[this->growthStage];
             t.setRect(position.x +root_map_x, position.y-tile_size + root_map_y, position.w, position.h*2);
             t.render(renderer);
-            return;
+            blingbling.setRect(position.x + tile_size/8 + root_map_x, position.y-tile_size + root_map_y, position.w*6/8, position.h*3/2);
         }
         else if(data.name == "Rice" || data.name == "Carrot" || data.name == "Pumpkin" || data.name == "Watermelon"){
             Texture& t =(Texture&)data.stageTextures[this->growthStage];
             t.setRect(position.x + root_map_x, position.y + root_map_y, position.w, position.h);
             t.render(renderer);
+            blingbling.setRect(position.x + tile_size/8 + root_map_x, position.y + tile_size/8 + root_map_y, position.w*6/8, position.h*6/8);
         }
         else if(data.name == "Apple"){
             Texture& t =(Texture&)data.stageTextures[this->growthStage];
             t.setRect(position.x + root_map_x - tile_size, position.y + root_map_y - 3*tile_size, position.w*3, position.h*4);
             t.render(renderer);
+            blingbling.setRect(position.x - tile_size + root_map_x, position.y - tile_size*7/3 + root_map_y, position.w*3, position.h*2);
         }
         else {
             Texture& t =(Texture&)data.stageTextures[this->growthStage];
             t.setRect(position.x + root_map_x, position.y + root_map_y - tile_size/5, position.w, position.h);
             t.render(renderer);
+            blingbling.setRect(position.x + tile_size/8 + root_map_x, position.y + tile_size/8 + root_map_y, position.w*6/8, position.h*6/8);
+        }    
+    }
+    if(this->isReadyToHarvest()){
+        if(growthTimer%17 == 0){
+            
+            blingbling.render(renderer);
         }
-        
     }
 }
 

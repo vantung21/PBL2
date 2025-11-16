@@ -188,3 +188,7 @@ void Setting::render(SDL_Renderer* renderer, TTF_Font* font){
     renameTextBox.render(renderer, font);
 }
 
+void Setting::out(){
+    renameTextBox.clearText();
+    renameTextBox.setActive(false);
+}

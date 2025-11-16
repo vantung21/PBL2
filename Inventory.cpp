@@ -231,8 +231,7 @@ bool Inventory::click(int x, int y, int &money){
         }
         else if(x <= inv_x || x >= inv_x + inv_width ||
             y <= inv_y || y >= inv_y + inv_height){
-                this->selectedItem = ItemType(-1);
-                slban = 1;
+                out();
                 run = false;
         }
         else {
@@ -255,4 +254,8 @@ void Inventory::clear(){
     soluongType = 0;
     selectedItem = ItemType(-1);
     slban = 1;
+}
+void Inventory::out(){
+    this->selectedItem = ItemType(-1);
+    this->slban = 1;
 }

@@ -31,6 +31,7 @@ class Inventory{
         void render(SDL_Renderer *renderer, TTF_Font* font);
         void save(ofstream &saveFile);
         void clear();
+        void out();
 };
 
 #endif
