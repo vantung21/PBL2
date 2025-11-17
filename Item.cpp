@@ -21,7 +21,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
 
     static ItemInfo corn_seed;
     corn_seed.ItemName = "corn_seed";
-    corn_seed.buyPrice = 10;
+    corn_seed.buyPrice = 6;
     corn_seed.sellPrice = 4;
     corn_seed.levelToUnlock = 2;
     corn_seed.icon.Loadfromfile(renderer, "image_game/corn_seed.png");
@@ -29,7 +29,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
 
     static ItemInfo blueberry_seed;
     blueberry_seed.ItemName = "blueberry_seed";
-    blueberry_seed.buyPrice = 15;
+    blueberry_seed.buyPrice = 7;
     blueberry_seed.sellPrice = 4;
     blueberry_seed.levelToUnlock = 3;
     blueberry_seed.icon.Loadfromfile(renderer, "image_game/blueberry_seed.png");
@@ -37,7 +37,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
 
     static ItemInfo cauliflower_seed;
     cauliflower_seed.ItemName = "cauliflower_seed";
-    cauliflower_seed.buyPrice = 12;
+    cauliflower_seed.buyPrice = 9;
     cauliflower_seed.sellPrice = 4;
     cauliflower_seed.levelToUnlock = 4;
     cauliflower_seed.icon.Loadfromfile(renderer, "image_game/cauliflower_seed.png");
@@ -45,7 +45,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
 
     static ItemInfo chili_seed;
     chili_seed.ItemName = "chili_seed";
-    chili_seed.buyPrice = 8;
+    chili_seed.buyPrice = 10;
     chili_seed.sellPrice = 4;
     chili_seed.levelToUnlock = 5;
     chili_seed.icon.Loadfromfile(renderer, "image_game/chili_seed.png");
@@ -53,7 +53,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
 
     static ItemInfo leek_seed;
     leek_seed.ItemName = "leek_seed";
-    leek_seed.buyPrice = 7;
+    leek_seed.buyPrice = 12;
     leek_seed.sellPrice = 4;
     leek_seed.levelToUnlock = 6;
     leek_seed.icon.Loadfromfile(renderer, "image_game/leek_seed.png");
@@ -61,7 +61,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
 
     static ItemInfo potato_seed;
     potato_seed.ItemName = "potato_seed";
-    potato_seed.buyPrice = 18;
+    potato_seed.buyPrice = 15;
     potato_seed.sellPrice = 4;
     potato_seed.levelToUnlock = 7;
     potato_seed.icon.Loadfromfile(renderer, "image_game/potato_seed.png");
@@ -69,7 +69,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
 
     static ItemInfo pumpkin_seed;
     pumpkin_seed.ItemName = "pumpkin_seed";
-    pumpkin_seed.buyPrice = 20;
+    pumpkin_seed.buyPrice = 22;
     pumpkin_seed.sellPrice = 4;
     pumpkin_seed.levelToUnlock = 8;
     pumpkin_seed.icon.Loadfromfile(renderer, "image_game/pumpkin_seed.png");
@@ -77,7 +77,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
 
     static ItemInfo strawberry_seed;
     strawberry_seed.ItemName = "strawberry_seed";
-    strawberry_seed.buyPrice = 25;
+    strawberry_seed.buyPrice = 27;
     strawberry_seed.sellPrice = 4;
     strawberry_seed.levelToUnlock = 9;
     strawberry_seed.icon.Loadfromfile(renderer, "image_game/strawberry_seed.png");
@@ -85,7 +85,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
 
     static ItemInfo tomato_seed;
     tomato_seed.ItemName = "tomato_seed";
-    tomato_seed.buyPrice = 12;
+    tomato_seed.buyPrice = 35;
     tomato_seed.sellPrice = 4;
     tomato_seed.levelToUnlock = 10;
     tomato_seed.icon.Loadfromfile(renderer, "image_game/tomato_seed.png");
@@ -93,7 +93,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
 
     static ItemInfo watermelon_seed;
     watermelon_seed.ItemName = "watermelon_seed";
-    watermelon_seed.buyPrice = 35;
+    watermelon_seed.buyPrice = 45;
     watermelon_seed.sellPrice = 4;
     watermelon_seed.levelToUnlock = 11;
     watermelon_seed.icon.Loadfromfile(renderer, "image_game/watermelon_seed.png");
@@ -101,7 +101,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
 
     static ItemInfo apple_seed;
     apple_seed.ItemName = "Apple_seed";
-    apple_seed.buyPrice = 1000;
+    apple_seed.buyPrice = 500;
     apple_seed.sellPrice = 100;
     apple_seed.levelToUnlock = 20;
     apple_seed.icon.Loadfromfile(renderer, "image_game/Tao_0.png");
@@ -110,31 +110,31 @@ void ItemDataBase::init(SDL_Renderer *renderer){
     static ItemInfo rice;
     rice.ItemName = "rice";
     rice.buyPrice = 4;
-    rice.sellPrice = 2;
+    rice.sellPrice = 1;
     rice.levelToUnlock = 1;
     rice.icon.Loadfromfile(renderer, "image_game/rice.png");
     allItems[RICE] = rice;
 
     static ItemInfo carrot;
     carrot.ItemName = "carrot";
-    carrot.buyPrice = 10;
-    carrot.sellPrice = 5;
+    carrot.buyPrice = 6;
+    carrot.sellPrice = 3;
     carrot.levelToUnlock = 1;
     carrot.icon.Loadfromfile(renderer, "image_game/carrot.png");
     allItems[CARROT] = carrot;
     
     static ItemInfo corn;
     corn.ItemName = "corn";
-    corn.buyPrice = 13;
-    corn.sellPrice = 11;
+    corn.buyPrice = 10;
+    corn.sellPrice = 4;
     corn.levelToUnlock = 2;
     corn.icon.Loadfromfile(renderer, "image_game/corn.png");
     allItems[CORN] = corn;
 
     static ItemInfo blueberry;
     blueberry.ItemName = "blueberry";
-    blueberry.buyPrice = 17;
-    blueberry.sellPrice = 16;
+    blueberry.buyPrice = 14;
+    blueberry.sellPrice = 6;
     blueberry.levelToUnlock = 3;
     blueberry.icon.Loadfromfile(renderer, "image_game/blueberry.png");
     allItems[BLUEBERRY] = blueberry;
@@ -142,7 +142,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
     static ItemInfo cauliflower;
     cauliflower.ItemName = "cauliflower";
     cauliflower.buyPrice = 15;
-    cauliflower.sellPrice = 12;
+    cauliflower.sellPrice = 6;
     cauliflower.levelToUnlock = 4;
     cauliflower.icon.Loadfromfile(renderer, "image_game/cauliflower.png");
     allItems[CAULIFLOWER] = cauliflower;
@@ -150,15 +150,15 @@ void ItemDataBase::init(SDL_Renderer *renderer){
     static ItemInfo chili;
     chili.ItemName = "chili";
     chili.buyPrice = 12;
-    chili.sellPrice = 8;
+    chili.sellPrice = 6;
     chili.levelToUnlock = 5;
     chili.icon.Loadfromfile(renderer, "image_game/chili.png");
     allItems[CHILI] = chili;
 
     static ItemInfo leek;
     leek.ItemName = "leek";
-    leek.buyPrice = 10;
-    leek.sellPrice = 7;
+    leek.buyPrice = 15;
+    leek.sellPrice = 9;
     leek.levelToUnlock = 6;
     leek.icon.Loadfromfile(renderer, "image_game/leek.png");
     allItems[LEEK] = leek;
@@ -166,7 +166,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
     static ItemInfo potato;
     potato.ItemName = "potato";
     potato.buyPrice = 25;
-    potato.sellPrice = 20;
+    potato.sellPrice = 11;
     potato.levelToUnlock = 7;
     potato.icon.Loadfromfile(renderer, "image_game/potato.png");
     allItems[POTATO] = potato;
@@ -174,7 +174,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
     static ItemInfo pumpkin;
     pumpkin.ItemName = "pumpkin";
     pumpkin.buyPrice = 30;
-    pumpkin.sellPrice = 22;
+    pumpkin.sellPrice = 15;
     pumpkin.levelToUnlock = 8;
     pumpkin.icon.Loadfromfile(renderer, "image_game/pumpkin.png");
     allItems[PUMPKIN] = pumpkin;
@@ -182,15 +182,15 @@ void ItemDataBase::init(SDL_Renderer *renderer){
     static ItemInfo strawberry;
     strawberry.ItemName = "strawberry";
     strawberry.buyPrice = 38;
-    strawberry.sellPrice = 30;
+    strawberry.sellPrice = 18;
     strawberry.levelToUnlock = 9;
     strawberry.icon.Loadfromfile(renderer, "image_game/strawberry.png");
     allItems[STRAWBERRY] = strawberry;
 
     static ItemInfo tomato;
     tomato.ItemName = "tomato";
-    tomato.buyPrice = 20;
-    tomato.sellPrice = 14;
+    tomato.buyPrice = 40;
+    tomato.sellPrice = 25;
     tomato.levelToUnlock = 10;
     tomato.icon.Loadfromfile(renderer, "image_game/tomato.png");
     allItems[TOMATO] = tomato;
@@ -198,7 +198,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
     static ItemInfo watermelon;
     watermelon.ItemName = "watermelon";
     watermelon.buyPrice = 45;
-    watermelon.sellPrice = 40;
+    watermelon.sellPrice = 33;
     watermelon.levelToUnlock = 11;
     watermelon.icon.Loadfromfile(renderer, "image_game/watermelon.png");
     allItems[WATERMELON] = watermelon;
@@ -206,7 +206,7 @@ void ItemDataBase::init(SDL_Renderer *renderer){
     static ItemInfo apple;
     apple.ItemName = "Apple";
     apple.buyPrice = 50;
-    apple.sellPrice = 30;
+    apple.sellPrice = 20;
     apple.levelToUnlock = 20;
     apple.icon.Loadfromfile(renderer, "image_game/Tao.png");
     allItems[TAO] = apple;
