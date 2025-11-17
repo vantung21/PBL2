@@ -27,7 +27,7 @@ class Market{
     public:
         Market(SDL_Renderer* renderer, TTF_Font *font);
         bool buyItem(ItemType item, int quantity, Inventory &playerInvenetory, int &playerMoney);
-        bool click(int x, int y, Inventory &playerInvenetory, Player &player);
+        bool click(int x, int y, Inventory &playerInvenetory, Player &player, Mix_Chunk* sound1 = NULL, Mix_Chunk* sound2 = NULL);
         ItemType getItemAtPosition(int x, int y);
         bool checkUnlock(Player &player, ItemType item);
         void render(SDL_Renderer *renderer, TTF_Font* font, Player &player);

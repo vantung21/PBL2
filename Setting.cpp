@@ -61,17 +61,20 @@ Setting::Setting(SDL_Renderer* renderer, TTF_Font* font)
     logOut.setRect(st_x + st_wight/2 + 20, volumeText.getRect().y + volumeText.getRect().h + 30, len, 50);
 }
 
-bool Setting::checkOutSetting(int x, int y){
-    return (x < st_x || x > st_x + st_wight || y < st_y || y > st_y + st_height);
+bool Setting::checkOutSetting(int x, int y, Mix_Chunk* sound){
+    if(x < st_x || x > st_x + st_wight || y < st_y || y > st_y + st_height){
+        Mix_PlayChannel(-1, sound, 0);
+        return true;
+    }
+    return false;
 }
 
 TextBox& Setting::get_renameTextBox(){
     return renameTextBox;
 }
 
-bool Setting::checkRenameOK(int x, int y){
-    return (x >= renameOK.getRect().x && x <= renameOK.getRect().x + renameOK.getRect().w &&
-             y >= renameOK.getRect().y && y <= renameOK.getRect().y + renameOK.getRect().h);
+bool Setting::checkRenameOK(int x, int y, Mix_Chunk* sound){
+    return (renameOK.checkClickTexture(x, y, sound));
 }
 
 void Setting::xulyRename(Player& tvt, SDL_Renderer* renderer, TTF_Font* font){
@@ -91,39 +94,35 @@ void Setting::set_isRenameOK(bool ok){
     isRenameOK = ok;
 }
 
-bool Setting::xulyAmThanh(int x, int y){
-    if(x >= congVolume.getRect().x && x <= congVolume.getRect().x + congVolume.getRect().w &&
-        y >= congVolume.getRect().y && y <= congVolume.getRect().y + congVolume.getRect().h){
-            volumeMusic += 4;
-            if(volumeMusic > 128){
-                volumeMusic = 128;
-            }
-            currentVL.setRect(lineVolume.getRect().x + volumeMusic*2, volumeText.getRect().y + 10, 5, 30);
-            return true;
+bool Setting::xulyAmThanh(int x, int y, Mix_Chunk* sound){
+    if(congVolume.checkClickTexture(x, y, sound)){
+        volumeMusic += 4;
+        if(volumeMusic > 128){
+            volumeMusic = 128;
+        }
+        currentVL.setRect(lineVolume.getRect().x + volumeMusic*2, volumeText.getRect().y + 10, 5, 30);
+        return true;
     }
 
-    if(x >= truVolume.getRect().x && x <= truVolume.getRect().x + truVolume.getRect().w &&
-        y >= truVolume.getRect().y && y <= truVolume.getRect().y + truVolume.getRect().h){
-            volumeMusic -= 4;
-            if(volumeMusic < 0){
-                volumeMusic = 0;
-            }
-            currentVL.setRect(lineVolume.getRect().x + volumeMusic*2, volumeText.getRect().y + 10, 5, 30);
-            return true;
+    if(truVolume.checkClickTexture(x, y, sound)){
+        volumeMusic -= 4;
+        if(volumeMusic < 0){
+            volumeMusic = 0;
+        }
+        currentVL.setRect(lineVolume.getRect().x + volumeMusic*2, volumeText.getRect().y + 10, 5, 30);
+        return true;
     }
     return false;
 }
 
-bool Setting::checkLogOut(int x, int y){
-    return (x >= logOut.getRect().x && x <= logOut.getRect().x + logOut.getRect().w &&
-            y >= logOut.getRect().y && y <= logOut.getRect().y + logOut.getRect().h);
+bool Setting::checkLogOut(int x, int y, Mix_Chunk* sound){
+    return (logOut.checkClickTexture(x, y, sound));
 }
 
-bool Setting::checkSaveGame(int x, int y){
-    if(x >= savegame.getRect().x && x <= savegame.getRect().x + savegame.getRect().w &&
-            y >= savegame.getRect().y && y <= savegame.getRect().y + savegame.getRect().h){
-                saved = 10;
-                return true;
+bool Setting::checkSaveGame(int x, int y, Mix_Chunk* sound){
+    if(savegame.checkClickTexture(x, y, sound)){
+        saved = 3;
+        return true;
     }
     return false;
 }

@@ -18,7 +18,7 @@ class ChoosenSeed {
 
     public:
         ChoosenSeed(SDL_Renderer *renderer);
-        bool checkclick(int x, int y);
+        bool checkclick(int x, int y, Mix_Chunk* sound = NULL);
         void xuLyClick(int x, int y, Player &tvt , CropType &current_cropTyppe);
         void render(SDL_Renderer *renderer, TTF_Font *font, Player &tvt, CropType &current_cropTyppe);
         vector<ItemType> getAvailableSeeds(Player &tvt); // duyet qua cac item de lay ra cac item dang co 

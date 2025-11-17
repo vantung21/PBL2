@@ -41,22 +41,19 @@ int ChoosenSeed::findItemIndex(const vector<ItemType>& items, const ItemType& it
 }
 
 
-bool ChoosenSeed::checkclick(int x, int y){
+bool ChoosenSeed::checkclick(int x, int y, Mix_Chunk* sound){
     if(isOpen){
         // neu click vao khu vuc chon hat giong
-        if (x  >= arrowLeft.getRect().x && x  <= arrowRight.getRect().x + arrowRight.getRect().w &&
-            y  >= areaItemSelection.getRect().y && y  <= areaItemSelection.getRect().y + areaItemSelection.getRect().h) {
+        if (arrowLeft.checkClickTexture(x, y, sound) || arrowRight.checkClickTexture(x, y, sound) || areaItemSelection.checkClickTexture(x, y)) {
             return true;
         }   
-        else if (x >= closeChoosenSeed.getRect().x && x <= closeChoosenSeed.getRect().x + closeChoosenSeed.getRect().w &&
-            y >= closeChoosenSeed.getRect().y && y <= closeChoosenSeed.getRect().y + closeChoosenSeed.getRect().h){
+        else if (closeChoosenSeed.checkClickTexture(x, y, sound)){
             return true;
         }
     }
     else {
         // click vao tat khung chon hat giong
-        if(x >= openChoosenSeed.getRect().x && x <= openChoosenSeed.getRect().x + openChoosenSeed.getRect().w &&
-           y >= openChoosenSeed.getRect().y && y <= openChoosenSeed.getRect().y + openChoosenSeed.getRect().h){
+        if(openChoosenSeed.checkClickTexture(x, y, sound)){
             return true;
         }
     }
@@ -66,11 +63,8 @@ bool ChoosenSeed::checkclick(int x, int y){
 void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropType){
     if(isOpen){
         // Kiem tra co click vao nut "Tat" khung chon hat hay khong
-        if(x >= closeChoosenSeed.getRect().x && x <= closeChoosenSeed.getRect().x + closeChoosenSeed.getRect().w &&
-           y >= closeChoosenSeed.getRect().y && y <= closeChoosenSeed.getRect().y + closeChoosenSeed.getRect().h){
-            
+        if(closeChoosenSeed.checkClickTexture(x, y)){
             isOpen = false;
-            openChoosenSeed.setRect(128, screen_height - 32 , 64, 32);
             return; 
         }
 
@@ -107,8 +101,7 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
         }
 
         //mui ten trai
-        if(x >= arrowLeft.getRect().x && x <= arrowLeft.getRect().x + arrowLeft.getRect().w &&
-           y >= arrowLeft.getRect().y && y <= arrowLeft.getRect().y + arrowLeft.getRect().h){
+        if(arrowLeft.checkClickTexture(x, y)){
             
             if (selectedIndex > 0) {
                 selectedIndex--;
@@ -118,14 +111,10 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
                 selectedIndex = 4;
             }
 
-            // if(itemOffset + selectedIndex >= availableItems.size()){
-            //     selectedIndex = (availableItems.size() - 1) % 5;
-            // }
             current_cropType = CropType(availableItems[itemOffset + selectedIndex]);
         }
         // mui ten phai
-        else if(x >= arrowRight.getRect().x && x <= arrowRight.getRect().x + arrowRight.getRect().w &&
-                y >= arrowRight.getRect().y && y <= arrowRight.getRect().y + arrowRight.getRect().h){
+        else if(arrowRight.checkClickTexture(x ,y)){
 
             if (selectedIndex < 4 && (itemOffset + selectedIndex + 1) < availableItems.size()) {
                 selectedIndex++;

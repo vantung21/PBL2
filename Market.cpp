@@ -184,58 +184,50 @@ ItemType Market::getItemAtPosition(int x, int y){
     return ItemType(-1);
 }
 
-bool Market::click(int x, int y,Inventory &inventory, Player &player){
+bool Market::click(int x, int y,Inventory &inventory, Player &player, Mix_Chunk* sound1, Mix_Chunk* sound2){
     bool run = true;
     ItemType clickedItem = getItemAtPosition(x, y);
     if(clickedItem != ItemType(-1) && checkUnlock(player, clickedItem)){
         this->selectedItem = clickedItem;
     }
-    else{
-        if(x >= buy_.getRect().x && x <= buy_.getRect().x + buy_.getRect().w &&
-            y >= buy_.getRect().y && y <= buy_.getRect().y + buy_.getRect().h){
-                if(this->selectedItem != ItemType(-1)){
-                    buyItem(this->selectedItem, slmua, inventory, player.getMoney());
-                    this->selectedItem = ItemType(-1);
-                    this->slmua = 1;
-                }
+    else if(this->selectedItem != ItemType(-1)){
+        if(buy_.checkClickTexture(x, y)){
+            if(available_to_buy) Mix_PlayChannel(-1, sound1, 0);
+            buyItem(this->selectedItem, slmua, inventory, player.getMoney());
+            this->selectedItem = ItemType(-1);
+            this->slmua = 1;
         }
-        else if(x >= tru10_.getRect().x && x <= tru10_.getRect().x + tru10_.getRect().w &&
-            y >= tru10_.getRect().y && y <= tru10_.getRect().y + tru10_.getRect().h){
-                if(this->selectedItem != ItemType(-1)){
-                    slmua -= 10;
-                    if(slmua <= 0) slmua = 1;
-                }
+        else if(tru10_.checkClickTexture(x, y, sound2)){
+            slmua -= 10;
+            if(slmua <= 0) slmua = 1;
         }
-        else if(x >= tru1_.getRect().x && x <= tru1_.getRect().x + tru1_.getRect().w &&
-            y >= tru1_.getRect().y && y <= tru1_.getRect().y + tru1_.getRect().h){
-                if(this->selectedItem != ItemType(-1)){
-                    slmua -= 1;
-                    if(slmua <= 0) slmua = 1;
-                }
+        else if(tru1_.checkClickTexture(x, y, sound2)){
+            slmua -= 1;
+            if(slmua <= 0) slmua = 1;
         }
-        else if(x >= plus10_.getRect().x && x <= plus10_.getRect().x + plus10_.getRect().w &&
-            y >= plus10_.getRect().y && y <= plus10_.getRect().y + plus10_.getRect().h){
-                if(this->selectedItem != ItemType(-1)){
-                    slmua += 10;
-                    if(slmua >= 999) slmua = 999;
-                }
+        else if(plus10_.checkClickTexture(x, y, sound2)){
+            slmua += 10;
+            if(slmua >= 999) slmua = 999;
         }
-        else if(x >= plus1_.getRect().x && x <= plus1_.getRect().x + plus1_.getRect().w &&
-            y >= plus1_.getRect().y && y <= plus1_.getRect().y + plus1_.getRect().h){
-                if(this->selectedItem != ItemType(-1)){
-                    slmua += 1;
-                    if(slmua >= 999) slmua = 999;
-                }
+        else if(plus1_.checkClickTexture(x, y, sound2)){
+            slmua += 1;
+            if(slmua >= 999) slmua = 999;
         }
-        else if(x <= mrk_x || x >= mrk_x + mrk_width ||
-            y <= mrk_y || y >= mrk_y + mrk_height){
-                out();
-                run = false;
+        else if(x <= mrk_x || x >= mrk_x + mrk_width || y <= mrk_y || y >= mrk_y + mrk_height){
+            Mix_PlayChannel(-1, sound2, 0);
+            out();
+            run = false;
         }
         else {
             out();
         }
     }
+    else if(x <= mrk_x || x >= mrk_x + mrk_width || y <= mrk_y || y >= mrk_y + mrk_height){
+        Mix_PlayChannel(-1, sound2, 0);
+        out();
+        run = false;
+    }
+    
     if(this->selectedItem != ItemType(-1))
     set_buy(this->selectedItem, slmua, player.getMoney());
     return run;

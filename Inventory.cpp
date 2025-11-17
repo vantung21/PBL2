@@ -192,47 +192,41 @@ bool Inventory::click(int x, int y, int &money, Mix_Chunk* sound1, Mix_Chunk* so
     if(clickedItem != ItemType(-1)){
         this->selectedItem = clickedItem;
     }
-    else{
+    else if(this->selectedItem != ItemType(-1)){
         if(sell_.checkClickTexture(x, y, sound1)){
-                if(this->selectedItem != ItemType(-1)){
-                    saleItem(this->selectedItem, slban, money);
-                    this->selectedItem = ItemType(-1);
-                    slban = 1;
-                }
-        }
-        else if(tru10_.checkClickTexture(x, y, sound2)){
-                if(this->selectedItem != ItemType(-1)){
-                    slban -= 10;
-                    if(slban <= 0) slban = 1;
-                }
-        }
-        else if(tru1_.checkClickTexture(x, y, sound2)){
-                if(this->selectedItem != ItemType(-1)){
-                    slban -= 1;
-                    if(slban <= 0) slban = 1;
-                }
-        }
-        else if(plus10_.checkClickTexture(x, y, sound2)){
-                if(this->selectedItem != ItemType(-1)){
-                    slban += 10;
-                    if(slban >= items[selectedItem]) slban = items[selectedItem];
-                }
-        }
-        else if(plus1_.checkClickTexture(x, y, sound2)){
-                if(this->selectedItem != ItemType(-1)){
-                    slban += 1;
-                    if(slban >= items[selectedItem]) slban = items[selectedItem];
-                }
-        }
-        else if(x <= inv_x || x >= inv_x + inv_width ||
-            y <= inv_y || y >= inv_y + inv_height){
-                out();
-                run = false;
-        }
-        else {
+            saleItem(this->selectedItem, slban, money);
             this->selectedItem = ItemType(-1);
             slban = 1;
         }
+        else if(tru10_.checkClickTexture(x, y, sound2)){
+            slban -= 10;
+            if(slban <= 0) slban = 1;
+        }
+        else if(tru1_.checkClickTexture(x, y, sound2)){
+            slban -= 1;
+            if(slban <= 0) slban = 1;
+        }
+        else if(plus10_.checkClickTexture(x, y, sound2)){
+            slban += 10;
+            if(slban >= items[selectedItem]) slban = items[selectedItem];
+        }
+        else if(plus1_.checkClickTexture(x, y, sound2)){
+            slban += 1;
+            if(slban >= items[selectedItem]) slban = items[selectedItem];
+        }
+        else if(x <= inv_x || x >= inv_x + inv_width || y <= inv_y || y >= inv_y + inv_height){
+            Mix_PlayChannel(-1, sound2, 0);
+            out();
+            run = false;
+        }
+        else {
+            out();
+        }
+    }
+    else if(x <= inv_x || x >= inv_x + inv_width || y <= inv_y || y >= inv_y + inv_height){
+        Mix_PlayChannel(-1, sound2, 0);
+        out();
+        run = false;
     }
     return run;
 }

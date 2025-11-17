@@ -15,14 +15,14 @@ class Setting{
     public:
         Setting(SDL_Renderer* renderer, TTF_Font* font);
         TextBox& get_renameTextBox();
-        bool checkOutSetting(int x, int y);
-        bool checkRenameOK(int x, int y);
+        bool checkOutSetting(int x, int y, Mix_Chunk* sound = NULL);
+        bool checkRenameOK(int x, int y, Mix_Chunk* sound = NULL);
         void set_isRenameOK(bool);
         void xulyRename(Player& tvt, SDL_Renderer* renderer, TTF_Font* font);
-        bool xulyAmThanh(int x, int y);
+        bool xulyAmThanh(int x, int y, Mix_Chunk* sound = NULL);
         int getVolume() { return volumeMusic; }
-        bool checkLogOut(int x, int y);
-        bool checkSaveGame(int x, int y);
+        bool checkLogOut(int x, int y, Mix_Chunk* sound = NULL);
+        bool checkSaveGame(int x, int y, Mix_Chunk* sound = NULL);
         void render(SDL_Renderer* renderer, TTF_Font* font);
         void reLoadAccountSetting(Player& tvt, SDL_Renderer *renderer, TTF_Font* font,  string strUsername);
         void out();

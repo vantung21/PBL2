@@ -125,6 +125,9 @@ int main(int argc, char* argv[]){
     Mix_Chunk* leveupSound = Mix_LoadWAV("sound/levelup.wav");
     Mix_Chunk* openDoorSound = Mix_LoadWAV("sound/opening_door.wav");
     Mix_Chunk* tingTingSound = Mix_LoadWAV("sound/tingting.wav");
+    Mix_Chunk* shovelSound = Mix_LoadWAV("sound/shovel.wav");
+    Mix_Chunk* wateringSound = Mix_LoadWAV("sound/watering.wav");
+
     
     //tai font chu
     TTF_Font* font = TTF_OpenFont("font.ttf", 32);
@@ -237,7 +240,7 @@ int main(int argc, char* argv[]){
                             else if(icon_setting.checkClickTexture(mouseX, mouseY, buttonSound)){
                                         tvt.updateStage(setting);
                             }
-                            else if(choosen_seed.checkclick(mouseX, mouseY)){
+                            else if(choosen_seed.checkclick(mouseX, mouseY, buttonSound)){
                                 choosen_seed.xuLyClick(mouseX, mouseY, tvt, current_cropTyppe);
                             }
                             else if(shovel_.checkClick(mouseX, mouseY)){
@@ -296,29 +299,29 @@ int main(int argc, char* argv[]){
                             if(!check) tvt.updateStage(farm); 
                         } 
                         else if(tvt.getStage() == market){
-                            bool check = Market_.click(mouseX, mouseY,tvt.getInventory(), tvt);
+                            bool check = Market_.click(mouseX, mouseY,tvt.getInventory(), tvt, tingTingSound, buttonSound);
                             tvt.update_moneyTexture(renderer, font);
                             if(!check) tvt.updateStage(farm);
                         }  
                         else if(tvt.getStage() == setting){
-                            if(setting_.checkLogOut(mouseX, mouseY)) {
+                            if(setting_.checkLogOut(mouseX, mouseY, buttonSound)) {
                                 saveGame(tvt, gMap_, water_);
                                 current_gamestage = LOGIN;
                             }
-                            if(setting_.checkSaveGame(mouseX, mouseY)) {
+                            if(setting_.checkSaveGame(mouseX, mouseY, buttonSound)) {
                                 saveGame(tvt, gMap_, water_);
                             }
-                            if(setting_.xulyAmThanh(mouseX, mouseY)) {
+                            if(setting_.xulyAmThanh(mouseX, mouseY, buttonSound)) {
                                 Mix_VolumeMusic(setting_.getVolume());
                             }
                             
                             setting_.get_renameTextBox().setActive(setting_.get_renameTextBox().checkClick(mouseX, mouseY));
-                            if(setting_.checkRenameOK(mouseX, mouseY)){
+                            if(setting_.checkRenameOK(mouseX, mouseY, buttonSound)){
                                 setting_.xulyRename(tvt, renderer, font);
                                 tvt.update_nameText(renderer, font);
                             }
 
-                            if(setting_.checkOutSetting(mouseX, mouseY)){
+                            if(setting_.checkOutSetting(mouseX, mouseY, buttonSound)){
                                 setting_.out();
                                 tvt.updateStage(farm);
                             }
@@ -329,6 +332,8 @@ int main(int argc, char* argv[]){
                                 tvt.updateStage(farm);
                             }
                             else if(gMap_.getMap().farmland[y][x] != NULL){
+                                Mix_PlayChannel(-1, shovelSound, 0);
+                                shovel_.shoveling();
                                 delete gMap_.getMap().farmland[y][x];
                                 gMap_.getMap().farmland[y][x] = NULL;
                             }
@@ -341,6 +346,7 @@ int main(int argc, char* argv[]){
                             else if(gMap_.getMap().farmland[y][x] != NULL){
                                 if(water_.getQuantity() > 0){
                                     water_.Watering();
+                                    Mix_PlayChannel(-1, wateringSound, 0);
                                     gMap_.getMap().farmland[y][x]->update(20000);
                                 }
                             }
@@ -378,13 +384,21 @@ int main(int argc, char* argv[]){
                             if(root_map_x >= 0) root_map_x = 0;
                         }
                     }
+                    bool sound = true;
                     if(tvt.getStage() == farm){
-                        if(e.key.keysym.sym == SDLK_i) tvt.updateStage(inventory);
-                        else if(e.key.keysym.sym == SDLK_b) tvt.updateStage(market);
-                        else if(e.key.keysym.sym == SDLK_TAB) tvt.updateStage(setting);
+                        if(e.key.keysym.sym == SDLK_i) {
+                            tvt.updateStage(inventory);
+                        }
+                        else if(e.key.keysym.sym == SDLK_b) {
+                            tvt.updateStage(market);
+                        }
+                        else if(e.key.keysym.sym == SDLK_TAB) {
+                            tvt.updateStage(setting);
+                        }
                         else if(e.key.keysym.sym == SDLK_SPACE){
                             choosen_seed.set_isopen(!choosen_seed.get_isopen());
                         }
+                        else sound = false;
                     }
                     else if(tvt.getStage() == inventory && e.key.keysym.sym == SDLK_i){
                         tvt.getInventory().out();
@@ -398,6 +412,8 @@ int main(int argc, char* argv[]){
                         setting_.out();
                         tvt.updateStage(farm);
                     } 
+                    else sound = false;
+                    if(sound) Mix_PlayChannel(-1, buttonSound, 0);
                 }
 
                 //
@@ -624,6 +640,9 @@ int main(int argc, char* argv[]){
     Mix_FreeChunk(leveupSound);
     Mix_FreeChunk(openDoorSound);
     Mix_FreeChunk(tingTingSound);
+    Mix_FreeChunk(shovelSound);
+    Mix_FreeChunk(wateringSound);
+
     Mix_CloseAudio();
     IMG_Quit();
     TTF_Quit();
