@@ -205,7 +205,6 @@ int main(int argc, char* argv[]){
     int random = 0;
     SDL_StartTextInput(); 
     // loop game
-    bool invetorystart = false;
     Uint32 startTime, endTime, TotalTime;
     SDL_Event e;
     bool running = true;
@@ -267,7 +266,7 @@ int main(int argc, char* argv[]){
                             }
                             
                             else if( gMap_.getMap().farmland[y][x] == NULL){
-                                if(gMap_.getMap().tile[y][x] >=17 && gMap_.getMap().tile[y][x] <= 24 || gMap_.getMap().tile[y][x] == 3){
+                                if((gMap_.getMap().tile[y][x] >=17 && gMap_.getMap().tile[y][x] <= 24) || (gMap_.getMap().tile[y][x] == 3)){
                                     int t = current_cropTyppe;
                                     if(current_cropTyppe == APPLE_cp) continue;
                                     if(tvt.getInventory().getQuantity((ItemType)t) > 0){
@@ -341,7 +340,9 @@ int main(int argc, char* argv[]){
                             }
                         }
                         else if(tvt.getStage() == tutorial){
-                            tutorial_.click(mouseX, mouseY, buttonSound);
+                            if(!tutorial_.click(mouseX, mouseY, buttonSound)){
+                                tvt.updateStage(farm);
+                            }
                         }
                         else if(tvt.getStage() == shovel){
                             if(shovel_.checkClick(mouseX, mouseY)){

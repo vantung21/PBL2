@@ -26,9 +26,9 @@ Tutorial::Tutorial(SDL_Renderer* renderer, TTF_Font* font){
     }
 
     arrow_right.Loadfromfile(renderer, "image_game/arrow_right.png");
-    arrow_right.setRect(screen_width/2 + 50, t_y + t_h - 50, 100, 35);
+    arrow_right.setRect(screen_width/2 + 50, t_y + t_h - 50, 100, 45);
     arrow_left.Loadfromfile(renderer, "image_game/arrow_left.png");
-    arrow_left.setRect(screen_width/2 - 150, t_y + t_h - 50, 100, 35);
+    arrow_left.setRect(screen_width/2 - 150, t_y + t_h - 50, 100, 45);
 }
 
 void Tutorial::render(SDL_Renderer* renderer){
@@ -92,6 +92,7 @@ bool Tutorial::click(int mouseX, int mouseY, Mix_Chunk* sound){
 
     if(mouseX < t_x || mouseX > t_x + t_w || mouseY < t_y || mouseY > t_y + t_h){
         out();
+        Mix_PlayChannel(-1, sound, 0);
         return false;
     }
 
