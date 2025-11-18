@@ -83,7 +83,7 @@ bool Tutorial::click(int mouseX, int mouseY, Mix_Chunk* sound){
             }
         }
         else {
-            cur_guide++;
+            cur_guide--;
             if(cur_guide < 0){
                 cur_guide = number_guide -1;
             }
