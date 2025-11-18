@@ -11,6 +11,7 @@
 #include "Setting.h"
 #include "shovel.h"
 #include "Water.h"
+#include "Tutorial.h"
 
 void LoadGame(Player &player , GameMap &gMap_, Water &water_){
     player.getInventory().clear();
@@ -161,6 +162,9 @@ int main(int argc, char* argv[]){
     //setting
     Setting setting_(renderer, font);
 
+    //tutorial
+    Tutorial tutorial_(renderer, font);
+
     //shovel
     Shovel shovel_(renderer);
 
@@ -192,6 +196,10 @@ int main(int argc, char* argv[]){
     Texture icon_setting;
     icon_setting.Loadfromfile(renderer, "image_game/Icon_Setting.png");
     icon_setting.setRect(screen_width - 70, screen_height - 210, 64, 64);
+
+    Texture icon_tutorial;
+    icon_tutorial.Loadfromfile(renderer, "image_game/Icon_tutorial.png");
+    icon_tutorial.setRect(screen_width - 70, screen_height - 280, 64, 64);
    
     //
     int random = 0;
@@ -235,13 +243,16 @@ int main(int argc, char* argv[]){
                     if(e.button.button == SDL_BUTTON_LEFT){
                         if(tvt.getStage() == farm){
                             if(icon_inv.checkClickTexture(mouseX, mouseY, buttonSound) || House.checkClickTexture(mouseX, mouseY, openDoorSound)){
-                                        tvt.updateStage(inventory);
+                                tvt.updateStage(inventory);
                             }
                             else if(icon_market.checkClickTexture(mouseX, mouseY, buttonSound)){
-                                        tvt.updateStage(market);
+                                tvt.updateStage(market);
                             }
                             else if(icon_setting.checkClickTexture(mouseX, mouseY, buttonSound)){
-                                        tvt.updateStage(setting);
+                                tvt.updateStage(setting);
+                            }
+                            else if(icon_tutorial.checkClickTexture(mouseX, mouseY, buttonSound)){
+                                tvt.updateStage(tutorial);
                             }
                             else if(choosen_seed.checkclick(mouseX, mouseY, buttonSound)){
                                 choosen_seed.xuLyClick(mouseX, mouseY, tvt, current_cropTyppe);
@@ -329,6 +340,9 @@ int main(int argc, char* argv[]){
                                 tvt.updateStage(farm);
                             }
                         }
+                        else if(tvt.getStage() == tutorial){
+                            tutorial_.click(mouseX, mouseY, buttonSound);
+                        }
                         else if(tvt.getStage() == shovel){
                             if(shovel_.checkClick(mouseX, mouseY)){
                                 shovel_.drop();
@@ -389,7 +403,7 @@ int main(int argc, char* argv[]){
                     }
                     bool sound = true;
                     if(tvt.getStage() == farm){
-                        if(e.key.keysym.sym == SDLK_i) {
+                        if(e.key.keysym.sym == SDLK_v) {
                             tvt.updateStage(inventory);
                         }
                         else if(e.key.keysym.sym == SDLK_b) {
@@ -398,12 +412,15 @@ int main(int argc, char* argv[]){
                         else if(e.key.keysym.sym == SDLK_TAB) {
                             tvt.updateStage(setting);
                         }
+                        else if(e.key.keysym.sym == SDLK_c){
+                            tvt.updateStage(tutorial);
+                        }
                         else if(e.key.keysym.sym == SDLK_SPACE){
                             choosen_seed.set_isopen(!choosen_seed.get_isopen());
                         }
                         else sound = false;
                     }
-                    else if(tvt.getStage() == inventory && e.key.keysym.sym == SDLK_i){
+                    else if(tvt.getStage() == inventory && e.key.keysym.sym == SDLK_v){
                         tvt.getInventory().out();
                         tvt.updateStage(farm);
                     } 
@@ -414,7 +431,11 @@ int main(int argc, char* argv[]){
                     else if(tvt.getStage() == setting && e.key.keysym.sym == SDLK_TAB){
                         setting_.out();
                         tvt.updateStage(farm);
-                    } 
+                    }
+                    else if(tvt.getStage() == tutorial && e.key.keysym.sym == SDLK_c){
+                        tutorial_.out();
+                        tvt.updateStage(farm);
+                    }
                     else sound = false;
                     if(sound) Mix_PlayChannel(-1, buttonSound, 0);
                 }
@@ -570,6 +591,7 @@ int main(int argc, char* argv[]){
                 icon_inv.render(renderer);
                 icon_market.render(renderer);
                 icon_setting.render(renderer);
+                icon_tutorial.render(renderer);
                 shovel_.render(renderer);
                 water_.render(renderer);
 
@@ -592,6 +614,9 @@ int main(int argc, char* argv[]){
                 }
                 if(tvt.getStage() == setting){
                     setting_.render(renderer, font);
+                }
+                if(tvt.getStage() == tutorial){
+                    tutorial_.render(renderer);
                 }
                 
             }

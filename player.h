@@ -6,7 +6,7 @@
 #include "Rain.h"
 
 enum playerStage{
-    farm, inventory, market, setting, shovel, watering
+    farm, inventory, market, setting, tutorial, shovel, watering
 };
 
 class Player {
