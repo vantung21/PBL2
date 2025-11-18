@@ -13,16 +13,19 @@
 #include "Water.h"
 
 void LoadGame(Player &player , GameMap &gMap_, Water &water_){
+    player.getInventory().clear();
+    player.clear();
+    gMap_.clear();
+    water_.setQuantity(10);
+    
     string id = to_string(player.getID());
     ifstream loadFile("savegame/" + id + ".txt");
     if(!loadFile.is_open()){
         cout << "loi! Khong the mo file save. (ID: " << id << ")" << endl;
-        return;
+        player.getInventory().addItem(RICE_SEED, 5);
+        player.getInventory().addItem(CARROT_SEED, 2);     
+        return;   
     }
-
-    player.clear();
-    player.getInventory().clear();
-    gMap_.clear();
 
     //load player
     string load;
