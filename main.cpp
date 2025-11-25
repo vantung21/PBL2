@@ -629,7 +629,7 @@ int main(int argc, char* argv[]){
 
             endTime = SDL_GetTicks();
             TotalTime = endTime - startTime;
-            cout << TotalTime <<endl;
+            //cout << TotalTime <<endl;
             if(TotalTime < 40)
             SDL_Delay(40 - TotalTime );
         }

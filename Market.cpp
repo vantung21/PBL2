@@ -176,7 +176,7 @@ void Market :: render(SDL_Renderer *renderer, TTF_Font *font, Player &player){
 
 
 ItemType Market::getItemAtPosition(int x, int y){
-    for( auto& pair : itemPositions){
+    for( auto& pair : itemPositions){ 
         if(x >= pair.second.getRect().x && x <= pair.second.getRect().x + pair.second.getRect().w &&
            y >= pair.second.getRect().y && y <= pair.second.getRect().y + pair.second.getRect().h)
             return pair.first;

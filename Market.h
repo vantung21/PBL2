@@ -4,11 +4,12 @@
 #include "Item.h"
 #include "Inventory.h"
 #include "player.h"
+#include "mymap.h"
 
 class Market{
     private:
         vector<ItemType> itemForSale;
-        map<ItemType, Texture> itemPositions;
+        mymap<ItemType, Texture> itemPositions;
         ItemType selectedItem;
         int mrk_x;
         int mrk_y ;

@@ -3,7 +3,7 @@
 
 #include "include.h"
 #include "Texture.h"
-#include <map>
+#include "mymap.h"
 
 enum ItemType{
     //hat giong
@@ -55,7 +55,7 @@ struct ItemInfo{
 
 class ItemDataBase{
     public:
-        static map<ItemType, ItemInfo> allItems;
+        static mymap<ItemType, ItemInfo> allItems;
         static void init(SDL_Renderer *renderer);
 };
 

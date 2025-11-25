@@ -13,7 +13,7 @@
 
 using namespace std;
 
-#define screen_width 1472
+#define screen_width  1472
 #define screen_height 896
 #define tile_size 64
 
@@ -26,5 +26,6 @@ inline int root_map_y = 0;
 enum gameStage{
     LOGIN, PLAYING
 };
+
 
 #endif

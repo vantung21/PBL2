@@ -40,7 +40,7 @@ Inventory::Inventory(SDL_Renderer* renderer, TTF_Font* font){
 
 }
 void Inventory :: addItem(ItemType item, int quantity){
-    if((items.find(item) == items.end()) || items[item] == 0) this->soluongType++;
+    if((items.find(item) == NULL) || items[item] == 0) this->soluongType++;
     items[item] += quantity;
 }
 void Inventory :: removeItem(ItemType item, int quantity){
@@ -52,8 +52,8 @@ void Inventory :: removeItem(ItemType item, int quantity){
     
 }
 
-int Inventory :: getQuantity(ItemType item) const{
-    if(items.find(item) == items.end()) return -1;
+int Inventory :: getQuantity(ItemType item) const {
+    if(items.find(item) == NULL) return -1;
     return items.at(item);
 }
 

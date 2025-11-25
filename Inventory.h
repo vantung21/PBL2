@@ -5,9 +5,9 @@
 
 class Inventory{
     private:
-        map<ItemType, int > items;
+        mymap<ItemType, int > items;
         int soluongType;
-        map<ItemType, Texture> itemPositions;
+        mymap<ItemType, Texture> itemPositions;
         ItemType selectedItem;
         int inv_x;
         int inv_y ;
