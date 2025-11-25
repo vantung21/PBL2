@@ -5,7 +5,7 @@
 
 class AccountManager {
     private:
-        vector<pair<pair<string, string>, int>> accounts; // ((username, password), userID)
+        Vector<pair<pair<string, string>, int>> accounts; // ((username, password), userID)
         int nextUserID;
     public:
         AccountManager();

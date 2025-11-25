@@ -2,7 +2,7 @@
 #define CROP_H
 
 #include "Texture.h"
-#include <map>
+#include "mymap.h"
 #include "Item.h"
 
 enum CropType{
@@ -26,16 +26,16 @@ struct CropData{
     int timePerStage; // thoi gian de qua 1 giai doan
     int totalStages; //tong so giai doan phat trien
     int exp; // kinh nghiem 
-    vector<ItemType> harvestedItems;
-    vector<Texture> stageTextures;  // load cac anh cua tung trang thai
+    Vector<ItemType> harvestedItems;
+    Vector<Texture> stageTextures;  // load cac anh cua tung trang thai
 };
 
 class CropManager{
     private:
-        static map< CropType, CropData> allCropData;
+        static mymap< CropType, CropData> allCropData;
     public:
         static void init(SDL_Renderer* renderer);
-        static const CropData& getData(CropType type);
+        static CropData& getData(CropType type);
 };
 
 class Crop{

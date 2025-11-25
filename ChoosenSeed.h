@@ -8,7 +8,7 @@
 
 class ChoosenSeed {
     private:
-        vector<ItemType> availableItems; // luu cac item dang co
+        Vector<ItemType> availableItems; // luu cac item dang co
         Texture areaItemSelection;
         Texture openChoosenSeed, closeChoosenSeed;
         Texture arrowLeft, arrowRight;
@@ -21,8 +21,8 @@ class ChoosenSeed {
         bool checkclick(int x, int y, Mix_Chunk* sound = NULL);
         void xuLyClick(int x, int y, Player &tvt , CropType &current_cropTyppe);
         void render(SDL_Renderer *renderer, TTF_Font *font, Player &tvt, CropType &current_cropTyppe);
-        vector<ItemType> getAvailableSeeds(Player &tvt); // duyet qua cac item de lay ra cac item dang co 
-        int findItemIndex(const vector<ItemType>& items, const ItemType& item); // tim vi tri cua item trong vector availableItems
+        Vector<ItemType> getAvailableSeeds(Player &tvt); // duyet qua cac item de lay ra cac item dang co 
+        int findItemIndex(Vector<ItemType>& items, const ItemType& item); // tim vi tri cua item trong vector availableItems
         bool get_isopen();
         void set_isopen(bool b);
 

@@ -21,9 +21,9 @@ bool AccountManager::registerAccount(const string& username, const string& passw
     if(username.empty() || password.empty()) {
         return false; // Khong the dang ky voi tai khoan hoac mat khau rong
     }
-    // Kiem tra tai khoan da ton tai?
-    for (const auto& account : accounts){
-        if (account.first.first == username) {
+    // Kiem tra tai khoan da ton tai?    
+    for (int i = 0; i < accounts.getSize(); i++) {
+        if (accounts[i].first.first == username) {
             return false; // Tai khoan da ton tai
         }
     }
@@ -39,9 +39,9 @@ bool AccountManager::registerAccount(const string& username, const string& passw
 }
 
 int AccountManager::login(const string& username, const string& password) {
-    for (const auto& account : accounts) {
-        if (account.first.first == username && account.first.second == password) {
-            return account.second; // tra ve userID
+    for (int i = 0; i < accounts.getSize(); i++) {
+        if (accounts[i].first.first == username && accounts[i].first.second == password) {
+            return accounts[i].second; // tra ve userID
         }
     }
     return -1; // dang nhap that bai

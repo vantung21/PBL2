@@ -19,8 +19,8 @@ ChoosenSeed::ChoosenSeed(SDL_Renderer *renderer){
     isOpen = false;
 }
 
-vector<ItemType> ChoosenSeed::getAvailableSeeds(Player &tvt) {
-    vector<ItemType> items;
+Vector<ItemType> ChoosenSeed::getAvailableSeeds(Player &tvt) {
+    Vector<ItemType> items;
     for (int i = 0; i < COUNT_SEED; i++) {
         ItemType it = ItemType(i);
         if (tvt.getInventory().getQuantity(it) > 0) {
@@ -31,8 +31,8 @@ vector<ItemType> ChoosenSeed::getAvailableSeeds(Player &tvt) {
 }
 
 // Tim vi tri cua item trong vector availableItems
-int ChoosenSeed::findItemIndex(const vector<ItemType>& items, const ItemType& item) {
-    for (int i = 0; i < items.size(); ++i) {
+int ChoosenSeed::findItemIndex(Vector<ItemType>& items, const ItemType& item) {
+    for (int i = 0; i < items.getSize(); ++i) {
         if (items[i] == item) {
             return i;
         }
@@ -72,7 +72,7 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
         availableItems = getAvailableSeeds(tvt);
 
         // Neu khong co hat giong nao thi thoat
-        if (availableItems.empty()) {
+        if (availableItems.isEmpty()) {
             selectedIndex = -1;
             itemOffset = 0;
             return;
@@ -84,7 +84,7 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
         if (x >= baseX && x < baseX + areaItemSelection.getRect().w) {
             for (int displayIndex = 0; displayIndex < 5; displayIndex++) {
                 int i = itemOffset + displayIndex; // i la chi so thuc te trong availableItems
-                if (i >= availableItems.size()) break; 
+                if (i >= availableItems.getSize()) break; 
 
                 ItemType it = availableItems[i];
                 int iconX1 = baseX + displayIndex * 64;
@@ -116,10 +116,10 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
         // mui ten phai
         else if(arrowRight.checkClickTexture(x ,y)){
 
-            if (selectedIndex < 4 && (itemOffset + selectedIndex + 1) < availableItems.size()) {
+            if (selectedIndex < 4 && (itemOffset + selectedIndex + 1) < availableItems.getSize()) {
                 selectedIndex++;
             } 
-            else if (itemOffset + 5 < availableItems.size()) {
+            else if (itemOffset + 5 < availableItems.getSize()) {
                 itemOffset += 5;
                 selectedIndex = 0;
             }
@@ -127,7 +127,7 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
         }
         
         int actualIndex = itemOffset + selectedIndex;
-        if (!itemClicked && (selectedIndex == -1 || actualIndex >= availableItems.size() || availableItems[actualIndex] != ItemType(current_cropType))) 
+        if (!itemClicked && (selectedIndex == -1 || actualIndex >= availableItems.getSize() || availableItems[actualIndex] != ItemType(current_cropType))) 
         {
             int foundIndex = findItemIndex(availableItems, ItemType(current_cropType));
             
@@ -149,7 +149,7 @@ void ChoosenSeed::xuLyClick(int x, int y, Player &tvt , CropType &current_cropTy
 
         availableItems = getAvailableSeeds(tvt);
 
-        if (availableItems.empty()) {
+        if (availableItems.isEmpty()) {
             selectedIndex = -1;
             itemOffset = 0;
         } 
@@ -185,7 +185,7 @@ void ChoosenSeed::render(SDL_Renderer *renderer, TTF_Font *font, Player &tvt, Cr
         
         for(int displayIndex = 0; displayIndex < 5; displayIndex++){
             int i = itemOffset + displayIndex; 
-            if (i >= availableItems.size()) break; // het item de ve
+            if (i >= availableItems.getSize()) break; // het item de ve
 
             ItemType it = availableItems[i]; 
 

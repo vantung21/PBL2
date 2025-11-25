@@ -9,7 +9,9 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-#include<vector>
+
+#include "mymap.h"
+#include "Vector.h"
 
 using namespace std;
 

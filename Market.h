@@ -5,10 +5,11 @@
 #include "Inventory.h"
 #include "player.h"
 #include "mymap.h"
+#include "Vector.h"
 
 class Market{
     private:
-        vector<ItemType> itemForSale;
+        Vector<ItemType> itemForSale;
         mymap<ItemType, Texture> itemPositions;
         ItemType selectedItem;
         int mrk_x;

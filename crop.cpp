@@ -1,6 +1,6 @@
 #include "crop.h"
 
-map<CropType, CropData> CropManager::allCropData;
+mymap<CropType, CropData> CropManager::allCropData;
 
 void CropManager :: init(SDL_Renderer* renderer){
     //khoi tao du lieu cho rice
@@ -15,7 +15,8 @@ void CropManager :: init(SDL_Renderer* renderer){
     riceData.stageTextures[2].Loadfromfile(renderer, "image_game/rice_stage2.png");
     riceData.stageTextures[3].Loadfromfile(renderer, "image_game/rice_stage3.png");
     riceData.harvestedItems.push_back(RICE);
-    allCropData[RICE_cp] = riceData;
+    //allCropData[RICE_cp] = riceData;
+    allCropData.insert(RICE_cp, riceData);
 
     //carrot
     static CropData carrotData;
@@ -29,7 +30,8 @@ void CropManager :: init(SDL_Renderer* renderer){
     carrotData.stageTextures[2].Loadfromfile(renderer, "image_game/carrot_stage2.png");
     carrotData.stageTextures[3].Loadfromfile(renderer, "image_game/carrot_stage3.png");
     carrotData.harvestedItems.push_back(CARROT);
-    allCropData[CARROT_cp] = carrotData;
+    //allCropData[CARROT_cp] = carrotData;
+    allCropData.insert(CARROT_cp, carrotData);
 
     //corn
     static CropData cornData;
@@ -43,7 +45,8 @@ void CropManager :: init(SDL_Renderer* renderer){
     cornData.stageTextures[2].Loadfromfile(renderer, "image_game/corn_stage2.png");
     cornData.stageTextures[3].Loadfromfile(renderer, "image_game/corn_stage3.png");
     cornData.harvestedItems.push_back(CORN);
-    allCropData[CORN_cp] = cornData;
+    //allCropData[CORN_cp] = cornData;
+    allCropData.insert(CORN_cp, cornData);
 
     static CropData blueberryData;
     blueberryData.name = "Blueberry";
@@ -56,7 +59,8 @@ void CropManager :: init(SDL_Renderer* renderer){
     blueberryData.stageTextures[2].Loadfromfile(renderer, "image_game/blueberry_stage2.png");
     blueberryData.stageTextures[3].Loadfromfile(renderer, "image_game/blueberry_stage3.png");
     blueberryData.harvestedItems.push_back(BLUEBERRY);
-    allCropData[BLUEBERRY_cp] = blueberryData;
+    //allCropData[BLUEBERRY_cp] = blueberryData;
+    allCropData.insert(BLUEBERRY_cp, blueberryData);
 
     static CropData cauliflowerData;
     cauliflowerData.name = "Cauliflower";
@@ -69,7 +73,8 @@ void CropManager :: init(SDL_Renderer* renderer){
     cauliflowerData.stageTextures[2].Loadfromfile(renderer, "image_game/cauliflower_stage2.png");
     cauliflowerData.stageTextures[3].Loadfromfile(renderer, "image_game/cauliflower_stage3.png");
     cauliflowerData.harvestedItems.push_back(CAULIFLOWER);
-    allCropData[CAULIFLOWER_cp] = cauliflowerData;
+    //allCropData[CAULIFLOWER_cp] = cauliflowerData;
+    allCropData.insert(CAULIFLOWER_cp, cauliflowerData);
 
     static CropData chiliData;
     chiliData.name = "Chili";
@@ -82,7 +87,8 @@ void CropManager :: init(SDL_Renderer* renderer){
     chiliData.stageTextures[2].Loadfromfile(renderer, "image_game/chili_stage2.png");
     chiliData.stageTextures[3].Loadfromfile(renderer, "image_game/chili_stage3.png");
     chiliData.harvestedItems.push_back(CHILI);
-    allCropData[CHILI_cp] = chiliData;
+    //allCropData[CHILI_cp] = chiliData;
+    allCropData.insert(CHILI_cp, chiliData);
 
     static CropData leekData;
     leekData.name = "Leek";
@@ -95,7 +101,8 @@ void CropManager :: init(SDL_Renderer* renderer){
     leekData.stageTextures[2].Loadfromfile(renderer, "image_game/leek_stage2.png");
     leekData.stageTextures[3].Loadfromfile(renderer, "image_game/leek_stage3.png");
     leekData.harvestedItems.push_back(LEEK);
-    allCropData[LEEK_cp] = leekData;
+    //allCropData[LEEK_cp] = leekData;
+    allCropData.insert(LEEK_cp, leekData);
 
     static CropData potatoData;
     potatoData.name = "Potato";
@@ -108,7 +115,8 @@ void CropManager :: init(SDL_Renderer* renderer){
     potatoData.stageTextures[2].Loadfromfile(renderer, "image_game/potato_stage2.png");
     potatoData.stageTextures[3].Loadfromfile(renderer, "image_game/potato_stage3.png");
     potatoData.harvestedItems.push_back(POTATO);
-    allCropData[POTATO_cp] = potatoData;
+    //allCropData[POTATO_cp] = potatoData;
+    allCropData.insert(POTATO_cp, potatoData);
 
     static CropData pumpkinData;
     pumpkinData.name = "Pumpkin";
@@ -121,7 +129,8 @@ void CropManager :: init(SDL_Renderer* renderer){
     pumpkinData.stageTextures[2].Loadfromfile(renderer, "image_game/pumpkin_stage2.png");
     pumpkinData.stageTextures[3].Loadfromfile(renderer, "image_game/pumpkin_stage3.png");
     pumpkinData.harvestedItems.push_back(PUMPKIN);
-    allCropData[PUMPKIN_cp] = pumpkinData;
+    //allCropData[PUMPKIN_cp] = pumpkinData;
+    allCropData.insert(PUMPKIN_cp, pumpkinData);
 
     static CropData strawberryData;
     strawberryData.name = "Strawberry";
@@ -134,7 +143,8 @@ void CropManager :: init(SDL_Renderer* renderer){
     strawberryData.stageTextures[2].Loadfromfile(renderer, "image_game/strawberry_stage2.png");
     strawberryData.stageTextures[3].Loadfromfile(renderer, "image_game/strawberry_stage3.png");
     strawberryData.harvestedItems.push_back(STRAWBERRY);
-    allCropData[STRAWBERRY_cp] = strawberryData;
+    //allCropData[STRAWBERRY_cp] = strawberryData;
+    allCropData.insert(STRAWBERRY_cp, strawberryData);
 
     static CropData tomatoData;
     tomatoData.name = "Tomato";
@@ -147,7 +157,8 @@ void CropManager :: init(SDL_Renderer* renderer){
     tomatoData.stageTextures[2].Loadfromfile(renderer, "image_game/tomato_stage2.png");
     tomatoData.stageTextures[3].Loadfromfile(renderer, "image_game/tomato_stage3.png");
     tomatoData.harvestedItems.push_back(TOMATO);
-    allCropData[TOMATO_cp] = tomatoData;
+    //allCropData[TOMATO_cp] = tomatoData;
+    allCropData.insert(TOMATO_cp, tomatoData);
 
     static CropData watermelonData;
     watermelonData.name = "Watermelon";
@@ -160,7 +171,8 @@ void CropManager :: init(SDL_Renderer* renderer){
     watermelonData.stageTextures[2].Loadfromfile(renderer, "image_game/watermelon_stage2.png");
     watermelonData.stageTextures[3].Loadfromfile(renderer, "image_game/watermelon_stage3.png");
     watermelonData.harvestedItems.push_back(WATERMELON);
-    allCropData[WATERMELON_cp] = watermelonData;
+    //allCropData[WATERMELON_cp] = watermelonData;
+    allCropData.insert(WATERMELON_cp, watermelonData);
 
     static CropData appleData;
     appleData.name = "Apple";
@@ -176,10 +188,11 @@ void CropManager :: init(SDL_Renderer* renderer){
     appleData.stageTextures[5].Loadfromfile(renderer, "image_game/Tao_5.png");
     appleData.stageTextures[6].Loadfromfile(renderer, "image_game/Tao_6.png");
     appleData.harvestedItems.push_back(TAO);
-    allCropData[APPLE_cp] = appleData;
+    //allCropData[APPLE_cp] = appleData;
+    allCropData.insert(APPLE_cp, appleData);
 }
 
-const CropData&  CropManager :: getData(CropType type){
+CropData&  CropManager :: getData(CropType type){
     return allCropData.at(type);
 }
 
@@ -204,7 +217,7 @@ void Crop::update(int deltaTime){
     }
 }
 void Crop::render(SDL_Renderer* renderer){
-    const CropData& data = CropManager::getData(this->type);
+    CropData& data = CropManager::getData(this->type);
 
     if(this->growthStage < data.totalStages){
         if(data.name == "Corn"){

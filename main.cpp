@@ -291,7 +291,8 @@ int main(int argc, char* argv[]){
                                 if((gMap_.getMap().farmland[y][x])->isReadyToHarvest()){
                                     Mix_PlayChannel(-1, thuhoachSound, 0);
                                     random = startTime%5;
-                                    for(const auto item : CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).harvestedItems){
+                                    for(int i = 0; i < CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).harvestedItems.getSize(); i++){
+                                        ItemType item = CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).harvestedItems[i];
                                         tvt.getInventory().addItem(item, (random == 0)?3:2);
                                     }
                                     bool levelup = tvt.updateExp(renderer, font, rain_, CropManager::getData(gMap_.getMap().farmland[y][x]->getType()).exp);

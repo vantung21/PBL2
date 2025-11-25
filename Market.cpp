@@ -76,7 +76,8 @@ void Market :: render(SDL_Renderer *renderer, TTF_Font *font, Player &player){
     // ve cac items
     int item_x = mrk_x + 50, item_y = mrk_y + 120;
     itemPositions.clear();
-    for(auto &item : itemForSale){
+    for(int i = 0; i < itemForSale.getSize(); i++){
+        ItemType item = itemForSale[i];
         //luu vi tri cac item trong inv
         itemPositions[item].setRect(item_x, item_y, 100, 100+30);
 
