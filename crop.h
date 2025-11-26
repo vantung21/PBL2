@@ -43,7 +43,7 @@ class Crop{
         CropType type;
         int growthStage;
         int growthTimer;
-        SDL_Rect position;  //vi tri va kich thuoc tren mang hinh
+        SDL_Rect position;  //vi tri va kich thuoc tren ban do
     public:
         static int count;
         static Texture blingbling;

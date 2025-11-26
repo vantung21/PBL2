@@ -9,7 +9,6 @@
 
 struct Map{
     int tile[max_map_y][max_map_x];
-    //int stages[max_map_y][max_map_x];
     Crop* farmland[max_map_y][max_map_x];
     string file_name;
 };
@@ -32,7 +31,6 @@ class GameMap{
         void LoadTiles(SDL_Renderer* renderer);
         void DrawMap(SDL_Renderer* renderer);
         Map& getMap() { return game_map; }
-        void update(int, int);
         void save(ofstream &saveFile);
         void clear();
 };

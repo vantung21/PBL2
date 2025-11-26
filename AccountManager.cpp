@@ -15,7 +15,6 @@ AccountManager::AccountManager(){
     }
 }
 
-//string AccountManager::hashPassword(const string& password) {}
 
 bool AccountManager::registerAccount(const string& username, const string& password) {
     if(username.empty() || password.empty()) {

@@ -12,5 +12,6 @@ main.exe
 *.o
 *.exe
 Makefile
+main2.cpp
 
 
