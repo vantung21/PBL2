@@ -503,10 +503,12 @@ void Game::render() {
             }
         }
 
+        house.setRect(tile_size + root_map_x, tile_size + root_map_y, tile_size*5, tile_size*7);
+        house.render(renderer);
         player_.render(renderer);
         water_.render(renderer);
         shovel_.render(renderer);
-        choosen_seed.render(renderer, font, player_, current_cropType);
+        if(player_.getStage() == farm) choosen_seed.render(renderer, font, player_, current_cropType);
 
         icon_inv.render(renderer);
         icon_market.render(renderer);
