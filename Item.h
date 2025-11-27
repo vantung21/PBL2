@@ -1,7 +1,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include "include.h"
+#include "CommonFunction.h"
 #include "Texture.h"
 #include "mymap.h"
 

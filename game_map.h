@@ -1,7 +1,7 @@
 #ifndef GAME_MAP_H
 #define GAME_MAP_H
 
-#include "include.h"
+#include "CommonFunction.h"
 #include "Texture.h"
 #include "crop.h"
 
@@ -29,7 +29,7 @@ class GameMap{
         ~GameMap();
         void LoadMap(string name);
         void LoadTiles(SDL_Renderer* renderer);
-        void DrawMap(SDL_Renderer* renderer);
+        void DrawMap(SDL_Renderer* renderer, int root_map_x, int root_map_y);
         Map& getMap() { return game_map; }
         void save(ofstream &saveFile);
         void clear();

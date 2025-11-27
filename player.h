@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include "Inventory.h"
-#include "include.h"
+#include "CommonFunction.h"
 #include "Rain.h"
 
 enum playerStage{

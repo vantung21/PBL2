@@ -36,6 +36,8 @@ Game::Game()
       current_cropType(RICE_cp)
 {
     loadResources();
+    root_map_x = 0;
+    root_map_y = 0;
 }
 
 Game::~Game() {
@@ -468,9 +470,9 @@ void Game::update() {
             for(int j = 0; j < max_map_x; j++){
                 if(gameMap_.getMap().farmland[i][j] != NULL){
                     gameMap_.getMap().farmland[i][j]->update(FRAME_DELAY);
-                }
-                if(rain_.getIsRaining()){
-                    gameMap_.getMap().farmland[i][j]->update(FRAME_DELAY);
+                    if(rain_.getIsRaining()){
+                        gameMap_.getMap().farmland[i][j]->update(FRAME_DELAY);
+                    }
                 }
             }
         }
@@ -478,9 +480,6 @@ void Game::update() {
         if(rain_.getIsRaining()){
             water_.updateQuatity(renderer, font, FRAME_DELAY);
             rain_.updateTime(FRAME_DELAY);
-        }
-        if(rain_.getIsRaining()){
-            rain_.execute(renderer);
         }
     }
 }
@@ -493,12 +492,12 @@ void Game::render() {
         loginUI.render(renderer, font);
     }
     else {
-        gameMap_.DrawMap(renderer);
+        gameMap_.DrawMap(renderer, root_map_x, root_map_y);
 
         for(int i = 0; i < max_map_y ; i++){
             for(int j =0 ; j < max_map_x; j++){
                 if(gameMap_.getMap().farmland[i][j] != NULL){
-                    gameMap_.getMap().farmland[i][j]->render(renderer) ;
+                    gameMap_.getMap().farmland[i][j]->render(renderer, root_map_x, root_map_y) ;
                 }
             }
         }
@@ -520,6 +519,9 @@ void Game::render() {
         if (player_.getStage() == market) market_.render(renderer, font, player_);
         if (player_.getStage() == setting) setting_.render(renderer, font);
         if (player_.getStage() == tutorial) tutorial_.render(renderer);
+        if(rain_.getIsRaining()){
+            rain_.execute(renderer);
+        }
     }
 
     SDL_RenderPresent(renderer);

@@ -1,7 +1,7 @@
 #ifndef RAIN_H
 #define RAIN_H
 
-#include "include.h"
+#include "CommonFunction.h"
 #include "Texture.h"
 
  

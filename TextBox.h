@@ -1,7 +1,7 @@
 #ifndef TEXTBOX_H
 #define TEXTBOX_H
 
-#include "include.h"
+#include "CommonFunction.h"
 #include "Texture.h"
 
 enum typeBox{

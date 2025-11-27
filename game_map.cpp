@@ -47,7 +47,7 @@ void GameMap :: LoadTiles(SDL_Renderer* renderer){
     }
 }
 
-void GameMap :: DrawMap(SDL_Renderer* renderer){
+void GameMap :: DrawMap(SDL_Renderer* renderer, int root_map_x, int root_map_y){
     for(int i = 0; i< (max_map_y + 0)*tile_size; i+= tile_size){
         for(int j = 0; j < (max_map_x + 0)*tile_size; j +=tile_size){
             int val = game_map.tile[i/tile_size][j/tile_size];

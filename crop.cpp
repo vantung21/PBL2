@@ -216,7 +216,7 @@ void Crop::update(int deltaTime){
         if(growthStage >= data.totalStages) growthStage = data.totalStages-1;
     }
 }
-void Crop::render(SDL_Renderer* renderer){
+void Crop::render(SDL_Renderer* renderer, int root_map_x, int root_map_y){
     CropData& data = CropManager::getData(this->type);
 
     if(this->growthStage < data.totalStages){

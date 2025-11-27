@@ -51,7 +51,7 @@ class Crop{
         Crop(CropType type, int = 0 , int = 0 );
         ~Crop(){count--;}
         void update(int deltaTime);
-        void render(SDL_Renderer* renderer);
+        void render(SDL_Renderer* renderer, int root_map_x, int root_map_y);
         bool isReadyToHarvest() const;
         CropType getType() const;
         int getTile_x() const;

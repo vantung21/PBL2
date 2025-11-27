@@ -1,8 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "include.h"
-#include "Texture.h"
+#include "CommonFunction.h"
 #include "game_map.h"
 #include "crop.h"
 #include "player.h"
@@ -17,6 +16,10 @@
 #include "Tutorial.h"
 #include "Rain.h"
 
+
+enum gameStage{
+    LOGIN, PLAYING
+};
 
 class Game {
 private:
@@ -47,6 +50,8 @@ private:
 
     bool running;
     bool windowActive;
+    int root_map_x;
+    int root_map_y;
 
 public:
     Game();

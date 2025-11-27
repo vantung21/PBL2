@@ -1,7 +1,7 @@
 #ifndef TUTORIAL_H
 #define TUTORIAL_H
 
-#include "include.h"
+#include "CommonFunction.h"
 #include "Texture.h"
 
 class Tutorial{

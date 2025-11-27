@@ -1,15 +1,4 @@
 #include "Texture.h"
-SDL_Color white = {255, 255, 255, 255};
-SDL_Color red = {255, 0 , 0, 255};
-SDL_Color green = {0, 255, 0, 255};
-SDL_Color blue = {0, 0, 255, 255};
-SDL_Color orange = {200, 100, 0, 255};
-SDL_Color black = {0, 0, 0, 255};
-SDL_Color gray = {255, 255, 224, 225}; 
-SDL_Color yellow = {205, 205, 0, 255};
-SDL_Color d_yellow = {175, 175, 0, 255};
-SDL_Color l_blue = {0, 150, 155, 255};
-SDL_Color d_red = {175, 30, 30, 255};
 
 Texture :: Texture(int x, int y, int w, int h): rect({x,y,w,h}){
     texture = NULL;
