@@ -18,7 +18,7 @@ using namespace std;
 #define screen_width  1472
 #define screen_height 896
 #define tile_size 64
-#define FPS 25
+#define FPS 60
 #define FRAME_DELAY (1000 / FPS)
 #define white (SDL_Color){255, 255, 255, 255}
 #define red (SDL_Color){255, 0 , 0, 255}

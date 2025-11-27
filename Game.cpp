@@ -399,7 +399,7 @@ void Game::handlePlayingEvents(SDL_Event& e) {
         if(player_.getStage() == farm || player_.getStage() == shovel || player_.getStage() == watering){
             if(e.key.keysym.sym == SDLK_s){
                 root_map_y -= tile_size/2;
-                if(root_map_y <= 960 - 64*tile_size) root_map_y = 960 - 64*tile_size;
+                if(root_map_y <= screen_height - 64*tile_size) root_map_y = screen_height - 64*tile_size;
             } 
             else if(e.key.keysym.sym == SDLK_w){
                 root_map_y += tile_size/2;
@@ -407,7 +407,7 @@ void Game::handlePlayingEvents(SDL_Event& e) {
             }
             else if(e.key.keysym.sym == SDLK_d){
                 root_map_x -= tile_size/2;
-                if(root_map_x <= 1600 - 64*tile_size) root_map_x = 1600 - 64*tile_size;
+                if(root_map_x <= screen_width - 64*tile_size) root_map_x = screen_width - 64*tile_size;
             }
             else if(e.key.keysym.sym == SDLK_a){
                 root_map_x += tile_size/2;
